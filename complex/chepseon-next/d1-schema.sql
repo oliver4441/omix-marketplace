@@ -1,0 +1,26 @@
+-- Cloudflare D1 Schema for Chepseon SMS
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  userTypeId INTEGER DEFAULT 4,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS students (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  userId INTEGER UNIQUE,
+  admissionNo TEXT UNIQUE NOT NULL,
+  myClassId INTEGER,
+  year INTEGER,
+  FOREIGN KEY (userId) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS classes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL
+);
+
+-- Insert sample data
+INSERT OR IGNORE INTO classes (name) VALUES ('Form 1'), ('Form 2'), ('Form 3');

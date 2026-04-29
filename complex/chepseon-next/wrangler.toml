@@ -5,4 +5,4 @@ pages_build_output_dir = ".vercel/output/static"
 [[d1_databases]]
 binding = "DB"
 database_name = "chepseon-sms-db"
-database_id = "chepseon-sms-db"
+database_id = "<DATABASE_ID>"

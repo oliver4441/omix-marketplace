@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -40,36 +41,47 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900">
-      <div className="glass max-w-md w-full mx-4 p-8 rounded-2xl">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-white">CCHS Portal</h1>
-          <p className="text-blue-200 text-sm">Chepseon Complex High School</p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 px-4">
+      <div className="glass max-w-md w-full p-8 rounded-2xl backdrop-blur-md">
+        <div className="flex flex-col items-center mb-8">
+          <div className="mb-4">
+            <Image
+              src="/logo.svg"
+              alt="CCHS Logo"
+              width={120}
+              height={120}
+              className="mx-auto"
+            />
+          </div>
+          <h1 className="text-3xl font-bold text-white text-center">CCHS Portal</h1>
+          <p className="text-blue-200 text-sm mt-2">Chepseon Complex High School</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <div className="bg-red-500/20 text-red-200 p-3 rounded-lg text-sm">{error}</div>
+            <div className="bg-red-500/20 text-red-200 p-3 rounded-lg text-sm text-center">{error}</div>
           )}
 
           <div>
-            <label className="block text-sm text-white mb-1">Email</label>
+            <label className="block text-sm text-blue-200 mb-2">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-white/90 rounded-lg"
+              className="w-full px-4 py-3 bg-white/90 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              placeholder="Enter your email"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm text-white mb-1">Password</label>
+            <label className="block text-sm text-blue-200 mb-2">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-white/90 rounded-lg"
+              className="w-full px-4 py-3 bg-white/90 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              placeholder="Enter your password"
               required
             />
           </div>
@@ -77,7 +89,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-white text-blue-900 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
+            className="w-full bg-white text-blue-900 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>

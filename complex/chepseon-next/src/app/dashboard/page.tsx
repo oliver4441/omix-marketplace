@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 interface DashboardStats {
   students: number
@@ -94,12 +95,21 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900">
       <nav className="glass border-b border-white/20 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">CCHS Portal</h1>
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.svg"
+              alt="CCHS Logo"
+              width={40}
+              height={40}
+              className="rounded-lg"
+            />
+            <h1 className="text-2xl font-bold text-white">CCHS Portal</h1>
+          </div>
           <div className="flex items-center gap-4">
             {user && <span className="text-blue-200">{user.name}</span>}
             <button
               onClick={handleLogout}
-              className="btn-glass px-4 py-2 rounded-lg text-sm"
+              className="btn-glass px-6 py-2 rounded-lg text-sm hover:bg-white/20 transition"
             >
               Logout
             </button>
@@ -112,25 +122,50 @@ export default function DashboardPage() {
 
         {stats && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-            <div className="glass p-6 rounded-xl">
-              <h3 className="text-blue-200 text-sm uppercase">Students</h3>
-              <p className="text-3xl font-bold text-white mt-2">{stats.students}</p>
+            <div className="glass p-6 rounded-xl hover:bg-white/15 transition">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="bg-blue-500/30 p-2 rounded-lg">
+                  <Image src="/icons/students.svg" alt="" width={24} height={24} className="text-white" />
+                </div>
+                <h3 className="text-blue-200 text-sm uppercase">Students</h3>
+              </div>
+              <p className="text-3xl font-bold text-white">{stats.students}</p>
             </div>
-            <div className="glass p-6 rounded-xl">
-              <h3 className="text-blue-200 text-sm uppercase">Staff</h3>
-              <p className="text-3xl font-bold text-white mt-2">{stats.staff}</p>
+            <div className="glass p-6 rounded-xl hover:bg-white/15 transition">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="bg-blue-500/30 p-2 rounded-lg">
+                  <Image src="/icons/staff.svg" alt="" width={24} height={24} className="text-white" />
+                </div>
+                <h3 className="text-blue-200 text-sm uppercase">Staff</h3>
+              </div>
+              <p className="text-3xl font-bold text-white">{stats.staff}</p>
             </div>
-            <div className="glass p-6 rounded-xl">
-              <h3 className="text-blue-200 text-sm uppercase">Classes</h3>
-              <p className="text-3xl font-bold text-white mt-2">{stats.classes}</p>
+            <div className="glass p-6 rounded-xl hover:bg-white/15 transition">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="bg-blue-500/30 p-2 rounded-lg">
+                  <Image src="/icons/classes.svg" alt="" width={24} height={24} className="text-white" />
+                </div>
+                <h3 className="text-blue-200 text-sm uppercase">Classes</h3>
+              </div>
+              <p className="text-3xl font-bold text-white">{stats.classes}</p>
             </div>
-            <div className="glass p-6 rounded-xl">
-              <h3 className="text-blue-200 text-sm uppercase">Subjects</h3>
-              <p className="text-3xl font-bold text-white mt-2">{stats.subjects}</p>
+            <div className="glass p-6 rounded-xl hover:bg-white/15 transition">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="bg-blue-500/30 p-2 rounded-lg">
+                  <Image src="/icons/subjects.svg" alt="" width={24} height={24} className="text-white" />
+                </div>
+                <h3 className="text-blue-200 text-sm uppercase">Subjects</h3>
+              </div>
+              <p className="text-3xl font-bold text-white">{stats.subjects}</p>
             </div>
-            <div className="glass p-6 rounded-xl">
-              <h3 className="text-blue-200 text-sm uppercase">Total Payments</h3>
-              <p className="text-3xl font-bold text-white mt-2">
+            <div className="glass p-6 rounded-xl hover:bg-white/15 transition">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="bg-blue-500/30 p-2 rounded-lg">
+                  <Image src="/icons/payments.svg" alt="" width={24} height={24} className="text-white" />
+                </div>
+                <h3 className="text-blue-200 text-sm uppercase">Total Payments</h3>
+              </div>
+              <p className="text-3xl font-bold text-white">
                 ${stats.totalPayments.toFixed(2)}
               </p>
             </div>
@@ -145,11 +180,18 @@ export default function DashboardPage() {
                 {recentStudents.map((student) => (
                   <div
                     key={student.id}
-                    className="flex justify-between items-center border-b border-white/10 pb-3"
+                    className="flex justify-between items-center border-b border-white/10 pb-3 last:border-0"
                   >
-                    <div>
-                      <p className="text-white font-medium">{student.user.name}</p>
-                      <p className="text-blue-200 text-sm">{student.admissionNo}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="bg-blue-500/30 p-2 rounded-full">
+                        <span className="text-white text-sm font-bold">
+                          {student.user.name.charAt(0)}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">{student.user.name}</p>
+                        <p className="text-blue-200 text-sm">{student.admissionNo}</p>
+                      </div>
                     </div>
                     <span className="text-blue-200 text-sm">{student.user.email}</span>
                   </div>
@@ -167,7 +209,7 @@ export default function DashboardPage() {
                 {recentPayments.map((payment) => (
                   <div
                     key={payment.id}
-                    className="flex justify-between items-center border-b border-white/10 pb-3"
+                    className="flex justify-between items-center border-b border-white/10 pb-3 last:border-0"
                   >
                     <div>
                       <p className="text-white font-medium">{payment.title}</p>

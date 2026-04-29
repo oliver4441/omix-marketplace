@@ -1,15 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
-  return NextResponse.json({
-    classes: [
-      { id: 1, name: 'Form 1', classType: { name: 'Form 1' } },
-      { id: 2, name: 'Form 2', classType: { name: 'Form 2' } },
-      { id: 3, name: 'Form 3', classType: { name: 'Form 3' } },
-    ],
-  })
+  try {
+    const classes = await prisma.myClass.findMany({
+      include: { classType: true, section: true },
+    })
+    return NextResponse.json({ classes })
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch classes' }, { status: 500 })
+  }
 }
 
 export async function POST(request: NextRequest) {
-  return NextResponse.json({ message: 'Class created (demo mode)' })
+  try {
+    const body = await request.json()
+    const { name, classTypeId, sectionId } = body
+
+    const myClass = await prisma.myClass.create({
+      data: { name, classTypeId, sectionId },
+    })
+
+    return NextResponse.json({ message: 'Class created', class: myClass })
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 }

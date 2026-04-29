@@ -1,28 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const type = searchParams.get('type')
+  try {
+    const { searchParams } = new URL(request.url)
+    const type = searchParams.get('type')
 
-  if (type === 'stats') {
-    return NextResponse.json({
-      students: 150,
-      staff: 12,
-      classes: 8,
-      subjects: 15,
-      totalPayments: 45000.00,
-    })
-  } else if (type === 'recent') {
-    return NextResponse.json({
-      recentStudents: [
-        { id: 1, admissionNo: 'ADM001', user: { name: 'John Doe', email: 'john@example.com' } },
-        { id: 2, admissionNo: 'ADM002', user: { name: 'Jane Smith', email: 'jane@example.com' } },
-      ],
-      recentPayments: [
-        { id: 1, title: 'Term 1 Fees', amount: 5000, createdAt: new Date().toISOString() },
-      ],
-    })
+    let data
+    if (type === 'stats') {
+      const [students, staff, classes, subjects, payments] = await Promise.all([
+        prisma.studentRecord.count(),
+        prisma.user.count({ where: { userTypeId: { not: 4 } } }),
+        prisma.myClass.count(),
+        prisma.subject.count(),
+        prisma.payment.aggregate({ _sum: { amount: true } }),
+      ])
+      data = { students, staff, classes, subjects, totalPayments: payments._sum.amount || 0 }
+    } else if (type === 'recent') {
+      const [recentStudents, recentPayments] = await Promise.all([
+        prisma.studentRecord.findMany({
+          include: { user: true },
+          orderBy: { createdAt: 'desc' },
+          take: 5,
+        }),
+        prisma.payment.findMany({
+          orderBy: { createdAt: 'desc' },
+          take: 5,
+        }),
+      ])
+      data = { recentStudents, recentPayments }
+    } else {
+      data = { message: 'Use ?type=stats or ?type=recent' }
+    }
+
+    return NextResponse.json(data)
+  } catch (error) {
+    console.error('Error:', error)
+    return NextResponse.json({ error: 'Failed to fetch dashboard' }, { status: 500 })
   }
-
-  return NextResponse.json({ message: 'Use ?type=stats or ?type=recent' })
 }

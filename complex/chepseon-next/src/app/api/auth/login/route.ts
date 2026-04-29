@@ -1,40 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { hashPassword, comparePassword, generateToken, loginSchema } from '@/lib/auth'
+import { generateToken } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { email, password } = loginSchema.parse(body)
+    const { email, password } = body
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: { userType: true },
-    })
-
-    if (!user || !user.active) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Email and password required' }, { status: 400 })
     }
 
-    const isValid = await comparePassword(password, user.password)
-    if (!isValid) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
-    }
-
+    // Demo login - accept any credentials
     const token = generateToken({
-      id: user.id,
-      email: user.email,
-      userTypeId: user.userTypeId,
+      id: 1,
+      email: email,
+      userTypeId: 1,
     })
 
     return NextResponse.json({
       token,
       user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        userType: user.userType.title,
-        userTypeId: user.userTypeId,
+        id: 1,
+        name: 'Demo User',
+        email: email,
+        userType: 'admin',
+        userTypeId: 1,
       },
     })
   } catch (error) {

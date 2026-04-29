@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx @cloudflare/next-on-pages",
-    "start": "npx @cloudflare/next-on-pages start",
-    "pages:build": "npx @cloudflare/next-on-pages",
-    "pages:dev": "npx wrangler pages dev"
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "next": "^15.3.0",

@@ -32,6 +32,13 @@ from handlers import (
     handle_status,
     handle_stats,
     handle_url_download,
+    handle_mkdir,
+    handle_cd,
+    handle_ls,
+    handle_rmdir,
+    handle_move,
+    handle_copy,
+    handle_quota,
 )
 
 logging.basicConfig(
@@ -45,13 +52,20 @@ async def post_init(application: Application) -> None:
     await application.bot.set_my_commands([
         ("start", "Start the bot"),
         ("help", "Show help message"),
+        ("mkdir", "Create a folder"),
+        ("cd", "Go to folder"),
+        ("ls", "Browse folder"),
+        ("rmdir", "Delete empty folder"),
         ("upload", "Upload a file"),
         ("list", "List your files"),
         ("get", "Download a file"),
         ("delete", "Delete a file"),
+        ("move", "Move file to folder"),
+        ("copy", "Copy file to folder"),
+        ("quota", "Storage usage"),
         ("search", "Search files"),
-        ("status", "System status"),
         ("stats", "Storage statistics"),
+        ("status", "System status"),
     ])
 
 
@@ -67,7 +81,7 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 
 async def health_check(request, service: str = "bot") -> dict:
-    api_url = os.getenv("API_BASE_URL", "http://api:8080")
+    api_url = os.getenv("API_BASE_URL", "http://127.0.0.1:8080")
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(f"{api_url}/health", timeout=5.0)
@@ -93,6 +107,13 @@ def main() -> None:
         .build()
     )
 
+    application.add_handler(CommandHandler("mkdir", handle_mkdir))
+    application.add_handler(CommandHandler("cd", handle_cd))
+    application.add_handler(CommandHandler("ls", handle_ls))
+    application.add_handler(CommandHandler("rmdir", handle_rmdir))
+    application.add_handler(CommandHandler("move", handle_move))
+    application.add_handler(CommandHandler("copy", handle_copy))
+    application.add_handler(CommandHandler("quota", handle_quota))
     application.add_handler(CommandHandler("start", handle_start))
     application.add_handler(CommandHandler("help", handle_help))
     application.add_handler(CommandHandler("upload", handle_upload))
@@ -107,18 +128,27 @@ def main() -> None:
         CallbackQueryHandler(handle_start, pattern="main_menu")
     )
 
+    # ── Auto-upload: any media sent directly gets uploaded ──────────────────
+    # Covers: document, photo, video, audio, voice, video_note
     application.add_handler(
         MessageHandler(
-            filters.Document.ALL | filters.PHOTO,
-            handle_upload
+            (
+                filters.Document.ALL
+                | filters.PHOTO
+                | filters.VIDEO
+                | filters.AUDIO
+                | filters.VOICE
+                | filters.VIDEO_NOTE
+            ),
+            handle_upload,
         ),
-        group=1
+        group=1,
     )
 
-    # Auto-download URLs in any message
+    # ── Auto-download: any URL in text gets fetched and saved ───────────────
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, handle_url_download),
-        group=2
+        group=2,
     )
 
     application.add_error_handler(error_handler)

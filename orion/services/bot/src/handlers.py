@@ -35,7 +35,7 @@ async def get_main_menu_keyboard() -> InlineKeyboardMarkup:
 async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
     await update.message.reply_text(
-        f"🌟 *Welcome to Orion File Storage!*",
+        f"🌟 *Welcome to Orion NAS!*",
         parse_mode="Markdown",
         reply_markup=await get_main_menu_keyboard()
     )
@@ -43,26 +43,35 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 async def handle_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     help_text = """
-📖 *Orion File Storage Help*
+📖 *Orion NAS — Help*
 
-*Available Commands:*
-
-/start - Start the bot
-/help - Show this help message
-/upload - Upload a file (reply to this message with a file)
-/list - List your uploaded files
-/get [file_id] - Download a file by ID
+*File Commands:*
+/upload - Upload a file
+/list - List your files
+/get [file_id] - Download a file
 /delete [file_id] - Delete a file
-/search [query] - Search files by name or tag
-/status - Check system status
-/stats - View storage statistics
+/search [query] - Search files
+/url [url] - Download from URL
 
-*Tips:*
-• You can also just send any file directly to upload it
-• Use /search to find files quickly
-• Check /stats to see your storage usage
+*Folder Commands:*
+/mkdir [name] - Create folder
+/ls - Browse current folder
+/cd [folder] - Go into folder
+/cd .. - Go back
+/cd / - Go to root
+/rmdir [name] - Delete empty folder
 
-Need more help? Contact an admin!
+*Storage:*
+/move [file_id] [folder] - Move file
+/copy [file_id] [folder] - Copy file
+/quota - Storage usage
+/stats - Full stats
+/status - System status
+
+*Quick Tips:*
+• Send any file directly to upload it
+• /ls shows your folder + quota
+• Use /cd .. to navigate back
     """
     await update.message.reply_text(
         help_text,
@@ -74,38 +83,41 @@ Need more help? Contact an admin!
 
 
 async def handle_upload(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Auto-upload: fires for any media sent directly (photo/video/audio/document/etc)."""
     message = update.message
     user = update.effective_user
-    
+
     settings = Settings()
     api_client = APIClient(settings)
 
-    uploading_msg = await message.reply_text("📤 *Uploading file...*", parse_mode="Markdown")
+    # Resolve the Telegram file object + a human-readable name
+    file_obj = None
+    file_name = None
 
+    if message.document:
+        file_obj = await message.document.get_file()
+        file_name = message.document.file_name or f"doc_{file_obj.file_id}"
+    elif message.photo:
+        file_obj = await message.photo[-1].get_file()
+        file_name = f"photo_{file_obj.file_id}.jpg"
+    elif message.video:
+        file_obj = await message.video.get_file()
+        file_name = message.video.file_name or f"video_{file_obj.file_id}.mp4"
+    elif message.audio:
+        file_obj = await message.audio.get_file()
+        file_name = message.audio.file_name or f"audio_{file_obj.file_id}.mp3"
+    elif message.voice:
+        file_obj = await message.voice.get_file()
+        file_name = f"voice_{file_obj.file_id}.ogg"
+    elif message.video_note:
+        file_obj = await message.video_note.get_file()
+        file_name = f"video_note_{file_obj.file_id}.mp4"
+    else:
+        return  # nothing to upload
+
+    uploading_msg = await message.reply_text("📤 *Uploading…*", parse_mode="Markdown")
     try:
-        file_to_upload = None
-        file_name = None
-        
-        if message.document:
-            file_to_upload = await message.document.get_file()
-            file_name = message.document.file_name
-        elif message.photo:
-            file_to_upload = await message.photo[-1].get_file()
-            file_name = f"photo_{file_to_upload.file_id}.jpg"
-        else:
-            await uploading_msg.edit_text(
-                "❌ Please send a valid file (document or photo).",
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("<< Back", callback_data="main_menu")]
-                ])
-            )
-            return
-
-        if file_to_upload is None:
-            await uploading_msg.edit_text("❌ Failed to get file. Please try again.")
-            return
-
-        file_bytes = await file_to_download_as_bytes(file_to_upload)
+        file_bytes = await file_to_download_as_bytes(file_obj)
         content_type = _get_content_type(file_name)
 
         result = await api_client.upload_file(
@@ -113,38 +125,34 @@ async def handle_upload(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
             file_name=file_name,
             file_content=file_bytes,
             content_type=content_type,
-            tags=None
+            tags=None,
         )
 
         if result.get("success"):
+            folder = result.get("folder_path", "")
+            loc = f"/{folder}/{file_name}" if folder else f"/{file_name}"
             await uploading_msg.edit_text(
-                f"✅ *File uploaded successfully!*\n\n"
-                f"📄 File ID: `{result.get('file_id')}`\n"
-                f"📁 Name: {result.get('file_name')}\n"
-                f"💾 Size: {result.get('size_formatted')}\n"
-                f"🕐 Uploaded: {result.get('created_at')}",
+                f"✅ *Uploaded!*\n\n"
+                f"📄 `{result.get('file_id')}`\n"
+                f"📁 {file_name}\n"
+                f"💾 {result.get('size_formatted')}\n"
+                f"📍 {loc}",
                 parse_mode="Markdown",
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton("📁 My Files", callback_data="menu_files")],
-                    [InlineKeyboardButton("<< Back", callback_data="main_menu")]
-                ])
+                    [InlineKeyboardButton("<< Back", callback_data="main_menu")],
+                ]),
             )
         else:
             await uploading_msg.edit_text(
                 f"❌ Upload failed: {result.get('error', 'Unknown error')}",
                 reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("<< Back", callback_data="main_menu")]
-                ])
+                    [InlineKeyboardButton("<< Back", callback_data="main_menu")],
+                ]),
             )
-
     except Exception as e:
         logger.error(f"Upload error: {e}")
-        await uploading_msg.edit_text(
-            f"❌ Error uploading file: {str(e)}",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("<< Back", callback_data="main_menu")]
-            ])
-        )
+        await uploading_msg.edit_text(f"❌ Error: {str(e)}")
 
 
 async def handle_url_download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -158,9 +166,8 @@ async def handle_url_download(update: Update, context: ContextTypes.DEFAULT_TYPE
     if not text:
         return
 
-    # Find URLs in message text
     url_pattern = re.compile(
-        r"https?://[^\s<>\"\']+(?:\.[^\s<>\"\']+)*", re.IGNORECASE
+        r"https?://[^\s<>\"']+(?:\.[^\s<>\"']+)*", re.IGNORECASE
     )
     urls = url_pattern.findall(text)
 
@@ -179,11 +186,9 @@ async def handle_url_download(update: Update, context: ContextTypes.DEFAULT_TYPE
                 response.raise_for_status()
                 file_content = response.content
 
-            # Determine file name from URL or content-disposition
             parsed_url = httpx.URL(url)
             file_name = parsed_url.params.get("filename", "")
             if not file_name:
-                # Try content-disposition
                 cd = response.headers.get("content-disposition", "")
                 match = re.search(r'filename[^;=\n]*=(?:\\?["\'])?([^;\n]*)', cd)
                 if match:
@@ -194,7 +199,6 @@ async def handle_url_download(update: Update, context: ContextTypes.DEFAULT_TYPE
             content_type = response.headers.get("content-type", "application/octet-stream")
             content_type = content_type.split(";")[0].strip()
 
-            # Handle no-extension filenames
             if "." not in file_name and content_type:
                 ext_map = {
                     "image/jpeg": ".jpg", "image/png": ".png",
@@ -214,10 +218,10 @@ async def handle_url_download(update: Update, context: ContextTypes.DEFAULT_TYPE
 
             if result.get("success"):
                 await status_msg.edit_text(
-                    f"✅ *Downloaded & uploaded!*:\n\n"
-                    f"📄 File ID: `{result.get('file_id')}`\n"
-                    f"📁 Name: {result.get('file_name')}\n"
-                    f"💾 Size: {result.get('size_formatted')}",
+                    f"✅ *Downloaded & saved!*\n\n"
+                    f"📄 `{result.get('file_id')}`\n"
+                    f"📁 {file_name}\n"
+                    f"💾 {result.get('size_formatted')}",
                     parse_mode="Markdown"
                 )
             else:
@@ -265,7 +269,7 @@ async def handle_list(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
             size = file_info.get("size_formatted", "0 B")
             created = file_info.get("created_at", "")
             
-            files_text += f"{idx + 1}. 📄 `{file_id}`\n   {file_name}\n   💾 {size} • {created}\n\n"
+            files_text += f"{idx + 1}. 📄 `{file_id}`\n  {file_name}\n  💾 {size} • {created}\n\n"
             
             keyboard_buttons.append([
                 InlineKeyboardButton(f"📥 Get #{idx + 1}", callback_data=f"get_{file_id}"),
@@ -396,7 +400,7 @@ async def handle_search(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         for idx, file_info in enumerate(result.get("files", [])[:10]):
             file_name = file_info.get("file_name", "Unknown")
             file_id = file_info.get("file_id", "")
-            files_text += f"{idx + 1}. 📄 `{file_id}`\n   {file_name}\n\n"
+            files_text += f"{idx + 1}. 📄 `{file_id}`\n  {file_name}\n\n"
             keyboard_buttons.append([
                 InlineKeyboardButton(f"📥 Get", callback_data=f"get_{file_id}")
             ])
@@ -425,11 +429,8 @@ async def handle_status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         queue_status = await api_client.get_queue_status()
 
         status_text = (
-            f"⚙️ *Orion System Status*\n\n"
-            f"*API:* {'✅ Online' if status.get('api') else '❌ Offline'}\n"
+            f"⚙️ *Orion NAS System Status*\n\n"
             f"*Uptime:* {status.get('uptime', 'N/A')}\n"
-            f"*Database:* {'✅ Connected' if status.get('database') else '❌ Disconnected'}\n"
-            f"*Storage:* {'✅ Available' if status.get('storage') else '❌ Error'}\n\n"
             f"*Processing Queue:*\n"
             f"• Pending: {queue_status.get('pending', 0)}\n"
             f"• Processing: {queue_status.get('processing', 0)}\n"
@@ -459,7 +460,6 @@ async def handle_stats(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
     try:
         stats = await api_client.get_stats(telegram_id=user.id)
-
         storage = stats.get("storage", {})
         files = stats.get("files", {})
 
@@ -518,3 +518,272 @@ def _get_content_type(filename: str) -> str:
         "xml": "application/xml",
     }
     return content_types.get(ext, "application/octet-stream")
+
+
+# ============================================================================
+# Orion NAS — Folder & Storage Management Commands
+# ============================================================================
+
+async def handle_mkdir(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Create a folder: /mkdir foldername"""
+    user = update.effective_user
+    settings = Settings()
+    api_client = APIClient(settings)
+
+    if not context.args:
+        await update.message.reply_text(
+            "Usage: /mkdir foldername\n"
+            "Example: /mkdir work\n"
+            "Example: /mkdir projects/2025"
+        )
+        return
+
+    folder_name = " ".join(context.args).strip()
+    if not folder_name or "\\" in folder_name:
+        await update.message.reply_text("❌ Invalid folder name.")
+        return
+
+    try:
+        # Split into parent + name if contains /
+        if "/" in folder_name:
+            parts = folder_name.rsplit("/", 1)
+            parent_path, name = parts[0], parts[1]
+        else:
+            parent_path, name = "", folder_name
+
+        me = await api_client.get_me(user.id)
+        current = me.get("current_folder", "") or ""
+        if current and not parent_path:
+            full_parent = current
+        else:
+            full_parent = parent_path
+
+        result = await api_client.create_folder(user.id, name, full_parent)
+        if result.get("success"):
+            path = result.get("path", name)
+            await update.message.reply_text(
+                f"✅ Folder created: `/{path}/`",
+                parse_mode="Markdown"
+            )
+        else:
+            await update.message.reply_text(f"❌ {result.get('detail', 'Error creating folder')}")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Error: {str(e)}")
+
+
+async def handle_cd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Change directory: /cd foldername or /cd .. or /cd /"""
+    user = update.effective_user
+    settings = Settings()
+    api_client = APIClient(settings)
+
+    target = context.args[0] if context.args else ""
+
+    try:
+        me = await api_client.get_me(user.id)
+        current = me.get("current_folder", "") or ""
+
+        if target == "/":
+            new_path = ""
+        elif target == "..":
+            new_path = "/".join(current.split("/")[:-1])
+        elif not target:
+            new_path = ""
+        else:
+            # Check if target exists as subfolder
+            folders = await api_client.list_folders(user.id, current)
+            folder_names = [f["name"] for f in folders.get("folders", [])]
+            if target not in folder_names:
+                await update.message.reply_text(f"❌ Folder '{target}' not found. Use /mkdir to create it first.")
+                return
+            new_path = f"{current}/{target}" if current else target
+
+        result = await api_client.navigate_folder(user.id, new_path)
+        display = f"/{new_path}" if new_path else "/ (root)"
+        await update.message.reply_text(f"📂 Now in: `{display}`", parse_mode="Markdown")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Error: {str(e)}")
+
+
+async def handle_ls(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """List current folder: /ls"""
+    user = update.effective_user
+    settings = Settings()
+    api_client = APIClient(settings)
+
+    loading = await update.message.reply_text("📂 *Loading...*", parse_mode="Markdown")
+
+    try:
+        me = await api_client.get_me(user.id)
+        current = me.get("current_folder", "") or ""
+
+        folders_result = await api_client.list_folders(user.id, current)
+        files_result = await api_client.list_files(user.id, current, limit=50)
+
+        folders = folders_result.get("folders", [])
+        files = files_result.get("files", [])
+
+        display_path = f"/{current}" if current else "/"
+        text = f"📂 **{display_path}**\n\n"
+
+        if folders:
+            text += "📁 *Folders:*\n"
+            for f in folders:
+                text += f"  📁 `{f['name']}/`\n"
+
+        if files:
+            text += "\n📄 *Files:*\n"
+            for f in files:
+                size = f.get("size_formatted") or _format_file_size(f.get("size", 0))
+                text += f"  📄 `{f.get('file_name', '?')}` — {size}\n"
+
+        if not folders and not files:
+            text += "_Empty folder_"
+
+        used = me.get("storage_used_formatted", "?")
+        quota = me.get("quota_formatted", "?")
+        percent = me.get("usage_percent", 0)
+        bar = "▓" * min(int(percent / 5), 20) + "░" * max(20 - int(percent / 5), 0)
+        text += f"\n\n💾 {used} / {quota} [{bar}] {percent}%"
+
+        keyboard = []
+        if current:
+            keyboard.append([InlineKeyboardButton("↩️ Back", callback_data="cd_parent")])
+        keyboard.append([InlineKeyboardButton("<< Menu", callback_data="main_menu")])
+
+        await loading.edit_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+    except Exception as e:
+        await loading.edit_text(f"❌ Error: {str(e)}")
+
+
+async def handle_rmdir(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Remove empty folder: /rmdir foldername"""
+    user = update.effective_user
+    settings = Settings()
+    api_client = APIClient(settings)
+
+    if not context.args:
+        await update.message.reply_text("Usage: /rmdir foldername")
+        return
+
+    folder_name = context.args[0].strip()
+
+    try:
+        me = await api_client.get_me(user.id)
+        current = me.get("current_folder", "") or ""
+
+        folders = await api_client.list_folders(user.id, current)
+        folder = next((f for f in folders.get("folders", []) if f["name"] == folder_name), None)
+
+        if not folder:
+            await update.message.reply_text(f"❌ Folder '{folder_name}' not found.")
+            return
+
+        result = await api_client.delete_folder(folder["id"], user.id)
+        await update.message.reply_text(
+            f"✅ Deleted folder: `{folder_name}/`",
+            parse_mode="Markdown"
+        )
+    except Exception as e:
+        await update.message.reply_text(f"❌ Error: {str(e)}")
+
+
+async def handle_move(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Move file to folder: /move file_id target_folder"""
+    user = update.effective_user
+    settings = Settings()
+    api_client = APIClient(settings)
+
+    if not context.args or len(context.args) < 2:
+        await update.message.reply_text(
+            "Usage: /move file_id folder\n"
+            "Example: /move abc123 work"
+        )
+        return
+
+    file_id = context.args[0]
+    target = context.args[1]
+
+    try:
+        me = await api_client.get_me(user.id)
+        current = me.get("current_folder", "") or ""
+        new_path = f"{current}/{target}" if current else target
+
+        result = await api_client.move_file(user.id, file_id, new_path)
+        if result.get("success"):
+            await update.message.reply_text(
+                f"✅ Moved to `/{new_path}/`",
+                parse_mode="Markdown"
+            )
+        else:
+            await update.message.reply_text(f"❌ {result.get('detail', 'Error')}")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Error: {str(e)}")
+
+
+async def handle_copy(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Copy file to folder: /copy file_id target_folder"""
+    user = update.effective_user
+    settings = Settings()
+    api_client = APIClient(settings)
+
+    if not context.args or len(context.args) < 2:
+        await update.message.reply_text(
+            "Usage: /copy file_id folder\n"
+            "Example: /copy abc123 archive"
+        )
+        return
+
+    file_id = context.args[0]
+    target = context.args[1]
+
+    try:
+        me = await api_client.get_me(user.id)
+        current = me.get("current_folder", "") or ""
+        new_path = f"{current}/{target}" if current else target
+
+        result = await api_client.copy_file(user.id, file_id, new_path)
+        if result.get("success"):
+            await update.message.reply_text(
+                f"✅ Copied to `/{new_path}/`",
+                parse_mode="Markdown"
+            )
+        else:
+            await update.message.reply_text(f"❌ {result.get('detail', 'Error')}")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Error: {str(e)}")
+
+
+async def handle_quota(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Show storage quota: /quota"""
+    user = update.effective_user
+    settings = Settings()
+    api_client = APIClient(settings)
+
+    try:
+        me = await api_client.get_me(user.id)
+
+        used = me.get("storage_used_formatted", "0 B")
+        quota = me.get("quota_formatted", "?")
+        percent = me.get("usage_percent", 0)
+        bar = "▓" * min(int(percent / 5), 20) + "░" * max(20 - int(percent / 5), 0)
+        current = me.get("current_folder", "") or "/"
+
+        text = (
+            f"📊 *Orion Storage*\n\n"
+            f"{used} / {quota}\n"
+            f"[{bar}] {percent}%\n\n"
+            f"*Current:* `/{current}`"
+        )
+
+        await update.message.reply_text(text, parse_mode="Markdown")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Error: {str(e)}")
+
+
+def _format_file_size(size_bytes: int) -> str:
+    for unit in ["B", "KB", "MB", "GB", "TB"]:
+        if size_bytes < 1024:
+            return f"{size_bytes:.1f} {unit}"
+        size_bytes /= 1024
+    return f"{size_bytes:.1f} PB"

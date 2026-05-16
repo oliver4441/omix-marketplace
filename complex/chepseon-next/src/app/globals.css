@@ -1,83 +1,99 @@
 :root {
   --background: #0f172a;
   --foreground: #f8fafc;
+  --accent: #3b82f6;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 html, body {
   min-height: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Glassmorphism base */
 .glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card {
+  @apply glass rounded-2xl p-6 transition-all duration-300;
+}
+
+.glass-card:hover {
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
 }
 
-.btn-glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  transition: all 0.2s ease;
-}
-
-.btn-glass:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-input {
-  outline: none;
-}
-
+/* Buttons */
 .glass-btn {
-  display: inline-block;
-  padding: 14px 32px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #1e3a8a;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.glass-btn:hover {
-  background: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.glass-btn:active {
-  transform: scale(0.98);
+  @apply px-6 py-3 bg-white text-blue-900 rounded-xl font-bold transition-all duration-300 hover:bg-blue-50 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95;
 }
 
 .glass-btn-outline {
-  display: inline-block;
-  padding: 14px 32px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  color: white;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-  transition: all 0.2s ease;
+  @apply px-6 py-3 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-xl font-bold transition-all duration-300 hover:bg-white/20 hover:border-white/50 active:scale-95;
 }
 
-.glass-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.6);
+/* Inputs */
+.glass-input {
+  @apply w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-blue-500 focus:bg-white/10 outline-none transition-all duration-200;
+}
+
+/* Backgrounds */
+.bg-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(225, 39%, 20%, 1) 0, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%);
+}
+
+.bg-image-overlay {
+  position: relative;
+}
+
+.bg-image-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9));
+  z-index: -1;
+}
+
+.bg-hero {
+  background-image: url('/images/comp2.jpeg');
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-login {
+  background-image: url('/images/ches.jpeg');
+  background-size: cover;
+  background-position: center;
 }

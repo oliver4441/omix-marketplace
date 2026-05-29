@@ -1,7 +1,13 @@
 import { login } from "@/lib/actions/auth";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; created?: string }>;
+}) {
+  const params = await searchParams;
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       <div className="w-full max-w-md space-y-6">
@@ -9,6 +15,16 @@ export default function LoginPage() {
           <h1 className="text-3xl font-bold">Welcome back</h1>
           <p className="text-gray-500 mt-1">Sign in to your Omix account</p>
         </div>
+        {params.error && (
+          <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm border border-red-200">
+            {params.error}
+          </div>
+        )}
+        {params.created && (
+          <div className="bg-green-50 text-green-700 p-3 rounded-lg text-sm border border-green-200">
+            Account created! Please sign in.
+          </div>
+        )}
         <form
           action={login}
           className="space-y-4 bg-white p-6 rounded-xl shadow-sm border"

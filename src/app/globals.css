@@ -192,7 +192,7 @@ a {
 .focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5); }
 
 /* Aspect ratio */
-.aspect-square { aspect-ratio: 1/1; */
+.aspect-square { aspect-ratio: 1/1; }
 
 /* Overflow */
 .overflow-hidden { overflow: hidden; }

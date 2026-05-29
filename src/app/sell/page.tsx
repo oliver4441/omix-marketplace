@@ -1,14 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { createProduct } from "@/lib/actions/products";
 import { CATEGORIES, CONDITIONS } from "@/lib/constants";
 
 export default async function SellPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
+  const session = await auth();
+  if (!session?.user) redirect("/auth/login");
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
@@ -50,29 +47,10 @@ export default async function SellPage() {
               type="number"
               required
               min="1"
-              placeholder="5000"
+              placeholder="1000"
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Category
-            </label>
-            <select
-              name="category_id"
-              required
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            >
-              <option value="">Select category</option>
-              {CATEGORIES.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Condition
@@ -80,9 +58,9 @@ export default async function SellPage() {
             <select
               name="condition"
               required
+              defaultValue="good"
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
-              <option value="">Select condition</option>
               {CONDITIONS.map((c) => (
                 <option key={c.value} value={c.value}>
                   {c.label}
@@ -90,21 +68,37 @@ export default async function SellPage() {
               ))}
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Location
-            </label>
-            <input
-              name="location"
-              required
-              placeholder="e.g., Kericho Town"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            />
-          </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Photos (up to 6)
+            Category
+          </label>
+          <select
+            name="category_id"
+            required
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            {CATEGORIES.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.icon} {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Location
+          </label>
+          <input
+            name="location"
+            required
+            placeholder="e.g., Kericho Town"
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Images
           </label>
           <input
             name="images"
@@ -113,6 +107,7 @@ export default async function SellPage() {
             accept="image/*"
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
+          <p className="text-xs text-gray-400 mt-1">Upload up to 5 images</p>
         </div>
         <button
           type="submit"
@@ -120,9 +115,6 @@ export default async function SellPage() {
         >
           Submit for Review
         </button>
-        <p className="text-xs text-gray-500 text-center">
-          Your listing will be reviewed before going live.
-        </p>
       </form>
     </div>
   );

@@ -1,36 +1,67 @@
 "use server";
-import { createClient } from "@/lib/supabase/server";
+
+import { signIn as nextSignIn, signOut as nextSignOut } from "@/lib/auth";
+import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
 
 export async function login(formData: FormData) {
-  const supabase = await createClient();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) return { error: error.message };
-  revalidatePath("/", "layout");
+
+  try {
+    await nextSignIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+  } catch {
+    redirect("/auth/login?error=Invalid+email+or+password");
+  }
   redirect("/");
 }
 
 export async function register(formData: FormData) {
-  const supabase = await createClient();
   const fullName = formData.get("full_name") as string;
   const phone = formData.get("phone") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const role = (formData.get("role") as string) || "buyer";
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { data: { full_name: fullName, phone, role } },
+
+  if (!email || !password || !fullName) {
+    redirect("/auth/register?error=Name%2C+email%2C+and+password+are+required");
+  }
+  if (password.length < 6) {
+    redirect("/auth/register?error=Password+must+be+at+least+6+characters");
+  }
+
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing) redirect("/auth/register?error=Email+already+registered");
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+  const user = await prisma.user.create({
+    data: {
+      name: fullName,
+      email,
+      hashedPassword,
+      phone: phone || null,
+      role: role as any,
+    },
   });
-  if (error) return { error: error.message };
-  return { success: "Account created! Check your email to confirm." };
+
+  try {
+    await nextSignIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+  } catch {
+    redirect("/auth/login?created=true");
+  }
+  redirect("/");
 }
 
 export async function logout() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+  await nextSignOut({ redirect: false });
   redirect("/");
 }

@@ -1,14 +1,12 @@
 "use server";
-import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/db";
+import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createProduct(formData: FormData) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
+  const session = await auth();
+  if (!session?.user) redirect("/auth/login");
 
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
@@ -17,62 +15,39 @@ export async function createProduct(formData: FormData) {
   const location = formData.get("location") as string;
   const categoryId = parseInt(formData.get("category_id") as string);
 
-  const images: string[] = [];
-  const files = formData.getAll("images") as File[];
-  for (const file of files) {
-    if (file.size === 0) continue;
-    const ext = file.name.split(".").pop();
-    const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const { error } = await supabase.storage.from("products").upload(path, file);
-    if (!error) {
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("products").getPublicUrl(path);
-      images.push(publicUrl);
-    }
-  }
-
-  const { error } = await supabase.from("products").insert({
-    seller_id: user.id,
-    category_id: categoryId,
-    title,
-    description,
-    price,
-    condition,
-    location,
-    images,
-    status: "pending",
+  await prisma.product.create({
+    data: {
+      title,
+      description,
+      price,
+      condition: condition as any,
+      location,
+      categoryId: isNaN(categoryId) ? null : categoryId,
+      status: "pending",
+      images: [],
+      sellerId: session.user.id,
+    },
   });
 
-  if (error) return { error: error.message };
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
 
 export async function deleteProduct(productId: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return;
-  await supabase
-    .from("products")
-    .delete()
-    .eq("id", productId)
-    .eq("seller_id", user.id);
+  const session = await auth();
+  if (!session?.user) return;
+  await prisma.product.deleteMany({
+    where: { id: productId, sellerId: session.user.id },
+  });
   revalidatePath("/dashboard");
 }
 
 export async function markAsSold(productId: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return;
-  await supabase
-    .from("products")
-    .update({ status: "sold" })
-    .eq("id", productId)
-    .eq("seller_id", user.id);
+  const session = await auth();
+  if (!session?.user) return;
+  await prisma.product.updateMany({
+    where: { id: productId, sellerId: session.user.id },
+    data: { status: "sold" },
+  });
   revalidatePath("/dashboard");
 }

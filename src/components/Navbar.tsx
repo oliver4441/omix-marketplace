@@ -1,37 +1,26 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
-  const [user, setUser] = useState<any>(null);
+  const { data: session, status } = useSession();
   const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
-  const supabase = createClient();
+
+  const user = session?.user ?? null;
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-      if (data.user) {
-        supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", data.user.id)
-          .single()
-          .then(({ data }) => setRole(data?.role ?? null));
-      }
-    });
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
+    if (session?.user) {
+      setRole((session.user as any).role ?? null);
+    } else {
+      setRole(null);
+    }
+  }, [session]);
 
   async function handleLogout() {
-    await supabase.auth.signOut();
+    await signOut({ redirect: false });
     router.push("/");
     router.refresh();
   }

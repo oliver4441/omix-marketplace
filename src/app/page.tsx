@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/db";
 import ProductCard from "@/components/ProductCard";
 import { CATEGORIES } from "@/lib/constants";
 import Link from "next/link";
@@ -9,23 +9,20 @@ export default async function HomePage({
   searchParams: Promise<{ q?: string; category?: string }>;
 }) {
   const params = await searchParams;
-  const supabase = await createClient();
 
-  let query = supabase
-    .from("products")
-    .select("*")
-    .eq("status", "active")
-    .order("created_at", { ascending: false });
-
+  const where: any = { status: "active" };
   if (params.q) {
-    query = query.ilike("title", `%${params.q}%`);
+    where.title = { contains: params.q, mode: "insensitive" };
   }
   if (params.category) {
     const cat = CATEGORIES.find((c) => c.slug === params.category);
-    if (cat) query = query.eq("category_id", cat.id);
+    if (cat) where.categoryId = cat.id;
   }
 
-  const { data: products } = await query;
+  const products = await prisma.product.findMany({
+    where,
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -85,9 +82,9 @@ export default async function HomePage({
         {/* Product Grid */}
         <div className="flex-1">
           <p className="text-gray-500 text-sm mb-4">
-            {products?.length ?? 0} items found
+            {products.length} items found
           </p>
-          {products && products.length > 0 ? (
+          {products.length > 0 ? (
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {products.map((product) => (
                 <ProductCard

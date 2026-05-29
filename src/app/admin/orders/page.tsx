@@ -1,19 +1,21 @@
-import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/db";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { confirmPayment, updateOrderStatus } from "@/lib/actions/admin";
 import { formatPrice } from "@/lib/constants";
 
 export default async function AdminOrdersPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
-  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
-  if (profile?.role !== "admin") redirect("/");
+  const session = await auth();
+  if (!session?.user) redirect("/auth/login");
+  if ((session.user as any).role !== "admin") redirect("/");
 
-  const { data: orders } = await supabase
-    .from("orders")
-    .select("*, products(title), profiles!orders_buyer_id_fkey(full_name)")
-    .order("created_at", { ascending: false });
+  const orders = await prisma.order.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      product: { select: { title: true } },
+      buyer: { select: { name: true } },
+    },
+  });
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -32,37 +34,49 @@ export default async function AdminOrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {orders?.map((order) => (
+            {orders.map((order) => (
               <tr key={order.id} className="border-t">
                 <td className="p-3 font-mono text-xs">{order.id.slice(0, 8)}</td>
-                <td className="p-3">{order.products?.title ?? "—"}</td>
-                <td className="p-3">{order.profiles?.full_name ?? "—"}</td>
+                <td className="p-3">{order.product?.title ?? "—"}</td>
+                <td className="p-3">{order.buyer?.name ?? "—"}</td>
                 <td className="p-3">{formatPrice(order.amount)}</td>
-                <td className="p-3 font-mono text-xs">{order.mpesa_receipt ?? "—"}</td>
+                <td className="p-3 font-mono text-xs">{order.mpesaReceipt ?? "—"}</td>
                 <td className="p-3">
-                  <span className="px-2 py-1 rounded-full text-xs bg-gray-100">{order.status}</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    order.status === "delivered" ? "bg-green-100 text-green-700" :
+                    order.status === "paid" ? "bg-blue-100 text-blue-700" :
+                    "bg-yellow-100 text-yellow-700"
+                  }`}>
+                    {order.status}
+                  </span>
                 </td>
                 <td className="p-3">
-                  {order.status === "pending_payment" && (
+                  {order.status === "pending_payment" && order.mpesaReceipt && (
                     <form action={confirmPayment.bind(null, order.id)}>
-                      <button className="px-3 py-1 bg-emerald-600 text-white rounded text-xs font-medium">Confirm Payment</button>
+                      <button className="text-xs px-2 py-1 bg-emerald-600 text-white rounded cursor-pointer hover:bg-emerald-700">
+                        Confirm
+                      </button>
                     </form>
                   )}
                   {order.status === "paid" && (
-                    <form action={updateOrderStatus.bind(null, order.id, "in_transit")}>
-                      <button className="px-3 py-1 bg-blue-600 text-white rounded text-xs font-medium">Mark In Transit</button>
+                    <form action={updateOrderStatus.bind(null, order.id, "delivery")}>
+                      <button className="text-xs px-2 py-1 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700">
+                        Ship
+                      </button>
                     </form>
                   )}
-                  {order.status === "in_transit" && (
+                  {order.status === "delivery" && (
                     <form action={updateOrderStatus.bind(null, order.id, "delivered")}>
-                      <button className="px-3 py-1 bg-green-600 text-white rounded text-xs font-medium">Mark Delivered</button>
+                      <button className="text-xs px-2 py-1 bg-emerald-600 text-white rounded cursor-pointer hover:bg-emerald-700">
+                        Delivered
+                      </button>
                     </form>
                   )}
                 </td>
               </tr>
             ))}
-            {(!orders || orders.length === 0) && (
-              <tr><td colSpan={7} className="p-8 text-center text-gray-400">No orders yet</td></tr>
+            {orders.length === 0 && (
+              <tr><td colSpan={7} className="p-6 text-center text-gray-400">No orders yet</td></tr>
             )}
           </tbody>
         </table>

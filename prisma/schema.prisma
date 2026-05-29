@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  buyer
+  seller
+  admin
+}
+
+enum ProductCondition {
+  like_new
+  good
+  fair
+}
+
+enum ProductStatus {
+  pending
+  active
+  rejected
+  sold
+}
+
+enum OrderStatus {
+  pending_payment
+  paid
+  delivery
+  delivered
+  cancelled
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+  phone          String?
+  role           Role      @default(buyer)
+  isVerified     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  products       Product[]
+  ordersAsBuyer  Order[]   @relation("buyer")
+  ordersAsSeller Order[]   @relation("seller")
+  inquiries      Inquiry[]
+}
+
+model Category {
+  id           Int      @id @default(autoincrement())
+  name         String
+  slug         String   @unique
+  icon         String   @default("")
+  displayOrder Int      @default(0) @map("display_order")
+  products     Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String          @id @default(cuid())
+  sellerId    String          @map("seller_id")
+  categoryId  Int?            @map("category_id")
+  title       String
+  description String          @db.Text
+  price       Int
+  condition   ProductCondition
+  location    String
+  images      String[]        @default([])
+  status      ProductStatus   @default(pending)
+  adminNote   String?         @db.Text @map("admin_note")
+  views       Int             @default(0)
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  seller      User            @relation(fields: [sellerId], references: [id])
+  category    Category?       @relation(fields: [categoryId], references: [id])
+  orders      Order[]
+  inquiries   Inquiry[]
+
+  @@map("products")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  productId       String      @map("product_id")
+  buyerId         String      @map("buyer_id")
+  sellerId        String      @map("seller_id")
+  amount          Int
+  commission      Int
+  deliveryFee     Int         @map("delivery_fee")
+  deliveryAddress String      @map("delivery_address")
+  mpesaReceipt    String?     @map("mpesa_receipt")
+  status          OrderStatus @default(pending_payment)
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  product         Product     @relation(fields: [productId], references: [id])
+  buyer           User        @relation("buyer", fields: [buyerId], references: [id])
+  seller          User        @relation("seller", fields: [sellerId], references: [id])
+
+  @@map("orders")
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  productId String   @map("product_id")
+  buyerId   String   @map("buyer_id")
+  message   String   @db.Text
+  status    String   @default("new")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  product   Product  @relation(fields: [productId], references: [id])
+  buyer     User     @relation(fields: [buyerId], references: [id])
+
+  @@map("inquiries")
+}
+
+model Setting {
+  id             Int      @id @default(1)
+  commissionRate Float    @default(0.07) @map("commission_rate")
+  listingFee     Int      @default(0) @map("listing_fee")
+  currency       String   @default("KES")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}

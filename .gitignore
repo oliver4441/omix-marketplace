@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# old express API (replaced by Next.js + Prisma)
+api/
+dist/

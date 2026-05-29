@@ -1,23 +1,23 @@
-import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/db";
+import { auth } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatPrice, CONDITIONS, CATEGORIES, TILL_NUMBER, DELIVERY_ZONES } from "@/lib/constants";
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = await props.params;
+  const session = await auth();
+  const user = session?.user ?? null;
 
-  const { data: product } = await supabase
-    .from("products")
-    .select("*, profiles(full_name, phone)")
-    .eq("id", id)
-    .single();
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: { seller: { include: { products: false } } },
+  });
 
   if (!product) notFound();
 
   const conditionLabel = CONDITIONS.find((c) => c.value === product.condition)?.label;
-  const category = CATEGORIES.find((c) => c.id === product.category_id);
+  const category = CATEGORIES.find((c) => c.id === product.categoryId);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -54,7 +54,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
           <div className="bg-white p-4 rounded-xl border space-y-2">
             <p className="text-sm"><strong>Location:</strong> {product.location}</p>
-            <p className="text-sm"><strong>Seller:</strong> {product.profiles?.full_name}</p>
+            <p className="text-sm"><strong>Seller:</strong> {product.seller.name}</p>
           </div>
 
           {!user && (
@@ -80,10 +80,10 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </div>
           </div>
 
-          {user && user.id !== product.seller_id && (
+          {user && (user as any).id !== product.sellerId && (
             <div className="bg-white p-4 rounded-xl border">
               <p className="text-sm text-gray-500">
-                Interested? Contact the seller at <strong>{product.profiles?.phone}</strong> after agreeing on terms.
+                Interested? Contact the seller at <strong>{product.seller.phone}</strong> after agreeing on terms.
               </p>
             </div>
           )}

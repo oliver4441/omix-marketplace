@@ -385,12 +385,12 @@ export async function sendAiMessage(
     }
 
     // Check if this is the first user message (conversation has user msg + this response only)
-    const { data: msgCount } = await supabase
+    const { count: msgCount } = await supabase
       .from("ai_messages")
-      .select("id", { count: "exact", head: true })
+      .select("*", { count: "exact", head: true })
       .eq("conversation_id", conversationId);
 
-    // If first exchange (3 msgs: user + system-none + assistant), update title
+    // If first exchange (<= 2 msgs so far), update title
     if (msgCount !== null && msgCount <= 2) {
       await supabase
         .from("ai_conversations")

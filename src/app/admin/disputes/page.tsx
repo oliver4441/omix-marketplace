@@ -1,8 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import AdminOrdersClient from "./AdminOrdersClient";
+import AdminDisputesClient from "./AdminDisputesClient";
 
-export default async function AdminOrdersPage() {
+export default async function AdminDisputesPage() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -17,10 +17,10 @@ export default async function AdminOrdersPage() {
 
   if (!profile?.is_admin) redirect("/");
 
-  const { data: orders } = await supabase
-    .from("orders")
-    .select("id, status, amount_cents, listings(title), profiles!orders_buyer_id_fkey(full_name)")
+  const { data: disputes } = await supabase
+    .from("disputes")
+    .select("id, status, reason, resolution_notes, created_at, order_id, profiles!disputes_opened_by_fkey(full_name), orders(amount_cents, listings(title))")
     .order("created_at", { ascending: false });
 
-  return <AdminOrdersClient orders={orders ?? []} />;
+  return <AdminDisputesClient disputes={disputes ?? []} />;
 }

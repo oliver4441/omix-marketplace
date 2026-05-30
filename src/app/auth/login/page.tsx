@@ -4,7 +4,7 @@ import Link from "next/link";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; created?: string }>;
+  searchParams: Promise<{ error?: string; callbackUrl?: string }>;
 }) {
   const params = await searchParams;
 
@@ -20,20 +20,13 @@ export default async function LoginPage({
             {params.error}
           </div>
         )}
-        {params.created && (
-          <div className="bg-green-50 text-green-700 p-3 rounded-lg text-sm border border-green-200">
-            Account created! Please sign in.
-          </div>
-        )}
         <form
           action={login}
           className="space-y-4 bg-white p-6 rounded-xl shadow-sm border"
         >
+          <input type="hidden" name="callbackUrl" value={params.callbackUrl || "/"} />
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
             <input
@@ -46,10 +39,7 @@ export default async function LoginPage({
             />
           </div>
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
             <input
@@ -68,10 +58,7 @@ export default async function LoginPage({
           </button>
           <p className="text-sm text-center text-gray-500">
             Don&apos;t have an account?{" "}
-            <Link
-              href="/auth/register"
-              className="text-emerald-600 font-medium"
-            >
+            <Link href="/auth/register" className="text-emerald-600 font-medium">
               Register
             </Link>
           </p>

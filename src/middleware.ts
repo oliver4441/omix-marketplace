@@ -1,13 +1,18 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { jwtVerify } from "jose";
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
-const secret = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || "dev-secret-change-me"
-);
-
-const publicPaths = ["/", "/auth/login", "/auth/register", "/api/auth"];
-const publicPrefixes = ["/product/", "/api/products", "/api/categories", "/api/inquiries"];
+const publicPaths = [
+  "/",
+  "/auth/login",
+  "/auth/register",
+  "/api/auth",
+];
+const publicPrefixes = [
+  "/product/",
+  "/api/products",
+  "/api/categories",
+  "/api/inquiries",
+];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -23,27 +28,54 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check for session token (NextAuth v5 cookie names)
-  const token =
-    request.cookies.get("authjs.session-token")?.value ||
-    request.cookies.get("__Secure-authjs.session-token")?.value ||
-    request.cookies.get("next-auth.session-token")?.value ||
-    request.cookies.get("__Secure-next-auth.session-token")?.value;
+  // Check Supabase session
+  let supabaseResponse = NextResponse.next({ request });
 
-  if (!token) {
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
+          supabaseResponse = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
     const url = new URL("/auth/login", request.url);
     url.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(url);
   }
 
-  try {
-    await jwtVerify(token, secret);
-    return NextResponse.next();
-  } catch {
-    const url = new URL("/auth/login", request.url);
-    url.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(url);
+  // Check admin routes
+  if (pathname.startsWith("/admin")) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (!profile || profile.role !== "admin") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
   }
+
+  return supabaseResponse;
 }
 
 export const config = {

@@ -1,17 +1,19 @@
 "use server";
-import { prisma } from "@/lib/db";
-import { auth } from "@/lib/auth";
+
+import { createClient } from "@/utils/supabase/server";
 
 export async function sendInquiry(productId: string, message: string) {
-  const session = await auth();
-  if (!session?.user) return { error: "Please sign in first" };
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in first" };
 
-  await prisma.inquiry.create({
-    data: {
-      productId,
-      buyerId: session.user.id,
-      message,
-    },
+  await supabase.from("inquiries").insert({
+    product_id: productId,
+    buyer_id: user.id,
+    message,
   });
+
   return { success: true };
 }

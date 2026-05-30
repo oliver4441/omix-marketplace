@@ -19,11 +19,10 @@ export default function ProductCard({
   images,
 }: ProductCardProps) {
   return (
-    <Link href={`/product/${id}`}>
+    <Link href={`/listings/${id}`}>
       <div className="bg-white rounded-xl border overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">
         <div className="aspect-square bg-gray-100 relative">
           {images?.[0] ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={images[0]}
               alt={title}

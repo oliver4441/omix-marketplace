@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -94,8 +95,9 @@ export default function Navbar() {
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-xl font-bold text-emerald-700">
-            Omix
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/logo.jpg" alt="Omix" width={36} height={36} className="rounded-lg" />
+            <span className="text-xl font-bold text-emerald-700 hidden sm:inline">Omix</span>
           </Link>
           {user && (
             <div className="hidden md:flex items-center gap-1">

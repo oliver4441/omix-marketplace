@@ -46,9 +46,9 @@ function DisputeItem({ dispute }: { dispute: DisputeRow }) {
       return;
     }
     const result = await resolveDispute(dispute.id, resolution.trim());
-    if ("error" in result) {
+    if ("error" in result && result.error) {
       setError(result.error);
-    } else {
+    } else if ("success" in result) {
       window.location.reload();
     }
   }

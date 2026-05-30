@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 const COMMISSION_RATE = 0.05;
 
 function formatPrice(cents: number): string {
-  return `KSh ${Math.round(cents).toLocaleString()}`;
+  return `KES ${Math.round(cents).toLocaleString()}`;
 }
 
 // =============================================

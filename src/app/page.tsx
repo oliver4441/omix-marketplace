@@ -24,7 +24,8 @@ export default async function HomePage({
     .order("created_at", { ascending: false });
 
   if (params.q) {
-    query = query.or(`title.ilike.%${params.q}%,description.ilike.%${params.q}%`);
+    const q = params.q.replace(/[%_]/g, "").trim();
+    if (q) query = query.or(`title.ilike.%${q}%,description.ilike.%${q}%`);
   }
 
   if (params.category) {

@@ -151,7 +151,7 @@ export default function ListingDetailClient({
               <strong>Seller:</strong>{" "}
               {seller?.store_slug ? (
                 <Link href={`/sellers/${seller.store_slug}`} className="text-emerald-600 hover:underline">
-                  {seller?.store_name || seller?.full_name ?? "—"}
+                  {(seller?.store_name || seller?.full_name) ?? "—"}
                 </Link>
               ) : (
                 <Link href={`/profiles/${seller?.id}`} className="text-emerald-600 hover:underline">

@@ -399,9 +399,8 @@ export async function getMessages(
     }
 
     return messages.map((m) => {
-      const senderProfile = m.sender_profiles as
-        | { display_name: string | null; avatar_url: string | null }
-        | null;
+      const senderProfiles = m.sender_profiles as { display_name: string | null; avatar_url: string | null }[] | { display_name: string | null; avatar_url: string | null } | null;
+      const senderProfile = Array.isArray(senderProfiles) ? senderProfiles[0] : senderProfiles;
       return {
         id: m.id,
         conversation_id: m.conversation_id,
@@ -428,9 +427,8 @@ export async function getMessages(
   }
 
   return messages.map((m) => {
-    const senderProfile = m.sender_profiles as
-      | { display_name: string | null; avatar_url: string | null }
-      | null;
+    const senderProfiles = m.sender_profiles as { display_name: string | null; avatar_url: string | null }[] | { display_name: string | null; avatar_url: string | null } | null;
+    const senderProfile = Array.isArray(senderProfiles) ? senderProfiles[0] : senderProfiles;
     return {
       id: m.id,
       conversation_id: m.conversation_id,

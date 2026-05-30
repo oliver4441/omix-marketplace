@@ -11,8 +11,27 @@ interface DisputeRow {
   resolution_notes?: string;
   created_at: string;
   order_id: string;
-  profiles?: { full_name: string };
-  orders?: { amount_cents: number; listings?: { title: string } };
+  profiles?: { full_name: string }[] | { full_name: string };
+  orders?: { amount_cents: number; listings?: { title: string }[] | { title: string } }[] | { amount_cents: number; listings?: { title: string }[] | { title: string } };
+}
+
+function getProfileName(p: DisputeRow['profiles']): string {
+  if (!p) return "—";
+  if (Array.isArray(p)) return p[0]?.full_name ?? "—";
+  return p.full_name;
+}
+
+function getOrderInfo(o: DisputeRow['orders']): { amount_cents: number; title: string } | null {
+  if (!o) return null;
+  const order = Array.isArray(o) ? o[0] : o;
+  if (!order) return null;
+  const listings = order.listings;
+  let title = "";
+  if (listings) {
+    if (Array.isArray(listings)) title = listings[0]?.title ?? "";
+    else title = (listings as { title: string }).title ?? "";
+  }
+  return { amount_cents: order.amount_cents, title };
 }
 
 export default function AdminDisputesClient({ disputes }: { disputes: DisputeRow[] }) {
@@ -68,15 +87,15 @@ function DisputeItem({ dispute }: { dispute: DisputeRow }) {
             </span>
           </div>
           <p className="text-sm text-gray-500 mt-1">
-            Opened by: {dispute.profiles?.full_name ?? "—"} ·{" "}
+            Opened by: {getProfileName(dispute.profiles)} ·{" "}
             {new Date(dispute.created_at).toLocaleDateString()}
           </p>
           <p className="text-sm mt-2"><strong>Reason:</strong> {dispute.reason}</p>
-          {(dispute.orders as any)?.listings?.title && (
+          {(() => { const info = getOrderInfo(dispute.orders); return info ? (
             <p className="text-sm text-gray-500">
-              Listing: {(dispute.orders as any).listings.title} · {formatPrice((dispute.orders as any).amount_cents)}
+              Listing: {info.title} · {formatPrice(info.amount_cents)}
             </p>
-          )}
+          ) : null; })()}
           {dispute.resolution_notes && (
             <p className="text-sm mt-2 bg-green-50 p-2 rounded">
               <strong>Resolution:</strong> {dispute.resolution_notes}

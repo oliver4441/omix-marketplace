@@ -11,7 +11,7 @@ interface ListingRow {
   price: number;
   location_city: string;
   status: string;
-  profiles?: { full_name: string | null };
+  profiles?: { full_name: string | null }[] | { full_name: string | null };
   listing_images?: { image_url: string }[];
 }
 
@@ -41,7 +41,7 @@ function ListingItem({ listing }: { listing: ListingRow }) {
 
   async function handleApprove() {
     const result = await approveListing(listing.id);
-    if ("error" in result) {
+    if ("error" in result && result.error) {
       alert(result.error);
     }
     window.location.reload();
@@ -54,7 +54,7 @@ function ListingItem({ listing }: { listing: ListingRow }) {
       return;
     }
     const result = await rejectListing(listing.id, reason);
-    if ("error" in result) {
+    if ("error" in result && result.error) {
       alert(result.error);
     }
     window.location.reload();
@@ -77,7 +77,7 @@ function ListingItem({ listing }: { listing: ListingRow }) {
           )}
         </div>
         <p className="text-sm text-gray-500">
-          by {listing.profiles?.full_name ?? "—"} · {listing.location_city}
+          by {(Array.isArray(listing.profiles) ? listing.profiles[0]?.full_name : listing.profiles?.full_name) ?? "—"} · {listing.location_city}
         </p>
         <p className="text-emerald-700 font-semibold">{formatPrice(listing.price)}</p>
         {rejecting && (

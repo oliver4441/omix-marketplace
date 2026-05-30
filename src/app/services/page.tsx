@@ -23,6 +23,13 @@ interface Service {
     store_slug: string | null;
     store_name: string | null;
     verified_badge: boolean;
+  }[] | {
+    id: string;
+    full_name: string;
+    avatar_url: string | null;
+    store_slug: string | null;
+    store_name: string | null;
+    verified_badge: boolean;
   };
 }
 
@@ -110,11 +117,11 @@ export default function ServicesPage() {
               <div className="bg-white rounded-xl border p-5 hover:shadow-lg transition-shadow cursor-pointer h-full">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">
-                    {service.provider?.full_name?.[0] || "?"}
+                    {(Array.isArray(service.provider) ? service.provider[0]?.full_name?.[0] : service.provider?.full_name?.[0]) || "?"}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm">{service.provider?.store_name || service.provider?.full_name || "Service Provider"}</p>
-                    {service.provider?.verified_badge && (
+                    <p className="font-medium text-sm">{(Array.isArray(service.provider) ? service.provider[0]?.store_name || service.provider[0]?.full_name : service.provider?.store_name || service.provider?.full_name) || "Service Provider"}</p>
+                    {(Array.isArray(service.provider) ? service.provider[0]?.verified_badge : service.provider?.verified_badge) && (
                       <p className="text-xs text-emerald-600">✓ Verified</p>
                     )}
                   </div>

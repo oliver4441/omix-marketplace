@@ -9,8 +9,8 @@ interface OrderRow {
   id: string;
   status: string;
   amount_cents: number;
-  listings?: { title: string };
-  profiles?: { full_name: string };
+  listings?: { title: string }[] | { title: string };
+  profiles?: { full_name: string }[] | { full_name: string };
 }
 
 export default function AdminOrdersClient({ orders }: { orders: OrderRow[] }) {
@@ -46,7 +46,7 @@ function OrderRowItem({ order }: { order: OrderRow }) {
   async function handleAction(status: string) {
     setError(null);
     const result = await updateOrderStatus(order.id, status);
-    if ("error" in result) {
+    if ("error" in result && result.error) {
       setError(result.error);
     } else {
       window.location.reload();
@@ -57,8 +57,8 @@ function OrderRowItem({ order }: { order: OrderRow }) {
     <>
       <tr key={order.id} className="border-t">
         <td className="p-3 font-mono text-xs">{order.id.slice(0, 8)}</td>
-        <td className="p-3">{(order.listings as any)?.title ?? "—"}</td>
-        <td className="p-3">{(order.profiles as any)?.full_name ?? "—"}</td>
+        <td className="p-3">{(Array.isArray(order.listings) ? order.listings[0]?.title : order.listings?.title) ?? "—"}</td>
+        <td className="p-3">{(Array.isArray(order.profiles) ? order.profiles[0]?.full_name : order.profiles?.full_name) ?? "—"}</td>
         <td className="p-3">{formatPrice(order.amount_cents)}</td>
         <td className="p-3">
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${

@@ -50,7 +50,7 @@ function UserRowItem({ user }: { user: UserRow }) {
   async function handleVerify() {
     setError(null);
     const result = await verifySeller(user.id);
-    if ("error" in result) {
+    if ("error" in result && result.error) {
       setError(result.error);
     } else {
       window.location.reload();

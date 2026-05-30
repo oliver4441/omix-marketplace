@@ -135,7 +135,8 @@ export async function getConversations(
 
   for (const m of allMembers ?? []) {
     const arr = membersByConv.get(m.conversation_id) ?? [];
-    const profile = m.profiles as { display_name: string | null; avatar_url: string | null } | null;
+    const profiles = m.profiles as { display_name: string | null; avatar_url: string | null }[] | { display_name: string | null; avatar_url: string | null } | null;
+    const profile = Array.isArray(profiles) ? profiles[0] : profiles;
     arr.push({
       user_id: m.user_id,
       last_read_message_id: m.last_read_message_id,

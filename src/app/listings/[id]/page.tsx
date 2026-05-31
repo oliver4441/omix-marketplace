@@ -31,6 +31,7 @@ interface ListingData {
     rating_count: number;
     verified_badge: boolean;
     location_city: string;
+    phone: string | null;
   };
   reviews: { id: string; rating: number; comment: string; created_at: string; reviewer: { full_name: string } }[];
 }
@@ -54,7 +55,7 @@ export default function ListingDetailPage() {
     const { data } = await supabase
       .from("listings")
       .select(
-        "*, listing_images(id, image_url, is_primary), seller:profiles!listings_seller_id_fkey(id, full_name, store_name, store_slug, avatar_url, seller_bio, rating_avg, rating_count, verified_badge, location_city)"
+        "*, listing_images(id, image_url, is_primary), seller:profiles!listings_seller_id_fkey(id, full_name, phone, store_name, store_slug, avatar_url, seller_bio, rating_avg, rating_count, verified_badge, location_city)"
       )
       .eq("id", id)
       .single();
@@ -90,6 +91,13 @@ export default function ListingDetailPage() {
           .then(({ data }) => setIsFavorited(!!data?.length));
       }
     });
+
+    // Lightbox escape handler
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowLightbox(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
   }, [fetchListing, supabase, id]);
 
   async function handleFavorite() {
@@ -192,8 +200,50 @@ export default function ListingDetailPage() {
   const isOwner = userId === listing.seller_id;
   const imageUrl = listing.images?.[activeImage]?.image_url;
 
+  const [showLightbox, setShowLightbox] = useState(false);
+
+  const waLink = listing.seller?.phone
+    ? `https://wa.me/${listing.seller.phone.replace(/^0/, "254")}?text=${encodeURIComponent(`Hi! I'm interested in your listing: ${listing.title} - ${formatPrice(listing.price)} on Omix Marketplace`)}`
+    : null;
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* Lightbox */}
+      {showLightbox && imageUrl && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+          onClick={() => setShowLightbox(false)}
+        >
+          <button
+            className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 z-10"
+            onClick={() => setShowLightbox(false)}
+          >
+            ✕
+          </button>
+          <img
+            src={imageUrl}
+            alt={listing.title}
+            className="max-w-full max-h-full object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+          {listing.images.length > 1 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              {listing.images.map((img, i) => (
+                <button
+                  key={img.id}
+                  onClick={(e) => { e.stopPropagation(); setActiveImage(i); }}
+                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 ${
+                    i === activeImage ? "border-emerald-500" : "border-white/30"
+                  }`}
+                >
+                  <img src={img.image_url} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Breadcrumb */}
       <div className="text-sm text-gray-500 mb-4">
         <Link href="/" className="hover:text-emerald-600">Home</Link>
@@ -210,9 +260,12 @@ export default function ListingDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Images */}
         <div className="lg:col-span-3">
-          <div className="aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden mb-3">
+          <div
+            className="aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden mb-3 cursor-zoom-in"
+            onClick={() => imageUrl && setShowLightbox(true)}
+          >
             {imageUrl ? (
-              <img src={imageUrl} alt={listing.title} className="w-full h-full object-cover" />
+              <img src={imageUrl} alt={listing.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-8xl">📦</div>
             )}
@@ -269,7 +322,17 @@ export default function ListingDetailPage() {
               >
                 💬 Chat with Seller
               </button>
-              <div className="grid grid-cols-2 gap-2">
+              {waLink && (
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 bg-green-500 text-white rounded-xl font-medium hover:bg-green-600 text-center block"
+                >
+                  📱 WhatsApp Seller
+                </a>
+              )}
+              <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={() => setShowOfferInput(!showOfferInput)}
                   className="py-2 border border-emerald-600 text-emerald-700 rounded-xl text-sm font-medium hover:bg-emerald-50"
@@ -285,6 +348,18 @@ export default function ListingDetailPage() {
                   }`}
                 >
                   {isFavorited ? "❤️ Saved" : "🤍 Save"}
+                </button>
+                <button
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(window.location.href);
+                    } catch {
+                      // fallback
+                    }
+                  }}
+                  className="py-2 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50"
+                >
+                  🔗 Share
                 </button>
               </div>
 

@@ -93,9 +93,21 @@ export default async function HomePage({
 
   query = query.range(offset, offset + PAGE_SIZE - 1);
 
-  const { data: listings, count } = await query;
-  const totalPages = Math.ceil((count || 0) / PAGE_SIZE);
-  const totalListings = count || 0;
+  let listings: any[] = [];
+  let totalListings = 0;
+  let totalPages = 0;
+  try {
+    const { data, count, error } = await query;
+    if (error) {
+      console.error("[HomePage] Supabase error:", error.message);
+    } else {
+      listings = data || [];
+      totalListings = count || 0;
+      totalPages = Math.ceil(totalListings / PAGE_SIZE);
+    }
+  } catch (err: any) {
+    console.error("[HomePage] Failed to fetch listings:", err.message);
+  }
 
   // Preserve filter params in pagination links
   const fp = new URLSearchParams();

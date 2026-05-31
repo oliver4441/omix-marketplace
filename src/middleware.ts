@@ -4,13 +4,19 @@ const publicPaths = [
   "/",
   "/auth/login",
   "/auth/register",
+  "/auth/reset-password",
   "/api/auth",
 ];
 const publicPrefixes = [
+  "/listings/",
+  "/store/",
   "/product/",
   "/api/products",
   "/api/categories",
   "/api/inquiries",
+  "/api/cart",
+  "/api/mpesa",
+  "/api/push",
 ];
 
 export async function middleware(request: NextRequest) {

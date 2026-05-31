@@ -1,4 +1,8 @@
 {
+  "version": 2,
   "framework": "nextjs",
-  "buildCommand": "next build"
+  "buildCommand": "npx next build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "regions": ["sin1"]
 }

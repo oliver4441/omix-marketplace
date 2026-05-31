@@ -1,4 +1,3 @@
-import { createClient as createServerClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import CheckoutForm from "./CheckoutForm";
@@ -16,6 +15,7 @@ interface CartItem {
 }
 
 export default async function CheckoutPage() {
+  const { createClient: createServerClient } = await import("@/utils/supabase/server");
   const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 

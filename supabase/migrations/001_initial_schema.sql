@@ -850,3 +850,96 @@ CREATE POLICY "Users can delete own push subscriptions"
 -- CREATE POLICY "Owners can delete their listing images" ON storage.objects
 --   FOR DELETE USING (bucket_id = 'listing-images');
 -- =============================================
+
+
+-- =============================================
+-- PHASE 1 UPGRADES: Cart, M-Pesa, Delivery Tracking
+-- =============================================
+
+-- Add M-Pesa columns to orders
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS mpesa_receipt_number TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS mpesa_phone TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_method TEXT DEFAULT 'mpesa' CHECK (payment_method IN ('mpesa', 'card', 'escrow', 'cod'));
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT DEFAULT 'unpaid' CHECK (payment_status IN ('unpaid', 'pending', 'paid', 'failed', 'refunded'));
+
+-- Cart table (persisted server-side for logged-in users)
+CREATE TABLE IF NOT EXISTS cart_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  listing_id UUID NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+  quantity INTEGER NOT NULL DEFAULT 1 CHECK (quantity > 0),
+  added_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(user_id, listing_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_cart_items_user ON cart_items(user_id);
+
+ALTER TABLE cart_items ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own cart"
+  ON cart_items FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own cart items"
+  ON cart_items FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own cart items"
+  ON cart_items FOR UPDATE
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own cart items"
+  ON cart_items FOR DELETE
+  USING (auth.uid() = user_id);
+
+-- Add delivery tracking columns to orders
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS tracking_number TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS estimated_delivery_at TIMESTAMPTZ;
+
+-- Wishlist table (replaces simple favorites with richer data)
+CREATE TABLE IF NOT EXISTS wishlist_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  listing_id UUID NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+  added_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(user_id, listing_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_wishlist_user ON wishlist_items(user_id);
+
+ALTER TABLE wishlist_items ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own wishlist"
+  ON wishlist_items FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can manage own wishlist"
+  ON wishlist_items FOR ALL
+  USING (auth.uid() = user_id);
+
+-- Order status history for timeline
+CREATE TABLE IF NOT EXISTS order_status_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  status TEXT NOT NULL,
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_order_history_order ON order_status_history(order_id);
+
+ALTER TABLE order_status_history ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Order participants can view history"
+  ON order_status_history FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM orders
+      WHERE orders.id = order_status_history.order_id
+      AND (orders.buyer_id = auth.uid() OR orders.seller_id = auth.uid())
+    )
+  );
+
+CREATE POLICY "System can insert history"
+  ON order_status_history FOR INSERT
+  WITH CHECK (true);

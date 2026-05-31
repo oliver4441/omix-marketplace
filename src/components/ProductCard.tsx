@@ -101,7 +101,7 @@ export default function ProductCard({
             </>
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-gray-300">
-              <span className="text-4xl">📦</span>
+              <span className="text-gray-400 text-2xl font-bold">?</span>
               <span className="text-xs mt-1">No photo</span>
             </div>
           )}
@@ -109,7 +109,7 @@ export default function ProductCard({
           {/* Featured badge */}
           {isFeatured && (
             <span className="absolute top-2 right-2 bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
-              ⭐ Featured
+              Featured
             </span>
           )}
 
@@ -125,7 +125,7 @@ export default function ProductCard({
           {/* Image count indicator */}
           {images && images.length > 1 && (
             <span className="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">
-              📷 {images.length}
+              {images.length} photos
             </span>
           )}
         </div>
@@ -159,7 +159,7 @@ export default function ProductCard({
                 {sellerName}
               </span>
               {sellerVerified && (
-                <span className="text-[10px] text-emerald-600" title="Verified seller">✓</span>
+                <span className="text-[10px] text-emerald-600 font-medium" title="Verified seller">Verified</span>
               )}
               {sellerRating !== undefined && sellerRating > 0 && (
                 <StarRating rating={sellerRating} size="xs" />
@@ -169,7 +169,7 @@ export default function ProductCard({
 
           {/* Footer */}
           <div className="flex items-center justify-between mt-1.5 text-[10px] text-gray-400">
-            {viewCount !== undefined && <span>👁️ {viewCount}</span>}
+            {viewCount !== undefined && <span>{viewCount} views</span>}
             {timeAgo && <span>{timeAgo}</span>}
           </div>
         </div>

@@ -43,12 +43,15 @@ export default function Navbar() {
     setUnreadCount(total);
   }, [supabase]);
 
+  const [cartCount, setCartCount] = useState(0);
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
       if (user) {
         fetchProfile(user.id);
         fetchUnreadCount(user.id);
+        fetchCartCount(user.id);
       }
       setLoading(false);
     });
@@ -60,14 +63,24 @@ export default function Navbar() {
       if (session?.user) {
         fetchProfile(session.user.id);
         fetchUnreadCount(session.user.id);
+        fetchCartCount(session.user.id);
       } else {
         setProfile(null);
         setUnreadCount(0);
+        setCartCount(0);
       }
     });
 
     return () => subscription.unsubscribe();
   }, [supabase, fetchProfile, fetchUnreadCount]);
+
+  const fetchCartCount = useCallback(async (uid: string) => {
+    const { count } = await supabase
+      .from("cart_items")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", uid);
+    setCartCount(count || 0);
+  }, [supabase]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -101,19 +114,30 @@ export default function Navbar() {
           </Link>
           {user && (
             <div className="hidden md:flex items-center gap-1">
+              <Link href="/cart" className="relative px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50">
+                Cart
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {cartCount > 9 ? "9+" : cartCount}
+                  </span>
+                )}
+              </Link>
               <Link href="/messages" className="relative px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50">
-                💬 Messages
+                Messages
                 {unreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                     {unreadCount > 9 ? "9+" : unreadCount}
                   </span>
                 )}
               </Link>
+              <Link href="/orders" className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50">
+                Orders
+              </Link>
               <Link href="/ai-assistant" className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50">
-                ✨ AI Help
+                AI Help
               </Link>
               <Link href="/services" className="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50">
-                🛠 Services
+                Services
               </Link>
             </div>
           )}
@@ -183,40 +207,51 @@ export default function Navbar() {
             {user ? (
               <>
                 <Link href="/sell" className="flex items-center gap-2 px-3 py-2.5 text-sm text-emerald-700 font-medium rounded-lg hover:bg-emerald-50">
-                  ➕ Sell Item
+                  Sell Item
+                </Link>
+                <Link href="/cart" className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
+                  Cart
+                  {cartCount > 0 && (
+                    <span className="bg-emerald-600 text-white text-xs px-1.5 py-0.5 rounded-full">
+                      {cartCount}
+                    </span>
+                  )}
                 </Link>
                 <Link href="/messages" className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
-                  💬 Messages
+                  Messages
                   {unreadCount > 0 && (
                     <span className="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
                       {unreadCount}
                     </span>
                   )}
                 </Link>
+                <Link href="/orders" className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
+                  Orders
+                </Link>
                 <Link href="/ai-assistant" className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
-                  ✨ AI Help
+                  AI Help
                 </Link>
                 <Link href="/services" className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
-                  🛠 Services
+                  Services
                 </Link>
                 <Link href="/dashboard" className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
-                  📊 Dashboard
+                  Dashboard
                 </Link>
                 <Link href="/verify" className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
-                  ✅ Verify
+                  Verify
                 </Link>
                 {profile?.store_slug && (
                   <Link href={`/store/${profile.store_slug}`} className="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
-                    🏪 My Store
+                    My Store
                   </Link>
                 )}
                 {profile?.is_admin && (
                   <Link href="/admin" className="flex items-center gap-2 px-3 py-2.5 text-sm text-red-600 rounded-lg hover:bg-red-50">
-                    🔐 Admin
+                    Admin
                   </Link>
                 )}
                 <button onClick={handleLogout} className="w-full text-left flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
-                  🚪 Logout
+                  Logout
                 </button>
               </>
             ) : (

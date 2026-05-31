@@ -45,10 +45,10 @@ export default function Footer() {
               </a>
               <span className="block">📍 Kericho, Kenya</span>
               <a
-                href="mailto:helloomix@gmail.com"
+                href="mailto:omixsystems@gmail.com"
                 className="block hover:text-white transition"
               >
-                ✉️ helloomix@gmail.com
+                ✉️ omixsystems@gmail.com
               </a>
             </div>
           </div>

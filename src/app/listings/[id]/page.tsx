@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { formatPrice, CONDITIONS, CATEGORIES } from "@/lib/constants";
+import { addToCart } from "@/lib/actions/cart";
 
 interface ListingData {
   id: string;
@@ -332,12 +333,25 @@ export default function ListingDetailPage() {
                   📱 WhatsApp Seller
                 </a>
               )}
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-4 gap-2">
+                <button
+                  onClick={async () => {
+                    const result = await addToCart(id);
+                    if (result?.error) {
+                      alert(result.error);
+                    } else {
+                      router.push("/cart");
+                    }
+                  }}
+                  className="py-2 border border-emerald-600 text-emerald-700 rounded-xl text-sm font-medium hover:bg-emerald-50"
+                >
+                  Add to Cart
+                </button>
                 <button
                   onClick={() => setShowOfferInput(!showOfferInput)}
                   className="py-2 border border-emerald-600 text-emerald-700 rounded-xl text-sm font-medium hover:bg-emerald-50"
                 >
-                  💰 Make Offer
+                  Make Offer
                 </button>
                 <button
                   onClick={handleFavorite}
@@ -347,7 +361,7 @@ export default function ListingDetailPage() {
                       : "border-gray-200 text-gray-600 hover:bg-gray-50"
                   }`}
                 >
-                  {isFavorited ? "❤️ Saved" : "🤍 Save"}
+                  {isFavorited ? "Saved" : "Save"}
                 </button>
                 <button
                   onClick={async () => {

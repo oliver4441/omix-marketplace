@@ -1,11 +1,11 @@
 export const dynamic = "force-dynamic";
 
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import AdminUsersClient from "./AdminUsersClient";
 
 export default async function AdminUsersPage() {
-  const supabase = await createClient();
+  const { createClient: createServerClient } = await import("@/utils/supabase/server");
+  const supabase = await createServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

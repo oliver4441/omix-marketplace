@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,7 +6,8 @@ import { ORDER_STATUS_LABELS } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export default async function PurchaseHistoryPage() {
-  const supabase = await createClient();
+  const { createClient: createServerClient } = await import("@/utils/supabase/server");
+  const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 

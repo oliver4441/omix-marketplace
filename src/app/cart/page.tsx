@@ -1,6 +1,5 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import Image from "next/image";
 import { formatPrice } from "@/lib/constants";
@@ -9,7 +8,8 @@ import { removeFromCart, clearCart } from "@/lib/actions/cart";
 export const dynamic = "force-dynamic";
 
 export default async function CartPage() {
-  const supabase = await createClient();
+  const { createClient: createServerClient } = await import("@/utils/supabase/server");
+  const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 

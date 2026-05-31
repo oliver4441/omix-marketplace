@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { formatPrice } from "@/lib/constants";
+import StarRating, { RatingDistribution } from "@/components/StarRating";
 
 interface StoreProfile {
   id: string;
@@ -187,6 +188,20 @@ export default function SellerStorePage() {
           )}
         </div>
 
+        {/* Rating Distribution */}
+        {reviews.length > 0 && (
+          <div className="mt-6 pt-6 border-t">
+            <h3 className="text-sm font-medium text-gray-700 mb-3">Rating Breakdown</h3>
+            <RatingDistribution
+              ratings={[5, 4, 3, 2, 1].map((stars) => ({
+                stars,
+                count: reviews.filter((r) => r.rating === stars).length,
+              }))}
+              total={reviews.length}
+            />
+          </div>
+        )}
+
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t">
           <div className="text-center">
@@ -194,7 +209,7 @@ export default function SellerStorePage() {
             <p className="text-xs text-gray-500">Active Listings</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-emerald-700">{profile.rating_count}</p>
+            <p className="text-2xl font-bold text-emerald-700">{reviews.length}</p>
             <p className="text-xs text-gray-500">Reviews</p>
           </div>
           <div className="text-center">
@@ -275,12 +290,8 @@ export default function SellerStorePage() {
                         })}
                       </p>
                     </div>
-                    <div className="ml-auto flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span key={star} className="text-sm">
-                          {star <= review.rating ? "⭐" : "☆"}
-                        </span>
-                      ))}
+                    <div className="ml-auto">
+                      <StarRating rating={review.rating} size="sm" />
                     </div>
                   </div>
                   {review.comment && <p className="text-sm text-gray-600">{review.comment}</p>}

@@ -353,8 +353,8 @@ export default function ListingDetailPage() {
                   onClick={async () => {
                     try {
                       await navigator.clipboard.writeText(window.location.href);
-                    } catch {
-                      // fallback
+                    } catch (_e) {
+                      // fallback — clipboard may be blocked
                     }
                   }}
                   className="py-2 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50"

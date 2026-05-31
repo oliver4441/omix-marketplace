@@ -3,5 +3,9 @@
   "framework": "nextjs",
   "buildCommand": "npx next build",
   "installCommand": "npm install",
-  "regions": ["sin1"]
+  "functions": {
+    "src/app/**/page.tsx": {
+      "maxDuration": 30
+    }
+  }
 }

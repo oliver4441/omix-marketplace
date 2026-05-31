@@ -2,7 +2,6 @@
   "version": 2,
   "framework": "nextjs",
   "buildCommand": "npx next build",
-  "outputDirectory": ".next",
   "installCommand": "npm install",
   "regions": ["sin1"]
 }

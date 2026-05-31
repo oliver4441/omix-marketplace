@@ -51,6 +51,7 @@ export async function signUp(formData: FormData) {
   const fullName = formData.get("full_name") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const phone = (formData.get("phone") as string) || null;
 
   if (!email || !password || !fullName) {
     redirect("/auth/register?error=Name%2C+email%2C+and+password+are+required");
@@ -61,7 +62,7 @@ export async function signUp(formData: FormData) {
 
   const supabase = await createClient();
 
-  // Sign up via Supabase Auth, pass full_name in metadata so the trigger can pick it up
+  // Sign up via Supabase Auth with full_name in metadata
   const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,
     password,
@@ -69,27 +70,37 @@ export async function signUp(formData: FormData) {
       data: {
         full_name: fullName,
       },
+      emailRedirectTo: undefined, // Let Supabase handle email confirmation
     },
   });
 
-  if (signUpError || !signUpData.user) {
-    redirect(
-      `/auth/register?error=${encodeURIComponent(
-        signUpError?.message || "Failed to create account"
-      )}`
-    );
+  if (signUpError) {
+    // Handle specific known errors
+    const msg = signUpError.message || "Failed to create account";
+    if (msg.toLowerCase().includes("already registered")) {
+      redirect("/auth/login?error=An+account+with+this+email+already+exists");
+    }
+    redirect(`/auth/register?error=${encodeURIComponent(msg)}`);
+  }
+
+  // signUpData.user is null when email confirmation is enabled
+  // In that case, we can't auto-sign-in — user must confirm email first
+  if (!signUpData.user) {
+    // Email confirmation required — redirect to a "check your email" page
+    redirect("/auth/login?created=true");
   }
 
   const userId = signUpData.user.id;
 
-  // Explicitly update the profiles row with full_name from metadata.
-  // The DB trigger may already insert a stub, so we upsert to be safe.
+  // Update the profiles row (trigger already created a stub)
+  // Store full_name properly and phone if provided
   const { error: profileError } = await supabase
     .from("profiles")
     .upsert(
       {
         id: userId,
         full_name: fullName,
+        phone: phone && phone.length > 0 ? phone : null,
         last_seen_at: new Date().toISOString(),
       },
       { onConflict: "id", ignoreDuplicates: false }

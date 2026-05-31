@@ -4,7 +4,7 @@ import Link from "next/link";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; callbackUrl?: string }>;
+  searchParams: Promise<{ error?: string; callbackUrl?: string; created?: string }>;
 }) {
   const params = await searchParams;
 
@@ -18,6 +18,11 @@ export default async function LoginPage({
         {params.error && (
           <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm border border-red-200">
             {params.error}
+          </div>
+        )}
+        {params.created && (
+          <div className="bg-emerald-50 text-emerald-700 p-3 rounded-lg text-sm border border-emerald-200">
+            ✅ Account created successfully! Sign in below.
           </div>
         )}
         <form

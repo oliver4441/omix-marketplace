@@ -34,13 +34,6 @@ export async function requireAuth() {
 
 export async function requireAdmin() {
   const profile = await getUserProfile();
-  if (!profile || profile.role !== "admin") redirect("/");
-  return profile;
-}
-
-export async function requireSeller() {
-  const profile = await getUserProfile();
-  if (!profile || (profile.role !== "seller" && profile.role !== "admin"))
-    redirect("/");
+  if (!profile || !profile.is_admin) redirect("/");
   return profile;
 }

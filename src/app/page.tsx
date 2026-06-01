@@ -7,11 +7,15 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 /* ===== INLINE ICONS ===== */
-const Icon = ({ d, size = "w-4 h-4", round }: { d: string; size?: string; round?: boolean }) => (
-  <svg className={size} fill="none" stroke="currentColor" strokeWidth={round ? 2 : 1.5} viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d={d} />
-  </svg>
-);
+const Icon = ({ d, size = "w-4 h-4", round }: { d: string; size?: string; round?: boolean }) => {
+  const sizeMap: Record<string, number> = { 'w-3 h-3': 12, 'w-4 h-4': 16, 'w-5 h-5': 20, 'w-6 h-6': 24, 'w-7 h-7': 28 };
+  const wh = sizeMap[size] || 16;
+  return (
+    <svg className={size} width={wh} height={wh} fill="none" stroke="currentColor" strokeWidth={round ? 2 : 1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d={d} />
+    </svg>
+  );
+};
 
 const SearchIcon = () => <Icon d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" size="w-4 h-4" round />;
 

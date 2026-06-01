@@ -191,13 +191,15 @@ export default async function HomePage({
                 <select
                   name="sort"
                   defaultValue={sort}
-                  onChange={(e) => e.target.form?.requestSubmit()}
                   className="px-3 py-1.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
                 >
                   {sortOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
+                <button type="submit" className="ml-2 px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700">
+                  Apply
+                </button>
               </form>
             </div>
           </div>

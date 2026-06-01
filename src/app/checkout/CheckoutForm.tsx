@@ -122,81 +122,84 @@ export default function CheckoutForm({ cartItems }: { cartItems: CartItem[] }) {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Checkout</h1>
+      <h1 className="text-2xl font-bold mb-6 text-white">Checkout</h1>
 
       {step === "success" ? (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-8 text-center">
-          <p className="text-4xl mb-3">Order Placed!</p>
-          <p className="text-emerald-700 font-medium">Your order has been created successfully.</p>
-          <p className="text-sm text-emerald-600 mt-2">You will receive an M-Pesa STK push prompt on your phone to complete payment.</p>
-          <p className="text-xs text-gray-500 mt-4">Redirecting to order details...</p>
+        <div className="glass-card p-8 text-center border-emerald-500/30">
+          <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+          </div>
+          <p className="text-xl font-bold text-white mb-2">Order Placed!</p>
+          <p className="text-slate-300 font-medium">Your order has been created successfully.</p>
+          <p className="text-sm text-slate-400 mt-2">You will receive an M-Pesa STK push prompt on your phone to complete payment.</p>
+          <p className="text-xs text-slate-500 mt-4">Redirecting to order details...</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3">
             <form onSubmit={handleCheckout} className="space-y-6">
-              <div className="bg-white rounded-xl border p-5">
-                <h2 className="font-semibold mb-4">Delivery Information</h2>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700 mb-4">
+              <div className="glass-card p-5">
+                <h2 className="font-semibold mb-4 text-white">Delivery Information</h2>
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 text-sm text-blue-400 mb-4">
                   Items are arranged for pickup or delivery between buyer and seller after payment confirmation.
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input required className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300" defaultValue="" />
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Full Name</label>
+                    <input required className="glass-input" defaultValue="" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">M-Pesa Phone *</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">M-Pesa Phone *</label>
                     <input
                       required
                       type="tel"
                       placeholder="07XXXXXXXX"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                      className="glass-input"
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Pickup / Delivery Location</label>
-                    <input required placeholder="e.g., Kericho Town, near university" className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300" />
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Pickup / Delivery Location</label>
+                    <input required placeholder="e.g., Kericho Town, near university" className="glass-input" />
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl border p-5">
-                <h2 className="font-semibold mb-4">Payment Method</h2>
+              <div className="glass-card p-5">
+                <h2 className="font-semibold mb-4 text-white">Payment Method</h2>
                 <div className="space-y-3">
-                  <label className="flex items-center gap-3 p-3 border-2 border-emerald-500 bg-emerald-50 rounded-lg cursor-pointer">
-                    <input type="radio" name="payment" defaultChecked className="text-emerald-600" />
+                  <label className="flex items-center gap-3 p-3 border-2 border-emerald-500/50 bg-emerald-500/10 rounded-xl cursor-pointer">
+                    <input type="radio" name="payment" defaultChecked className="accent-emerald-500" />
                     <div className="flex-1">
-                      <p className="font-medium text-sm">M-Pesa STK Push</p>
-                      <p className="text-xs text-gray-500">Pay directly from your M-Pesa account. Secure and instant.</p>
+                      <p className="font-medium text-sm text-white">M-Pesa STK Push</p>
+                      <p className="text-xs text-slate-400">Pay directly from your M-Pesa account. Secure and instant.</p>
                     </div>
                   </label>
-                  <label className="flex items-center gap-3 p-3 border rounded-lg cursor-not-allowed opacity-50">
+                  <label className="flex items-center gap-3 p-3 border border-white/10 rounded-xl cursor-not-allowed opacity-50">
                     <input type="radio" name="payment" disabled />
                     <div className="flex-1">
-                      <p className="font-medium text-sm">Cash on Delivery</p>
-                      <p className="text-xs text-gray-500">Available for nearby locations. (Coming soon)</p>
+                      <p className="font-medium text-sm text-slate-400">Cash on Delivery</p>
+                      <p className="text-xs text-slate-500">Available for nearby locations. (Coming soon)</p>
                     </div>
                   </label>
                 </div>
               </div>
 
               {error && (
-                <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm border border-red-200">
+                <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-sm">
                   {error}
                 </div>
               )}
 
               <div className="flex gap-3">
-                <Link href="/cart" className="flex-1 py-3 border text-center rounded-lg font-medium hover:bg-gray-50 transition">
+                <Link href="/cart" className="flex-1 py-3 glass-btn-outline text-center rounded-xl font-medium">
                   Back to Cart
                 </Link>
                 <button
                   type="submit"
                   disabled={paying}
-                  className="flex-1 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50 transition"
+                  className="flex-1 py-3 glass-btn rounded-xl font-medium disabled:opacity-50"
                 >
                   {step === "processing" ? "Processing..." : `Pay ${formatPrice(total)}`}
                 </button>
@@ -205,30 +208,30 @@ export default function CheckoutForm({ cartItems }: { cartItems: CartItem[] }) {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl border p-5 sticky top-20">
-              <h2 className="font-semibold mb-4">Order Summary ({cartItems.length})</h2>
+            <div className="glass-card p-5 sticky top-20">
+              <h2 className="font-semibold mb-4 text-white">Order Summary ({cartItems.length})</h2>
               <div className="space-y-3 max-h-64 overflow-y-auto">
                 {cartItems.map((item) => (
                   <div key={item.cart_id} className="flex gap-3">
-                    <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+                    <div className="w-12 h-12 bg-white/5 rounded-lg overflow-hidden shrink-0">
                       {item.images?.[0] ? (
                         <Image src={item.images[0]} alt={item.title} width={48} height={48} className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-300 text-xs">--</div>
+                        <div className="w-full h-full flex items-center justify-center text-slate-600 text-xs">--</div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{item.title}</p>
-                      <p className="text-xs text-gray-400">{item.seller_name}</p>
-                      <p className="text-sm font-semibold text-emerald-700">{formatPrice(item.price)}</p>
+                      <p className="text-sm font-medium text-slate-200 truncate">{item.title}</p>
+                      <p className="text-xs text-slate-500">{item.seller_name}</p>
+                      <p className="text-sm font-semibold text-emerald-400">{formatPrice(item.price)}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="border-t pt-3 mt-3 space-y-1 text-sm">
-                <div className="flex justify-between"><span className="text-gray-500">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
-                <div className="flex justify-between text-gray-400"><span>Platform fee</span><span>{formatPrice(commission)}</span></div>
-                <div className="flex justify-between font-bold text-base pt-2 border-t"><span>Total</span><span className="text-emerald-700">{formatPrice(total)}</span></div>
+              <div className="border-t border-white/10 pt-3 mt-3 space-y-1 text-sm">
+                <div className="flex justify-between text-slate-400"><span>Subtotal</span><span className="text-slate-300">{formatPrice(subtotal)}</span></div>
+                <div className="flex justify-between text-slate-500"><span>Platform fee</span><span className="text-slate-400">{formatPrice(commission)}</span></div>
+                <div className="flex justify-between font-bold text-base pt-2 border-t border-white/10 text-white"><span>Total</span><span className="text-emerald-400">{formatPrice(total)}</span></div>
               </div>
             </div>
           </div>

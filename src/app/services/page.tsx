@@ -84,8 +84,8 @@ export default function ServicesPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">Business Services</h1>
-        <p className="text-gray-500 text-sm mt-1">Find skilled professionals for any task</p>
+        <h1 className="text-2xl font-bold text-white">Business Services</h1>
+        <p className="text-slate-400 text-sm mt-1">Find skilled professionals for any task</p>
       </div>
 
       {/* Search & Filter */}
@@ -94,12 +94,12 @@ export default function ServicesPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search services..."
-          className="flex-1 px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
+          className="flex-1 glass-input"
         />
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
+          className="glass-input"
         >
           {SERVICE_CATEGORIES.map((cat) => (
             <option key={cat} value={cat}>
@@ -114,38 +114,38 @@ export default function ServicesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((service) => (
             <Link key={service.id} href={`/services/${service.id}`}>
-              <div className="bg-white rounded-xl border p-5 hover:shadow-lg transition-shadow cursor-pointer h-full">
+              <div className="glass-card p-5 hover:border-emerald-500/30 transition-colors cursor-pointer h-full">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold shrink-0">
                     {(Array.isArray(service.provider) ? service.provider[0]?.full_name?.[0] : service.provider?.full_name?.[0]) || "?"}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm">{(Array.isArray(service.provider) ? service.provider[0]?.store_name || service.provider[0]?.full_name : service.provider?.store_name || service.provider?.full_name) || "Service Provider"}</p>
+                    <p className="font-medium text-sm text-white">{(Array.isArray(service.provider) ? service.provider[0]?.store_name || service.provider[0]?.full_name : service.provider?.store_name || service.provider?.full_name) || "Service Provider"}</p>
                     {(Array.isArray(service.provider) ? service.provider[0]?.verified_badge : service.provider?.verified_badge) && (
-                      <p className="text-xs text-emerald-600">✓ Verified</p>
+                      <p className="text-xs text-emerald-400">✓ Verified</p>
                     )}
                   </div>
                 </div>
-                <h3 className="font-bold text-base mb-1">{service.title}</h3>
-                <p className="text-sm text-gray-500 line-clamp-2 mb-3">{service.description}</p>
+                <h3 className="font-bold text-base mb-1 text-white">{service.title}</h3>
+                <p className="text-sm text-slate-400 line-clamp-2 mb-3">{service.description}</p>
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-lg font-bold text-emerald-700">{formatPrice(service.price_cents)}</span>
-                    <span className="text-xs text-gray-400 ml-1">
+                    <span className="text-lg font-bold text-emerald-400">{formatPrice(service.price_cents)}</span>
+                    <span className="text-xs text-slate-500 ml-1">
                       {service.price_type === "hourly" ? "/hr" : service.price_type === "negotiable" ? " ~" : ""}
                     </span>
                   </div>
                   {service.is_remote && (
-                    <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">Remote</span>
+                    <span className="text-xs bg-blue-500/15 text-blue-400 px-2 py-1 rounded-full">Remote</span>
                   )}
                 </div>
-                <div className="flex items-center gap-3 mt-3 text-xs text-gray-500">
+                <div className="flex items-center gap-3 mt-3 text-xs text-slate-500">
                   {service.location_city && <span>Location: {service.location_city}</span>}
                   {service.rating_count > 0 && (
                     <span>Rating: {service.rating_avg.toFixed(1)} ({service.rating_count})</span>
                   )}
                 </div>
-                <span className="inline-block mt-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                <span className="inline-block mt-2 text-xs bg-white/10 text-slate-300 px-2 py-1 rounded-full">
                   {service.category}
                 </span>
               </div>
@@ -153,13 +153,13 @@ export default function ServicesPage() {
           ))}
         </div>
       ) : !loading ? (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-slate-400">
           <p className="text-5xl mb-3">Services</p>
-          <p className="font-medium">No services found</p>
-          <p className="text-sm">Try adjusting your filters</p>
+          <p className="font-medium text-white">No services found</p>
+          <p className="text-sm text-slate-500">Try adjusting your filters</p>
         </div>
       ) : (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-slate-400">
           <p>Loading services...</p>
         </div>
       )}

@@ -30,7 +30,6 @@ export default function SellPage() {
         return;
       }
 
-      // 1. Create listing first (without images)
       const price = Math.round(parseFloat(formData.get("price") as string) * 100);
       const { data: listing, error: dbError } = await supabase
         .from("listings")
@@ -57,7 +56,6 @@ export default function SellPage() {
 
       setListingId(listing.id);
 
-      // 2. Upload images if any
       if (uploadedFiles.length > 0) {
         const { error: uploadError } = await supabase.storage
           .from("listing-images")
@@ -82,7 +80,6 @@ export default function SellPage() {
           });
         }
 
-        // Upload remaining images
         for (let i = 1; i < uploadedFiles.length; i++) {
           const file = uploadedFiles[i];
           const path = `${listing.id}/${Date.now()}_${i}.${file.name.split(".").pop()}`;
@@ -114,20 +111,21 @@ export default function SellPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
+      {/* Step Indicator */}
       <div className="flex items-center gap-2 mb-6">
-        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= 1 ? "bg-emerald-600 text-white" : "bg-gray-200 text-gray-500"}`}>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= 1 ? "bg-emerald-600 text-white" : "bg-white/10 text-slate-500"}`}>
           1
         </div>
-        <div className={`flex-1 h-1 rounded ${step >= 2 ? "bg-emerald-600" : "bg-gray-200"}`} />
-        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= 2 ? "bg-emerald-600 text-white" : "bg-gray-200 text-gray-500"}`}>
+        <div className={`flex-1 h-1 rounded ${step >= 2 ? "bg-emerald-600" : "bg-white/10"}`} />
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= 2 ? "bg-emerald-600 text-white" : "bg-white/10 text-slate-500"}`}>
           2
         </div>
       </div>
 
-      <h1 className="text-2xl font-bold mb-2">
+      <h1 className="text-2xl font-bold mb-2 text-white">
         {step === 1 ? "List an Item for Sale" : "Add Photos"}
       </h1>
-      <p className="text-gray-500 mb-6">
+      <p className="text-slate-400 mb-6">
         {step === 1
           ? "Tell us about what you're selling"
           : "Great! Now add some photos to attract buyers"}
@@ -135,45 +133,45 @@ export default function SellPage() {
 
       <form onSubmit={handleCreateListing} className="space-y-4">
         {step === 1 && (
-          <div className="bg-white p-6 rounded-xl border space-y-4">
+          <div className="glass-card p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1">Title *</label>
               <input
                 name="title"
                 required
                 maxLength={120}
                 placeholder="e.g., iPhone 12 Pro 128GB - Excellent Condition"
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="glass-input"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1">Description</label>
               <textarea
                 name="description"
                 rows={5}
                 placeholder="Describe your item — condition, specs, reason for selling..."
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="glass-input resize-none"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Price (KES) *</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Price (KES) *</label>
                 <input
                   name="price"
                   type="number"
                   required
                   min="1"
                   placeholder="5000"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="glass-input"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Condition *</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Condition *</label>
                 <select
                   name="condition"
                   required
                   defaultValue="good"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="glass-input"
                 >
                   {CONDITIONS.map((c) => (
                     <option key={c.value} value={c.value}>{c.label}</option>
@@ -183,45 +181,46 @@ export default function SellPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Category *</label>
                 <select
                   name="category_id"
                   required
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="glass-input"
                 >
                   {CATEGORIES.map((c) => (
-                    <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
+                    <option key={c.id} value={c.id}>{c.name}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Location *</label>
                 <input
                   name="location"
                   required
                   placeholder="e.g., Kericho Town"
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="glass-input"
                 />
               </div>
             </div>
             <div>
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" name="is_negotiable" defaultChecked className="rounded" />
+              <label className="flex items-center gap-2 text-sm text-slate-300">
+                <input type="checkbox" name="is_negotiable" defaultChecked className="rounded accent-emerald-500" />
                 Price is negotiable
               </label>
             </div>
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="w-full py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition"
+              className="w-full py-3 glass-btn rounded-xl font-medium"
             >
-              Continue to Photos →
+              Continue to Photos
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
             </button>
           </div>
         )}
 
         {step === 2 && (
-          <div className="bg-white p-6 rounded-xl border space-y-4">
+          <div className="glass-card p-6 space-y-4">
             <ImageUploader
               maxImages={5}
               maxSizeMB={5}
@@ -229,7 +228,7 @@ export default function SellPage() {
             />
 
             {error && (
-              <div className="bg-red-50 text-red-600 text-sm px-3 py-2 rounded-lg">
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-3 py-2 rounded-xl">
                 {error}
               </div>
             )}
@@ -238,21 +237,21 @@ export default function SellPage() {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="flex-1 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition"
+                className="flex-1 py-3 glass-btn-outline rounded-xl font-medium"
               >
-                ← Back
+                Back
               </button>
               <button
                 type="submit"
                 disabled={publishing}
-                className="flex-1 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition disabled:opacity-50"
+                className="flex-1 py-3 glass-btn rounded-xl font-medium disabled:opacity-50"
               >
                 {publishing ? "Publishing..." : "Publish Listing"}
               </button>
             </div>
 
-            <p className="text-xs text-gray-400 text-center">
-              By listing, you agree to Omix Marketplace terms. Listing fee: free.
+            <p className="text-xs text-slate-500 text-center">
+              By listing, you agree to Marketplace terms. Listing fee: free.
             </p>
           </div>
         )}

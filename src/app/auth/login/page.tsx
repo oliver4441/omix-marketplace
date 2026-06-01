@@ -18,7 +18,7 @@ export default async function LoginPage({
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white">Welcome back</h1>
-          <p className="text-gray-400 mt-2">Sign in to your Omix account</p>
+          <p className="text-slate-400 mt-2">Sign in to your Omix account</p>
         </div>
 
         {params.error && (
@@ -36,24 +36,24 @@ export default async function LoginPage({
           <form action={handleLogin} className="space-y-4">
             <input type="hidden" name="callbackUrl" value={params.callbackUrl || "/"} />
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
               <input name="email" type="email" required className="glass-input" placeholder="you@example.com" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
               <input name="password" type="password" required className="glass-input" placeholder="Your password" />
             </div>
             <button type="submit" className="glass-btn w-full">Sign In</button>
           </form>
 
           <div className="mt-4 text-center">
-            <a href="/auth/forgot-password" className="text-sm text-gray-500 hover:text-emerald-400 transition-colors">
+            <a href="/auth/forgot-password" className="text-sm text-slate-400 hover:text-emerald-400 transition-colors">
               Forgot password?
             </a>
           </div>
         </div>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-slate-400 mt-6">
           New to Omix?{" "}
           <a href="/auth/register" className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors">
             Create an account

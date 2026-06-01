@@ -26,7 +26,7 @@ export default function AdminListingsClient({ listings }: { listings: ListingRow
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-slate-400">
           <p className="text-lg">No listings need review</p>
         </div>
       )}
@@ -58,7 +58,7 @@ function ListingItem({ listing }: { listing: ListingRow }) {
         {listing.listing_images?.[0]?.image_url ? (
           <img src={listing.listing_images[0].image_url} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600">
+          <div className="w-full h-full flex items-center justify-center text-slate-300">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
             </svg>
@@ -72,7 +72,7 @@ function ListingItem({ listing }: { listing: ListingRow }) {
             <span className="bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded-full">Reported</span>
           )}
         </div>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-slate-400">
           by {(Array.isArray(listing.profiles) ? listing.profiles[0]?.full_name : listing.profiles?.full_name) || "Unknown"} &middot; {listing.location_city}
         </p>
         <p className="text-emerald-400 font-semibold">{formatPrice(listing.price)}</p>

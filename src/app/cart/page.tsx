@@ -47,11 +47,11 @@ export default async function CartPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold">Shopping Cart</h1>
-          <p className="text-gray-500 text-sm mt-1">{items.length} item{items.length !== 1 ? "s" : ""} in your cart</p>
+          <p className="text-slate-400 text-sm mt-1">{items.length} item{items.length !== 1 ? "s" : ""} in your cart</p>
         </div>
         {items.length > 0 && (
           <form action={clearCart}>
-            <button type="submit" className="text-sm text-red-600 hover:text-red-700 hover:underline">
+            <button type="submit" className="text-sm text-red-400 hover:text-red-400 hover:underline">
               Clear Cart
             </button>
           </form>
@@ -59,9 +59,9 @@ export default async function CartPage() {
       </div>
 
       {items.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-xl border">
-          <p className="text-lg font-medium text-gray-700 mb-2">Your cart is empty</p>
-          <p className="text-gray-500 text-sm mb-4">Browse listings and add items to your cart.</p>
+        <div className="text-center py-16 glass-card rounded-xl border">
+          <p className="text-lg font-medium text-slate-300 mb-2">Your cart is empty</p>
+          <p className="text-slate-400 text-sm mb-4">Browse listings and add items to your cart.</p>
           <Link href="/" className="inline-block px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700">
             Browse Listings
           </Link>
@@ -71,25 +71,25 @@ export default async function CartPage() {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {items.map((item: any) => (
-              <div key={item.cart_id} className="bg-white rounded-xl border p-4 flex gap-4">
-                <Link href={`/listings/${item.listing_id}`} className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+              <div key={item.cart_id} className="glass-card rounded-xl border p-4 flex gap-4">
+                <Link href={`/listings/${item.listing_id}`} className="w-24 h-24 bg-white/10 rounded-lg overflow-hidden shrink-0">
                   {item.images?.[0] ? (
                     <Image src={item.images[0]} alt={item.title} width={96} height={96} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-300 text-sm">No image</div>
+                    <div className="w-full h-full flex items-center justify-center text-slate-500 text-sm">No image</div>
                   )}
                 </Link>
                 <div className="flex-1 min-w-0">
                   <Link href={`/listings/${item.listing_id}`}>
-                    <h3 className="font-medium text-sm hover:text-emerald-700 transition-colors line-clamp-2">{item.title}</h3>
+                    <h3 className="font-medium text-sm hover:text-emerald-400 transition-colors line-clamp-2">{item.title}</h3>
                   </Link>
                   <div className="flex items-center gap-2 mt-1 flex-wrap">
-                    <span className="text-xs text-gray-500">{item.condition}</span>
-                    <span className="text-xs text-gray-300">|</span>
-                    <span className="text-xs text-gray-500">{item.location}</span>
+                    <span className="text-xs text-slate-400">{item.condition}</span>
+                    <span className="text-xs text-slate-300">|</span>
+                    <span className="text-xs text-slate-400">{item.location}</span>
                   </div>
-                  <p className="text-lg font-bold text-emerald-700 mt-2">{formatPrice(item.price)}</p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-lg font-bold text-emerald-400 mt-2">{formatPrice(item.price)}</p>
+                  <p className="text-xs text-slate-400 mt-1">
                     Sold by {item.seller_slug ? (
                       <Link href={`/store/${item.seller_slug}`} className="text-emerald-600 hover:underline">{item.seller_name}</Link>
                     ) : item.seller_name}
@@ -100,7 +100,7 @@ export default async function CartPage() {
                     "use server";
                     await removeFromCart(item.listing_id);
                   }}>
-                    <button type="submit" className="text-xs text-red-600 hover:text-red-700">Remove</button>
+                    <button type="submit" className="text-xs text-red-400 hover:text-red-400">Remove</button>
                   </form>
                   <p className="font-semibold">{formatPrice(item.price * item.quantity)}</p>
                 </div>
@@ -110,20 +110,20 @@ export default async function CartPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl border p-5 sticky top-20">
+            <div className="glass-card rounded-xl border p-5 sticky top-20">
               <h2 className="font-semibold text-lg mb-4">Order Summary</h2>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Subtotal ({items.length} item{items.length !== 1 ? "s" : ""})</span>
+                  <span className="text-slate-400">Subtotal ({items.length} item{items.length !== 1 ? "s" : ""})</span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-gray-400">
+                <div className="flex justify-between text-slate-400">
                   <span>Platform fee (5%)</span>
                   <span>{formatPrice(commission)}</span>
                 </div>
                 <div className="border-t pt-2 mt-2 flex justify-between font-bold text-base">
                   <span>Total</span>
-                  <span className="text-emerald-700">{formatPrice(total)}</span>
+                  <span className="text-emerald-400">{formatPrice(total)}</span>
                 </div>
               </div>
               <Link
@@ -132,7 +132,7 @@ export default async function CartPage() {
               >
                 Proceed to Checkout
               </Link>
-              <p className="text-xs text-gray-400 text-center mt-3">
+              <p className="text-xs text-slate-400 text-center mt-3">
                 Secure checkout with M-Pesa. No card required.
               </p>
             </div>

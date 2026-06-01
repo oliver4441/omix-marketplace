@@ -58,7 +58,7 @@ interface NotificationRow {
 // CHART: Simple SVG bar chart
 // =============================================
 function MiniBarChart({ data, height = 120 }: { data: number[]; height?: number }) {
-  if (!data.length) return <p className="text-sm text-gray-500 text-center py-4">No data yet</p>;
+  if (!data.length) return <p className="text-sm text-slate-400 text-center py-4">No data yet</p>;
 
   const max = Math.max(...data, 1);
   const barWidth = 28;

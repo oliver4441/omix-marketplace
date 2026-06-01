@@ -40,56 +40,65 @@ export default async function AdminPage() {
       .limit(5),
   ]);
 
+  const statCards = [
+    { label: "Active Listings", value: activeListings ?? 0, href: "/admin/listings", color: "emerald" },
+    { label: "Pending Review", value: pendingListings ?? 0, href: null, color: "amber" },
+    { label: "Total Orders", value: totalOrders ?? 0, href: "/admin/orders", color: "blue" },
+    { label: "Total Users", value: totalUsers ?? 0, href: "/admin/users", color: "purple" },
+    { label: "Open Disputes", value: openDisputes ?? 0, href: "/admin/disputes", color: "red" },
+  ];
+
+  const colorMap: Record<string, string> = {
+    emerald: "from-emerald-500/20 to-emerald-600/5 border-emerald-500/20 text-emerald-400",
+    amber: "from-amber-500/20 to-amber-600/5 border-amber-500/20 text-amber-400",
+    blue: "from-blue-500/20 to-blue-600/5 border-blue-500/20 text-blue-400",
+    purple: "from-purple-500/20 to-purple-600/5 border-purple-500/20 text-purple-400",
+    red: "from-red-500/20 to-red-600/5 border-red-500/20 text-red-400",
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-6 text-white">Admin Dashboard</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-        <Link href="/admin/listings" className="bg-white p-6 rounded-xl border hover:shadow-sm transition">
-          <p className="text-sm text-gray-500">Active Listings</p>
-          <p className="text-3xl font-bold text-emerald-600">{activeListings ?? 0}</p>
-        </Link>
-        <div className="bg-white p-6 rounded-xl border">
-          <p className="text-sm text-gray-500">Pending Review</p>
-          <p className="text-3xl font-bold text-yellow-600">{pendingListings ?? 0}</p>
-        </div>
-        <Link href="/admin/orders" className="bg-white p-6 rounded-xl border hover:shadow-sm transition">
-          <p className="text-sm text-gray-500">Total Orders</p>
-          <p className="text-3xl font-bold text-blue-600">{totalOrders ?? 0}</p>
-        </Link>
-        <Link href="/admin/users" className="bg-white p-6 rounded-xl border hover:shadow-sm transition">
-          <p className="text-sm text-gray-500">Total Users</p>
-          <p className="text-3xl font-bold text-purple-600">{totalUsers ?? 0}</p>
-        </Link>
-        <Link href="/admin/disputes" className="bg-white p-6 rounded-xl border hover:shadow-sm transition">
-          <p className="text-sm text-gray-500">Open Disputes</p>
-          <p className="text-3xl font-bold text-red-600">{openDisputes ?? 0}</p>
-        </Link>
+        {statCards.map((card) => {
+          const content = (
+            <div className={`bg-gradient-to-br ${colorMap[card.color]} border rounded-xl p-5 transition-all hover:scale-[1.02]`}>
+              <p className="text-sm text-slate-400">{card.label}</p>
+              <p className={`text-3xl font-bold ${colorMap[card.color].split(" ").pop()}`}>{card.value}</p>
+            </div>
+          );
+          return card.href ? (
+            <Link key={card.label} href={card.href}>{content}</Link>
+          ) : (
+            <div key={card.label}>{content}</div>
+          );
+        })}
       </div>
 
-      <h2 className="text-lg font-semibold mb-4">Recent Orders</h2>
-      <div className="bg-white rounded-xl border overflow-x-auto">
+      <h2 className="text-lg font-semibold mb-4 text-white">Recent Orders</h2>
+      <div className="glass-card overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="text-left p-3">Listing</th>
-              <th className="text-left p-3">Buyer</th>
-              <th className="text-left p-3">Amount</th>
-              <th className="text-left p-3">Status</th>
+          <thead>
+            <tr className="border-b border-white/10">
+              <th className="text-left p-3 text-slate-400 font-medium">Listing</th>
+              <th className="text-left p-3 text-slate-400 font-medium">Buyer</th>
+              <th className="text-left p-3 text-slate-400 font-medium">Amount</th>
+              <th className="text-left p-3 text-slate-400 font-medium">Status</th>
             </tr>
           </thead>
           <tbody>
             {recentOrders?.map((order: any) => (
-              <tr key={order.id} className="border-t">
-                <td className="p-3">{(order.listings as any)?.title ?? "—"}</td>
-                <td className="p-3">{(order.profiles as any)?.full_name ?? "—"}</td>
-                <td className="p-3">{formatPrice(order.amount_cents)}</td>
+              <tr key={order.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                <td className="p-3 text-slate-300">{(order.listings as any)?.title ?? "—"}</td>
+                <td className="p-3 text-slate-300">{(order.profiles as any)?.full_name ?? "—"}</td>
+                <td className="p-3 text-slate-300">{formatPrice(order.amount_cents)}</td>
                 <td className="p-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    order.status === "completed" ? "bg-green-100 text-green-700" :
-                    order.status === "paid" ? "bg-blue-100 text-blue-700" :
-                    order.status === "cancelled" || order.status === "refunded" ? "bg-red-100 text-red-700" :
-                    "bg-yellow-100 text-yellow-700"
+                    order.status === "completed" ? "bg-emerald-500/15 text-emerald-400" :
+                    order.status === "paid" ? "bg-blue-500/15 text-blue-400" :
+                    order.status === "cancelled" || order.status === "refunded" ? "bg-red-500/15 text-red-400" :
+                    "bg-amber-500/15 text-amber-400"
                   }`}>
                     {order.status}
                   </span>

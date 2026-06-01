@@ -35,11 +35,11 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold">Reset password</h1>
-          <p className="text-gray-500 mt-1">Enter your email and we&apos;ll send you a reset link</p>
+          <p className="text-slate-400 mt-1">Enter your email and we&apos;ll send you a reset link</p>
         </div>
 
         {status === "sent" ? (
-          <div className="bg-green-50 text-green-700 p-4 rounded-xl text-sm border border-green-200 text-center">
+          <div className="bg-green-50 text-green-400 p-4 rounded-xl text-sm border border-green-200 text-center">
             <p className="font-medium">✅ Check your email</p>
             <p className="mt-1">{message}</p>
             <Link href="/auth/login" className="inline-block mt-3 text-green-800 underline font-medium">
@@ -47,14 +47,14 @@ export default function ForgotPasswordPage() {
             </Link>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-xl shadow-sm border">
+          <form onSubmit={handleSubmit} className="space-y-4 glass-card p-6 rounded-xl shadow-sm border">
             {status === "error" && (
-              <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm border border-red-200">
+              <div className="bg-red-50 text-red-400 p-3 rounded-lg text-sm border border-red-200">
                 {message}
               </div>
             )}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-1">
                 Email
               </label>
               <input
@@ -74,7 +74,7 @@ export default function ForgotPasswordPage() {
             >
               {status === "sending" ? "Sending..." : "Send reset link"}
             </button>
-            <p className="text-sm text-center text-gray-500">
+            <p className="text-sm text-center text-slate-400">
               <Link href="/auth/login" className="text-emerald-600 font-medium">
                 ← Back to sign in
               </Link>

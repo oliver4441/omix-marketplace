@@ -131,7 +131,7 @@ export default function SellerStorePage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
-        <p className="text-gray-400">Loading store...</p>
+        <p className="text-slate-400">Loading store...</p>
       </div>
     );
   }
@@ -140,8 +140,8 @@ export default function SellerStorePage() {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
         <p className="text-5xl mb-4">🏪</p>
-        <p className="text-lg font-medium">Store not found</p>
-        <Link href="/" className="text-emerald-600 hover:underline text-sm">
+        <p className="text-lg font-medium text-white">Store not found</p>
+        <Link href="/" className="text-emerald-400 hover:underline text-sm">
           Back to marketplace
         </Link>
       </div>
@@ -151,24 +151,24 @@ export default function SellerStorePage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       {/* Store Header */}
-      <div className="bg-white rounded-2xl border p-6 mb-6">
+      <div className="glass-card p-6 mb-6">
         <div className="flex items-start gap-4">
-          <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center text-3xl text-emerald-700 font-bold shrink-0">
+          <div className="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center text-3xl text-emerald-400 font-bold shrink-0">
             {profile.store_name?.[0] || profile.full_name?.[0] || "?"}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold">{profile.store_name || profile.full_name}&apos;s Store</h1>
+              <h1 className="text-xl font-bold text-white">{profile.store_name || profile.full_name}&apos;s Store</h1>
               {profile.verified_badge && (
-                <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                <span className="bg-emerald-500/20 text-emerald-400 text-xs px-2 py-0.5 rounded-full font-medium">
                   ✓ Verified
                 </span>
               )}
             </div>
             {profile.store_description && (
-              <p className="text-gray-600 text-sm mt-1">{profile.store_description}</p>
+              <p className="text-slate-300 text-sm mt-1">{profile.store_description}</p>
             )}
-            <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+            <div className="flex items-center gap-4 mt-2 text-sm text-slate-400">
               {profile.location_city && <span>Location: {profile.location_city}</span>}
               {profile.rating_count > 0 && (
                 <span>Rating: {profile.rating_avg.toFixed(1)} ({profile.rating_count} reviews)</span>
@@ -181,7 +181,7 @@ export default function SellerStorePage() {
           {userId !== profile.id && (
             <button
               onClick={handleMessage}
-              className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 shrink-0"
+              className="px-4 py-2 glass-btn rounded-xl text-sm font-medium shrink-0"
             >
               💬 Message
             </button>
@@ -190,8 +190,8 @@ export default function SellerStorePage() {
 
         {/* Rating Distribution */}
         {reviews.length > 0 && (
-          <div className="mt-6 pt-6 border-t">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">Rating Breakdown</h3>
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <h3 className="text-sm font-medium text-slate-300 mb-3">Rating Breakdown</h3>
             <RatingDistribution
               ratings={[5, 4, 3, 2, 1].map((stars) => ({
                 stars,
@@ -203,30 +203,30 @@ export default function SellerStorePage() {
         )}
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t">
+        <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/10">
           <div className="text-center">
-            <p className="text-2xl font-bold text-emerald-700">{listings.length}</p>
-            <p className="text-xs text-gray-500">Active Listings</p>
+            <p className="text-2xl font-bold text-emerald-400">{listings.length}</p>
+            <p className="text-xs text-slate-400">Active Listings</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-emerald-700">{reviews.length}</p>
-            <p className="text-xs text-gray-500">Reviews</p>
+            <p className="text-2xl font-bold text-emerald-400">{reviews.length}</p>
+            <p className="text-xs text-slate-400">Reviews</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-emerald-700">{profile.rating_avg.toFixed(1)}</p>
-            <p className="text-xs text-gray-500">Avg Rating</p>
+            <p className="text-2xl font-bold text-emerald-400">{profile.rating_avg.toFixed(1)}</p>
+            <p className="text-xs text-slate-400">Avg Rating</p>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 bg-gray-100 rounded-xl p-1">
+      <div className="flex gap-1 mb-6 bg-white/10 rounded-xl p-1">
         {(["listings", "reviews", "about"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-              tab === t ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+            className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-colors ${
+              tab === t ? "bg-white/15 text-white shadow-sm" : "text-slate-400 hover:text-slate-300"
             }`}
           >
             {t === "listings" ? `Listings (${listings.length})` : t === "reviews" ? `Reviews (${reviews.length})` : "About"}
@@ -241,8 +241,8 @@ export default function SellerStorePage() {
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {listings.map((listing) => (
                 <Link key={listing.id} href={`/listings/${listing.id}`}>
-                  <div className="bg-white rounded-xl border overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">
-                    <div className="aspect-square bg-gray-100 relative">
+                  <div className="glass-card overflow-hidden hover:border-emerald-500/30 transition-colors cursor-pointer h-full">
+                    <div className="aspect-square bg-white/5 relative">
                       {listing.images?.length > 0 ? (
                         <img
                           src={listing.images.find((i) => i.is_primary)?.image_url || listing.images[0].image_url}
@@ -254,17 +254,17 @@ export default function SellerStorePage() {
                       )}
                     </div>
                     <div className="p-3">
-                      <h3 className="font-medium text-sm line-clamp-2">{listing.title}</h3>
-                      <p className="text-lg font-bold text-emerald-700 mt-1">{formatPrice(listing.price)}</p>
+                      <h3 className="font-medium text-sm text-white line-clamp-2">{listing.title}</h3>
+                      <p className="text-lg font-bold text-emerald-400 mt-1">{formatPrice(listing.price)}</p>
                     </div>
                   </div>
                 </Link>
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 text-gray-400">
+            <div className="text-center py-16 text-slate-400">
               <p className="text-4xl mb-2">No image</p>
-              <p>No active listings yet</p>
+              <p className="text-slate-300">No active listings yet</p>
             </div>
           )}
         </>
@@ -275,14 +275,14 @@ export default function SellerStorePage() {
           {reviews.length > 0 ? (
             <div className="space-y-4">
               {reviews.map((review) => (
-                <div key={review.id} className="bg-white rounded-xl border p-4">
+                <div key={review.id} className="glass-card p-4">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-sm font-bold text-emerald-700">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-sm font-bold text-emerald-400">
                       {review.reviewer?.full_name?.[0] || "?"}
                     </div>
                     <div>
-                      <p className="font-medium text-sm">{review.reviewer?.full_name || "Anonymous"}</p>
-                      <p className="text-xs text-gray-400">
+                      <p className="font-medium text-sm text-white">{review.reviewer?.full_name || "Anonymous"}</p>
+                      <p className="text-xs text-slate-500">
                         {new Date(review.created_at).toLocaleDateString("en-KE", {
                           month: "short",
                           day: "numeric",
@@ -294,45 +294,45 @@ export default function SellerStorePage() {
                       <StarRating rating={review.rating} size="sm" />
                     </div>
                   </div>
-                  {review.comment && <p className="text-sm text-gray-600">{review.comment}</p>}
+                  {review.comment && <p className="text-sm text-slate-300">{review.comment}</p>}
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 text-gray-400">
+            <div className="text-center py-16 text-slate-400">
               <p className="text-4xl mb-2">⭐</p>
-              <p>No reviews yet</p>
+              <p className="text-slate-300">No reviews yet</p>
             </div>
           )}
         </>
       )}
 
       {tab === "about" && (
-        <div className="bg-white rounded-xl border p-6">
-          <h3 className="font-bold mb-3">About {profile.store_name || profile.full_name}</h3>
-          <p className="text-gray-600 text-sm whitespace-pre-wrap">
+        <div className="glass-card p-6">
+          <h3 className="font-bold mb-3 text-white">About {profile.store_name || profile.full_name}</h3>
+          <p className="text-slate-300 text-sm whitespace-pre-wrap">
             {profile.seller_bio || "This seller hasn't written a bio yet."}
           </p>
-          <div className="mt-6 pt-4 border-t grid grid-cols-2 gap-4 text-sm">
+          <div className="mt-6 pt-4 border-t border-white/10 grid grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-gray-500">Location:</span>
-              <span className="ml-2 font-medium">{profile.location_city || "Kenya"}</span>
+              <span className="text-slate-400">Location:</span>
+              <span className="ml-2 font-medium text-white">{profile.location_city || "Kenya"}</span>
             </div>
             <div>
-              <span className="text-gray-500">Member since:</span>
-              <span className="ml-2 font-medium">
+              <span className="text-slate-400">Member since:</span>
+              <span className="ml-2 font-medium text-white">
                 {new Date(profile.created_at).toLocaleDateString("en-KE", { month: "long", year: "numeric" })}
               </span>
             </div>
             <div>
-              <span className="text-gray-500">Verification:</span>
-              <span className={`ml-2 font-medium ${profile.verified_badge ? "text-emerald-600" : "text-gray-400"}`}>
+              <span className="text-slate-400">Verification:</span>
+              <span className={`ml-2 font-medium ${profile.verified_badge ? "text-emerald-400" : "text-slate-500"}`}>
                 {profile.verified_badge ? "✓ Verified Seller" : "Not verified"}
               </span>
             </div>
             <div>
-              <span className="text-gray-500">Listings:</span>
-              <span className="ml-2 font-medium">{listings.length} active</span>
+              <span className="text-slate-400">Listings:</span>
+              <span className="ml-2 font-medium text-white">{listings.length} active</span>
             </div>
           </div>
         </div>

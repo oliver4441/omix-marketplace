@@ -18,7 +18,7 @@ export default async function RegisterPage({
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white">Create Account</h1>
-          <p className="text-gray-400 mt-2">Join Omix Marketplace today</p>
+          <p className="text-slate-400 mt-2">Join Omix Marketplace today</p>
         </div>
 
         {params.error && (
@@ -30,26 +30,26 @@ export default async function RegisterPage({
         <div className="glass-card p-6">
           <form action={handleRegister} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Full Name</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Full Name</label>
               <input name="full_name" type="text" required className="glass-input" placeholder="John Doe" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
               <input name="email" type="email" required className="glass-input" placeholder="you@example.com" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Phone (optional)</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Phone (optional)</label>
               <input name="phone" type="tel" className="glass-input" placeholder="07XXXXXXXX" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
               <input name="password" type="password" required minLength={6} className="glass-input" placeholder="At least 6 characters" />
             </div>
             <button type="submit" className="glass-btn w-full">Create Account</button>
           </form>
         </div>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-slate-400 mt-6">
           Already have an account?{" "}
           <a href="/auth/login" className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors">
             Sign in

@@ -70,7 +70,7 @@ export default function PWAInstaller() {
       <div className="flex gap-2 mt-3">
         <button
           onClick={handleInstall}
-          className="flex-1 py-2 bg-white text-emerald-700 rounded-lg text-sm font-medium hover:bg-emerald-50 transition"
+          className="flex-1 py-2 glass-card text-emerald-400 rounded-lg text-sm font-medium hover:bg-emerald-50 transition"
         >
           Install Now
         </button>

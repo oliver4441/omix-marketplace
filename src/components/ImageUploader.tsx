@@ -105,9 +105,9 @@ export default function ImageUploader({
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-slate-300">
         Photos
-        <span className="text-gray-400 font-normal ml-1">
+        <span className="text-slate-400 font-normal ml-1">
           ({totalImages}/{maxImages})
         </span>
       </label>
@@ -123,14 +123,14 @@ export default function ImageUploader({
           className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
             dragActive
               ? "border-emerald-500 bg-emerald-50"
-              : "border-gray-300 hover:border-emerald-400 hover:bg-emerald-50/50"
+              : "border-white/15 hover:border-emerald-400 hover:bg-emerald-500/50"
           }`}
         >
           <div className="text-3xl mb-2">📷</div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-300">
             <span className="text-emerald-600 font-medium">Click to upload</span> or drag & drop
           </p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-slate-400 mt-1">
             PNG, JPG, WEBP up to {maxSizeMB}MB each
           </p>
           <input
@@ -146,7 +146,7 @@ export default function ImageUploader({
 
       {/* Error */}
       {error && (
-        <div className="bg-red-50 text-red-600 text-sm px-3 py-2 rounded-lg">
+        <div className="bg-red-50 text-red-400 text-sm px-3 py-2 rounded-lg">
           {error}
         </div>
       )}
@@ -159,7 +159,7 @@ export default function ImageUploader({
             <div
               key={img.id}
               className={`relative aspect-square rounded-lg overflow-hidden border-2 ${
-                i === 0 ? "border-emerald-500" : "border-gray-200"
+                i === 0 ? "border-emerald-500" : "border-white/10"
               }`}
             >
               <Image
@@ -190,7 +190,7 @@ export default function ImageUploader({
               className={`relative aspect-square rounded-lg overflow-hidden border-2 ${
                 existing.length === 0 && i === 0
                   ? "border-emerald-500"
-                  : "border-gray-200"
+                  : "border-white/10"
               }`}
             >
               <Image
@@ -240,7 +240,7 @@ export default function ImageUploader({
       )}
 
       {/* Hint */}
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-slate-400">
         First image is your cover photo. Drag to reorder. Max {maxImages} photos.
       </p>
     </div>

@@ -184,7 +184,7 @@ export default function ListingDetailPage() {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-12 text-center">
-        <p className="text-gray-400">Loading...</p>
+        <p className="text-slate-400">Loading...</p>
       </div>
     );
   }
@@ -192,7 +192,7 @@ export default function ListingDetailPage() {
   if (!listing) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-12 text-center">
-        <p className="text-gray-400">Listing not found</p>
+        <p className="text-slate-400">Listing not found</p>
       </div>
     );
   }
@@ -217,7 +217,7 @@ export default function ListingDetailPage() {
           onClick={() => setShowLightbox(false)}
         >
           <button
-            className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 z-10"
+            className="absolute top-4 right-4 text-white text-3xl hover:text-slate-300 z-10"
             onClick={() => setShowLightbox(false)}
           >
             ✕
@@ -234,7 +234,7 @@ export default function ListingDetailPage() {
                 <button
                   key={img.id}
                   onClick={(e) => { e.stopPropagation(); setActiveImage(i); }}
-                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 ${
+                  className={`w-16 h-16 rounded-xl overflow-hidden border-2 ${
                     i === activeImage ? "border-emerald-500" : "border-white/30"
                   }`}
                 >
@@ -247,23 +247,23 @@ export default function ListingDetailPage() {
       )}
 
       {/* Breadcrumb */}
-      <div className="text-sm text-gray-500 mb-4">
-        <Link href="/" className="hover:text-emerald-600">Home</Link>
+      <div className="text-sm text-slate-400 mb-4">
+        <Link href="/" className="hover:text-emerald-400">Home</Link>
         {category && (
           <>
             <span className="mx-2">›</span>
-            <Link href={`/?category=${category.slug}`} className="hover:text-emerald-600">{category.name}</Link>
+            <Link href={`/?category=${category.slug}`} className="hover:text-emerald-400">{category.name}</Link>
           </>
         )}
         <span className="mx-2">›</span>
-        <span className="text-gray-700">{listing.title}</span>
+        <span className="text-slate-300">{listing.title}</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Images */}
         <div className="lg:col-span-3">
           <div
-            className="aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden mb-3 cursor-zoom-in"
+            className="aspect-[4/3] bg-white/5 rounded-2xl overflow-hidden mb-3 cursor-zoom-in"
             onClick={() => imageUrl && setShowLightbox(true)}
           >
             {imageUrl ? (
@@ -278,8 +278,8 @@ export default function ListingDetailPage() {
                 <button
                   key={img.id}
                   onClick={() => setActiveImage(i)}
-                  className={`w-20 h-20 rounded-lg overflow-hidden shrink-0 border-2 ${
-                    i === activeImage ? "border-emerald-600" : "border-transparent"
+                  className={`w-20 h-20 rounded-xl overflow-hidden shrink-0 border-2 ${
+                    i === activeImage ? "border-emerald-500" : "border-transparent"
                   }`}
                 >
                   <img src={img.image_url} alt="" className="w-full h-full object-cover" />
@@ -294,24 +294,24 @@ export default function ListingDetailPage() {
           <div>
             <div className="flex items-center gap-2 mb-2">
               {conditionLabel && (
-                <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full font-medium">
+                <span className="text-xs bg-emerald-500/15 text-emerald-400 px-2 py-1 rounded-full font-medium">
                   {conditionLabel}
                 </span>
               )}
               {listing.is_negotiable && (
-                <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-medium">
+                <span className="text-xs bg-blue-500/15 text-blue-400 px-2 py-1 rounded-full font-medium">
                   Negotiable
                 </span>
               )}
             </div>
-            <h1 className="text-2xl font-bold">{listing.title}</h1>
-            <p className="text-3xl font-bold text-emerald-700 mt-2">{formatPrice(listing.price)}</p>
+            <h1 className="text-2xl font-bold text-white">{listing.title}</h1>
+            <p className="text-3xl font-bold text-emerald-400 mt-2">{formatPrice(listing.price)}</p>
           </div>
 
           {listing.description && (
-            <div className="bg-white rounded-xl border p-4">
-              <h3 className="font-medium text-sm mb-2">Description</h3>
-              <p className="text-sm text-gray-600 whitespace-pre-wrap">{listing.description}</p>
+            <div className="glass-card p-4">
+              <h3 className="font-medium text-sm text-slate-300 mb-2">Description</h3>
+              <p className="text-sm text-slate-400 whitespace-pre-wrap">{listing.description}</p>
             </div>
           )}
 
@@ -320,7 +320,7 @@ export default function ListingDetailPage() {
             <div className="space-y-2">
               <button
                 onClick={handleContactSeller}
-                className="w-full py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700"
+                className="w-full py-3 glass-btn rounded-xl font-medium"
               >
                 💬 Chat with Seller
               </button>
@@ -329,7 +329,7 @@ export default function ListingDetailPage() {
                   href={waLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 bg-green-500 text-white rounded-xl font-medium hover:bg-green-600 text-center block"
+                  className="w-full py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 text-center block"
                 >
                   WhatsApp Seller
                 </a>
@@ -344,22 +344,22 @@ export default function ListingDetailPage() {
                       router.push("/cart");
                     }
                   }}
-                  className="py-2 border border-emerald-600 text-emerald-700 rounded-xl text-sm font-medium hover:bg-emerald-50"
+                  className="py-2 glass-btn-outline rounded-xl text-sm font-medium"
                 >
                   Add to Cart
                 </button>
                 <button
                   onClick={() => setShowOfferInput(!showOfferInput)}
-                  className="py-2 border border-emerald-600 text-emerald-700 rounded-xl text-sm font-medium hover:bg-emerald-50"
+                  className="py-2 glass-btn-outline rounded-xl text-sm font-medium"
                 >
                   Make Offer
                 </button>
                 <button
                   onClick={handleFavorite}
-                  className={`py-2 border rounded-xl text-sm font-medium ${
+                  className={`py-2 rounded-xl text-sm font-medium ${
                     isFavorited
-                      ? "border-red-200 text-red-600 bg-red-50"
-                      : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                      ? "border-red-500/30 text-red-400 bg-red-500/10"
+                      : "glass-btn-outline"
                   }`}
                 >
                   {isFavorited ? "Saved" : "Save"}
@@ -372,32 +372,32 @@ export default function ListingDetailPage() {
                       // fallback — clipboard may be blocked
                     }
                   }}
-                  className="py-2 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50"
+                  className="py-2 glass-btn-outline rounded-xl text-sm font-medium"
                 >
                   🔗 Share
                 </button>
               </div>
 
               {showOfferInput && (
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-sm font-medium mb-2">Listed at {formatPrice(listing.price)}</p>
+                <div className="glass-card p-4">
+                  <p className="text-sm font-medium text-slate-300 mb-2">Listed at {formatPrice(listing.price)}</p>
                   <div className="flex gap-2">
                     <input
                       value={offerAmount}
                       onChange={(e) => setOfferAmount(e.target.value)}
                       type="number"
                       placeholder="Your offer (KES)"
-                      className="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                      className="flex-1 glass-input rounded-xl text-sm"
                     />
                     <button
                       onClick={handleSendOffer}
                       disabled={offerSending || !offerAmount}
-                      className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 disabled:opacity-50"
+                      className="px-4 py-2 glass-btn rounded-xl text-sm font-medium disabled:opacity-50"
                     >
                       Send
                     </button>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">This will start a chat with your offer</p>
+                  <p className="text-xs text-slate-500 mt-1">This will start a chat with your offer</p>
                 </div>
               )}
             </div>
@@ -405,33 +405,33 @@ export default function ListingDetailPage() {
 
           {listing.status !== "active" && (
             <div className={`py-3 px-4 rounded-xl text-center font-medium ${
-              listing.status === "sold" ? "bg-gray-100 text-gray-500" : "bg-yellow-50 text-yellow-700"
+              listing.status === "sold" ? "bg-white/5 text-slate-400" : "bg-yellow-500/10 text-yellow-400"
             }`}>
               {listing.status === "sold" ? "This item has been sold" : `Status: ${listing.status}`}
             </div>
           )}
 
           {/* Listing Info */}
-          <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm">
+          <div className="glass-card p-4 space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-500">Condition</span>
-              <span className="font-medium">{conditionLabel || "—"}</span>
+              <span className="text-slate-400">Condition</span>
+              <span className="font-medium text-white">{conditionLabel || "—"}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Location</span>
-              <span className="font-medium">{listing.location_city || "—"}</span>
+              <span className="text-slate-400">Location</span>
+              <span className="font-medium text-white">{listing.location_city || "—"}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Category</span>
-              <span className="font-medium">{category?.name || "—"}</span>
+              <span className="text-slate-400">Category</span>
+              <span className="font-medium text-white">{category?.name || "—"}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Views</span>
-              <span className="font-medium">{listing.views.toLocaleString()}</span>
+              <span className="text-slate-400">Views</span>
+              <span className="font-medium text-white">{listing.views.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Posted</span>
-              <span className="font-medium">
+              <span className="text-slate-400">Posted</span>
+              <span className="font-medium text-white">
                 {new Date(listing.created_at).toLocaleDateString("en-KE", {
                   month: "short",
                   day: "numeric",
@@ -441,31 +441,31 @@ export default function ListingDetailPage() {
           </div>
 
           {/* Seller Card */}
-          <div className="bg-white rounded-xl border overflow-hidden">
+          <div className="glass-card overflow-hidden">
             <Link href={listing.seller?.store_slug ? `/store/${listing.seller.store_slug}` : "#"}>
-              <div className="p-4 flex items-center gap-3 hover:bg-gray-50 cursor-pointer">
-                <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center text-xl text-emerald-700 font-bold shrink-0">
+              <div className="p-4 flex items-center gap-3 hover:bg-white/5 cursor-pointer">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-xl text-emerald-400 font-bold shrink-0">
                   {listing.seller?.full_name?.[0]?.toUpperCase() || "?"}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1">
-                    <p className="font-medium text-sm truncate">
+                    <p className="font-medium text-sm text-white truncate">
                       {listing.seller?.store_name || listing.seller?.full_name || "Seller"}
                     </p>
                     {listing.seller?.verified_badge && (
-                      <span className="text-emerald-600 text-xs">✓</span>
+                      <span className="text-emerald-400 text-xs">✓</span>
                     )}
                   </div>
                   {listing.seller?.rating_count > 0 && (
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-slate-400">
                       Rating: {listing.seller.rating_avg.toFixed(1)} ({listing.seller.rating_count} reviews)
                     </p>
                   )}
                   {listing.seller?.location_city && (
-                    <p className="text-xs text-gray-400">Location: {listing.seller.location_city}</p>
+                    <p className="text-xs text-slate-500">Location: {listing.seller.location_city}</p>
                   )}
                 </div>
-                <span className="text-xs text-emerald-600">View Store →</span>
+                <span className="text-xs text-emerald-400">View Store →</span>
               </div>
             </Link>
           </div>

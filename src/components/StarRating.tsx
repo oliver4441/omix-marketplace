@@ -40,7 +40,7 @@ export default function StarRating({
           interactive
             ? "cursor-pointer hover:scale-110 transition-transform focus:outline-none"
             : "cursor-default"
-        } ${filled ? "text-amber-400" : "text-gray-300"}`}
+        } ${filled ? "text-amber-400" : "text-slate-300"}`}
         aria-label={interactive ? `Rate ${i} star${i > 1 ? "s" : ""}` : undefined}
       >
         ★
@@ -52,12 +52,12 @@ export default function StarRating({
     <div className="inline-flex items-center gap-1">
       <div className="flex">{stars}</div>
       {showValue && rating > 0 && (
-        <span className={`ml-1 font-medium ${sizeMap[size]} text-gray-700`}>
+        <span className={`ml-1 font-medium ${sizeMap[size]} text-slate-300`}>
           {rating.toFixed(1)}
         </span>
       )}
       {reviewCount !== undefined && (
-        <span className={`ml-1 ${sizeMap[size]} text-gray-500`}>
+        <span className={`ml-1 ${sizeMap[size]} text-slate-400`}>
           ({reviewCount})
         </span>
       )}
@@ -85,7 +85,7 @@ export function StarRatingInput({
         type="button"
         onClick={() => onChange(i)}
         className={`text-3xl transition-all hover:scale-115 focus:outline-none ${
-          i <= value ? "text-amber-400" : "text-gray-300 hover:text-amber-200"
+          i <= value ? "text-amber-400" : "text-slate-500 hover:text-amber-200"
         }`}
       >
         ★
@@ -95,7 +95,7 @@ export function StarRatingInput({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-slate-300 mb-1">{label}</label>
       <div className="flex gap-1">{stars}</div>
     </div>
   );
@@ -118,18 +118,18 @@ export function RatingDistribution({
     <div className="space-y-1.5">
       {sorted.map((r) => (
         <div key={r.stars} className="flex items-center gap-2 text-sm">
-          <span className="w-12 text-gray-600">{r.stars} star</span>
-          <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+          <span className="w-12 text-slate-300">{r.stars} star</span>
+          <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
             <div
               className="h-full bg-amber-400 rounded-full transition-all"
               style={{ width: `${(r.count / maxCount) * 100}%` }}
             />
           </div>
-          <span className="w-8 text-right text-gray-500 text-xs">{r.count}</span>
+          <span className="w-8 text-right text-slate-400 text-xs">{r.count}</span>
         </div>
       ))}
       {total > 0 && (
-        <p className="text-xs text-gray-400 pt-1">Based on {total} review{total !== 1 ? "s" : ""}</p>
+        <p className="text-xs text-slate-400 pt-1">Based on {total} review{total !== 1 ? "s" : ""}</p>
       )}
     </div>
   );

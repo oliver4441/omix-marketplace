@@ -21,7 +21,7 @@ export default function DeliveryTrackingPage({ params }: { params: Promise<{ ord
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">Delivery Tracking</h1>
-      <p className="text-gray-500">Track delivery status for your order.</p>
+      <p className="text-slate-400">Track delivery status for your order.</p>
     </div>
   );
 }

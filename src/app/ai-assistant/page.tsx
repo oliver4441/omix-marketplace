@@ -141,11 +141,11 @@ export default function AiAssistantPage() {
               className={`group flex items-center justify-between px-3 py-2.5 cursor-pointer transition-colors ${activeConv === conv.id ? "bg-emerald-500/10" : "hover:bg-white/[0.03]"}`}
               onClick={() => setActiveConv(conv.id)}>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-300 truncate">{conv.title}</p>
-                <p className="text-[11px] text-gray-600">{new Date(conv.updated_at).toLocaleDateString("en-KE", { month: "short", day: "numeric" })}</p>
+                <p className="text-sm font-medium text-slate-500 truncate">{conv.title}</p>
+                <p className="text-[11px] text-slate-300">{new Date(conv.updated_at).toLocaleDateString("en-KE", { month: "short", day: "numeric" })}</p>
               </div>
               <button onClick={(e) => { e.stopPropagation(); handleDelete(conv.id); }}
-                className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-400 p-1 transition-colors">
+                className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-400 p-1 transition-colors">
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -156,12 +156,12 @@ export default function AiAssistantPage() {
       {/* Main Chat */}
       <div className="flex-1 flex flex-col">
         <div className="p-3 border-b border-white/[0.06] flex items-center gap-3" style={{ background: "rgba(10,15,26,0.3)" }}>
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-white/5 rounded-lg text-gray-400">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-white/5 rounded-lg text-slate-400">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
           </button>
           <div>
             <h2 className="font-medium text-sm text-white">Omix AI Assistant</h2>
-            <p className="text-xs text-gray-500">Your marketplace helper</p>
+            <p className="text-xs text-slate-400">Your marketplace helper</p>
           </div>
         </div>
 
@@ -172,7 +172,7 @@ export default function AiAssistantPage() {
                 <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${msg.role === "user" ? "bg-emerald-600 text-white rounded-br-sm" : "glass-card rounded-bl-sm"}`}>
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                    <p className={`text-[10px] mt-1 ${msg.role === "user" ? "text-emerald-200" : "text-gray-500"}`}>
+                    <p className={`text-[10px] mt-1 ${msg.role === "user" ? "text-emerald-200" : "text-slate-400"}`}>
                       {new Date(msg.created_at).toLocaleTimeString("en-KE", { hour: "2-digit", minute: "2-digit" })}
                     </p>
                   </div>
@@ -210,11 +210,11 @@ export default function AiAssistantPage() {
                 </svg>
               </div>
               <h2 className="text-2xl font-bold text-white mb-2">Omix AI Assistant</h2>
-              <p className="text-gray-400 mb-8 text-sm">Your smart helper for buying, selling, and everything marketplace.</p>
+              <p className="text-slate-400 mb-8 text-sm">Your smart helper for buying, selling, and everything marketplace.</p>
               <div className="grid grid-cols-2 gap-3">
                 {SUGGESTED_PROMPTS.map((prompt) => (
                   <button key={prompt.text} onClick={() => handleNewChat(prompt.text)}
-                    className="glass-card p-3 text-left text-sm text-gray-300 hover:text-emerald-400 transition-colors">
+                    className="glass-card p-3 text-left text-sm text-slate-500 hover:text-emerald-400 transition-colors">
                     {prompt.text}
                   </button>
                 ))}

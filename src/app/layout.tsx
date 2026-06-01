@@ -7,24 +7,24 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#0a0f1a",
+  themeColor: "#060a14",
 };
 
 export const metadata: Metadata = {
-  title: "Omix Marketplace — Buy & Sell in Kericho",
-  description: "The trusted second-hand marketplace for Kericho, Kenya",
+  title: "Marketplace — Buy & Sell in Kericho",
+  description: "The trusted second-hand marketplace for Kericho, Kenya. Buy and sell electronics, furniture, clothing, vehicles, and more.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "Omix",
+    statusBarStyle: "black-translucent",
+    title: "Marketplace",
   },
   icons: {
     icon: "/favicon.jpg",
     apple: "/logo.jpg",
   },
   openGraph: {
-    title: "Omix Marketplace",
+    title: "Marketplace",
     description: "Buy & Sell in Kericho — The trusted P2P marketplace",
     type: "website",
     images: ["/logo.jpg"],

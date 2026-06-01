@@ -1,11 +1,11 @@
 {
-  "name": "Omix Marketplace",
-  "short_name": "Omix",
+  "name": "Marketplace",
+  "short_name": "Marketplace",
   "description": "Buy & Sell in Kericho — The trusted P2P marketplace",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f9fafb",
-  "theme_color": "#047857",
+  "background_color": "#060a14",
+  "theme_color": "#10b981",
   "orientation": "portrait-primary",
   "icons": [
     {

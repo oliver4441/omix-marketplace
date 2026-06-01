@@ -305,7 +305,7 @@ export default function DashboardPage() {
               href="/admin"
               className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-700"
             >
-              🛡️ Admin
+              Admin
             </Link>
           )}
         </div>
@@ -326,15 +326,15 @@ export default function DashboardPage() {
           color="blue"
         />
         <StatCard
-          icon="📦"
+          icon=""
           label="Active Listings"
           value={activeListings}
           sub={`${soldListings} sold`}
           color="purple"
         />
-        <StatCard icon="👁️" label="Total Views" value={totalViews.toLocaleString()} color="amber" />
+        <StatCard icon="" label="Total Views" value={totalViews.toLocaleString()} color="amber" />
         <StatCard icon="🛒" label="Orders" value={orders.length} sub={`${pendingOrders} pending`} color="red" />
-        <StatCard icon="⭐" label="Rating" value={profile?.rating_avg ? profile.rating_avg.toFixed(1) : "—"} sub={`${profile?.rating_count || 0} reviews`} color="amber" />
+        <StatCard icon="" label="Rating" value={profile?.rating_avg ? profile.rating_avg.toFixed(1) : "—"} sub={`${profile?.rating_count || 0} reviews`} color="amber" />
       </div>
 
       {/* Charts Row */}
@@ -353,7 +353,7 @@ export default function DashboardPage() {
         {/* Rating Card */}
         <div className="bg-white rounded-xl border p-5">
           <h3 className="font-semibold mb-4 flex items-center gap-2">
-            ⭐ Your Rating
+            Your Rating
           </h3>
           <div className="flex items-center gap-4">
             <div className="text-center">
@@ -430,7 +430,7 @@ export default function DashboardPage() {
                       <p className="font-medium text-sm truncate">{l.title}</p>
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className="text-xs text-gray-400">
-                          {l.location_city} · 👁️ {l.views}
+                          {l.location_city} · Views: {l.views}
                         </span>
                       </div>
                     </div>
@@ -585,14 +585,14 @@ export default function DashboardPage() {
                 href="/services"
                 className="p-3 bg-purple-50 text-purple-700 rounded-lg text-xs font-medium text-center hover:bg-purple-100 transition"
               >
-                🛎️ Services
+                Services
               </Link>
               {profile?.is_admin && (
                 <Link
                   href="/admin"
                   className="p-3 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium text-center hover:bg-gray-200 transition"
                 >
-                  🛡️ Admin Panel
+                  Admin Panel
                 </Link>
               )}
             </div>

@@ -268,7 +268,7 @@ export default function ListingDetailPage() {
             {imageUrl ? (
               <img src={imageUrl} alt={listing.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-8xl">📦</div>
+              <div className="w-full h-full flex items-center justify-center text-8xl">No image</div>
             )}
           </div>
           {listing.images.length > 1 && (
@@ -330,7 +330,7 @@ export default function ListingDetailPage() {
                   rel="noopener noreferrer"
                   className="w-full py-3 bg-green-500 text-white rounded-xl font-medium hover:bg-green-600 text-center block"
                 >
-                  📱 WhatsApp Seller
+                  WhatsApp Seller
                 </a>
               )}
               <div className="grid grid-cols-4 gap-2">
@@ -457,11 +457,11 @@ export default function ListingDetailPage() {
                   </div>
                   {listing.seller?.rating_count > 0 && (
                     <p className="text-xs text-gray-500">
-                      ⭐ {listing.seller.rating_avg.toFixed(1)} ({listing.seller.rating_count} reviews)
+                      Rating: {listing.seller.rating_avg.toFixed(1)} ({listing.seller.rating_count} reviews)
                     </p>
                   )}
                   {listing.seller?.location_city && (
-                    <p className="text-xs text-gray-400">📍 {listing.seller.location_city}</p>
+                    <p className="text-xs text-gray-400">Location: {listing.seller.location_city}</p>
                   )}
                 </div>
                 <span className="text-xs text-emerald-600">View Store →</span>

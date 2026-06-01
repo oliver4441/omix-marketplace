@@ -13,17 +13,17 @@ export interface Category {
 }
 
 export const CATEGORIES: Category[] = [
-  { id: 1, name: "Electronics", slug: "electronics", icon: "📱" },
-  { id: 2, name: "Furniture", slug: "furniture", icon: "🪑" },
-  { id: 3, name: "Clothing", slug: "clothing", icon: "👕" },
-  { id: 4, name: "Books", slug: "books", icon: "📚" },
-  { id: 5, name: "Vehicles", slug: "vehicles", icon: "🚗" },
-  { id: 6, name: "Home & Garden", slug: "home-garden", icon: "🏡" },
-  { id: 7, name: "Sports", slug: "sports", icon: "⚽" },
-  { id: 8, name: "Toys & Games", slug: "toys-games", icon: "🎮" },
-  { id: 9, name: "Health & Beauty", slug: "health-beauty", icon: "💄" },
-  { id: 10, name: "Business Services", slug: "business-services", icon: "💼" },
-  { id: 11, name: "Others", slug: "others", icon: "📦" },
+  { id: 1, name: "Electronics", slug: "electronics", icon: "" },
+  { id: 2, name: "Furniture", slug: "furniture", icon: "" },
+  { id: 3, name: "Clothing", slug: "clothing", icon: "" },
+  { id: 4, name: "Books", slug: "books", icon: "" },
+  { id: 5, name: "Vehicles", slug: "vehicles", icon: "" },
+  { id: 6, name: "Home & Garden", slug: "home-garden", icon: "" },
+  { id: 7, name: "Sports", slug: "sports", icon: "" },
+  { id: 8, name: "Toys & Games", slug: "toys-games", icon: "" },
+  { id: 9, name: "Health & Beauty", slug: "health-beauty", icon: "" },
+  { id: 10, name: "Business Services", slug: "business-services", icon: "" },
+  { id: 11, name: "Others", slug: "others", icon: "" },
 ];
 
 // =============================================

@@ -169,9 +169,9 @@ export default function SellerStorePage() {
               <p className="text-gray-600 text-sm mt-1">{profile.store_description}</p>
             )}
             <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-              {profile.location_city && <span>📍 {profile.location_city}</span>}
+              {profile.location_city && <span>Location: {profile.location_city}</span>}
               {profile.rating_count > 0 && (
-                <span>⭐ {profile.rating_avg.toFixed(1)} ({profile.rating_count} reviews)</span>
+                <span>Rating: {profile.rating_avg.toFixed(1)} ({profile.rating_count} reviews)</span>
               )}
               <span>
                 Member since {new Date(profile.created_at).toLocaleDateString("en-KE", { month: "short", year: "numeric" })}
@@ -250,7 +250,7 @@ export default function SellerStorePage() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-5xl">📦</div>
+                        <div className="w-full h-full flex items-center justify-center text-5xl">No image</div>
                       )}
                     </div>
                     <div className="p-3">
@@ -263,7 +263,7 @@ export default function SellerStorePage() {
             </div>
           ) : (
             <div className="text-center py-16 text-gray-400">
-              <p className="text-4xl mb-2">📦</p>
+              <p className="text-4xl mb-2">No image</p>
               <p>No active listings yet</p>
             </div>
           )}

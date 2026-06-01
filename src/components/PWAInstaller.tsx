@@ -58,7 +58,7 @@ export default function PWAInstaller() {
     <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50 bg-emerald-600 text-white rounded-2xl shadow-2xl p-4 animate-slide-up">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-xl shrink-0">
-          📱
+          
         </div>
         <div className="flex-1">
           <p className="font-semibold text-sm">Install Omix</p>

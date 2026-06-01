@@ -140,9 +140,9 @@ export default function ServicesPage() {
                   )}
                 </div>
                 <div className="flex items-center gap-3 mt-3 text-xs text-gray-500">
-                  {service.location_city && <span>📍 {service.location_city}</span>}
+                  {service.location_city && <span>Location: {service.location_city}</span>}
                   {service.rating_count > 0 && (
-                    <span>⭐ {service.rating_avg.toFixed(1)} ({service.rating_count})</span>
+                    <span>Rating: {service.rating_avg.toFixed(1)} ({service.rating_count})</span>
                   )}
                 </div>
                 <span className="inline-block mt-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
@@ -154,7 +154,7 @@ export default function ServicesPage() {
         </div>
       ) : !loading ? (
         <div className="text-center py-16 text-gray-400">
-          <p className="text-5xl mb-3">🛠️</p>
+          <p className="text-5xl mb-3">Services</p>
           <p className="font-medium">No services found</p>
           <p className="text-sm">Try adjusting your filters</p>
         </div>

@@ -15,8 +15,8 @@ import { formatPrice } from "@/lib/constants";
 const MPESA_CONFIG = {
   consumerKey: process.env.MPESA_CONSUMER_KEY || "",
   consumerSecret: process.env.MPESA_CONSUMER_SECRET || "",
-  shortcode: process.env.MPESA_SHORTCODE || "174379", // Safaricom test shortcode
-  passkey: process.env.MPESA_PASSKEY || "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f7e7e7f3b8a6923208e", // test passkey
+  shortcode: process.env.MPESA_SHORTCODE || "",
+  passkey: process.env.MPESA_PASSKEY || "",
   callbackUrl: process.env.MPESA_CALLBACK_URL || "https://omix-marketplace.vercel.app/api/mpesa/callback",
   environment: (process.env.MPESA_ENVIRONMENT || "sandbox") as "sandbox" | "production",
 };
@@ -94,53 +94,50 @@ export async function initiateMpesaPayment(params: {
     })
     .eq("id", params.orderId);
 
-  // === REAL M-PESA INTEGRATION ===
-  // Uncomment below when credentials are configured:
-  //
-  // const token = await getMpesaToken();
-  // const password = Buffer.from(
-  //   `${MPESA_CONFIG.shortcode}${MPESA_CONFIG.passkey}${timestamp}`
-  // ).toString("base64");
-  //
-  // const stkResponse = await fetch(`${getBaseUrl()}/mpesa/stkpush/v1/processrequest`, {
-  //   method: "POST",
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     BusinessShortCode: MPESA_CONFIG.shortcode,
-  //     Password: password,
-  //     Timestamp: timestamp,
-  //     TransactionType: "CustomerPayBillOnline",
-  //     Amount: amountKes,
-  //     PartyA: phone,
-  //     PartyB: MPESA_CONFIG.shortcode,
-  //     PhoneNumber: phone,
-  //     CallBackURL: MPESA_CONFIG.callbackUrl,
-  //     AccountReference: `OMIX-${params.orderId.slice(0, 8)}`,
-  //     TransactionDesc: "Omix Marketplace purchase",
-  //   }),
-  // });
-  //
-  // const stkData = await stkResponse.json();
-  // if (stkData.ResponseCode !== "0") {
-  //   await supabase.from("orders").update({ payment_status: "failed" }).eq("id", params.orderId);
-  //   return { error: stkData.errorMessage || "STK push failed" };
-  // }
-  //
-  // return {
-  //   success: true,
-  //   message: "Enter your M-Pesa PIN to complete payment",
-  //   checkoutRequestId: stkData.CheckoutRequestID,
-  // };
+  // === REAL M-PESA STK PUSH ===
+  if (!MPESA_CONFIG.shortcode || !MPESA_CONFIG.passkey) {
+    return {
+      success: false,
+      error: "M-Pesa not configured. Please set MPESA_SHORTCODE and MPESA_PASSKEY.",
+    };
+  }
 
-  // === STUB: For development without M-Pesa credentials ===
+  const token = await getMpesaToken();
+  const password = Buffer.from(
+    `${MPESA_CONFIG.shortcode}${MPESA_CONFIG.passkey}${timestamp}`
+  ).toString("base64");
+
+  const stkResponse = await fetch(`${getBaseUrl()}/mpesa/stkpush/v1/processrequest`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      BusinessShortCode: MPESA_CONFIG.shortcode,
+      Password: password,
+      Timestamp: timestamp,
+      TransactionType: "CustomerPayBillOnline",
+      Amount: amountKes,
+      PartyA: phone,
+      PartyB: MPESA_CONFIG.shortcode,
+      PhoneNumber: phone,
+      CallBackURL: MPESA_CONFIG.callbackUrl,
+      AccountReference: `OMIX-${params.orderId.slice(0, 8)}`,
+      TransactionDesc: "Omix Marketplace purchase",
+    }),
+  });
+
+  const stkData = await stkResponse.json();
+  if (stkData.ResponseCode !== "0") {
+    await supabase.from("orders").update({ payment_status: "failed" }).eq("id", params.orderId);
+    return { error: stkData.errorMessage || stkData.ResponseDescription || "STK push failed" };
+  }
+
   return {
     success: true,
-    message:
-      "STK push initiated (development mode). In production, the buyer receives an M-Pesa prompt on their phone.",
-    checkoutRequestId: `dev_${params.orderId.slice(0, 8)}`,
+    message: "Enter your M-Pesa PIN to complete payment",
+    checkoutRequestId: stkData.CheckoutRequestID,
   };
 }
 

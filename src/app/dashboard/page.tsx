@@ -203,24 +203,18 @@ function LiveBackground() {
           }}
         />
       </div>
-      {/* Floating particles */}
+      {/* Floating particles - fixed positions to avoid hydration mismatch */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {Array.from({ length: 20 }, (_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: `${2 + Math.random() * 3}px`,
-              height: `${2 + Math.random() * 3}px`,
-              background: i % 3 === 0 ? "#10b981" : i % 3 === 1 ? "#3b82f6" : "#8b5cf6",
-              opacity: 0.1 + Math.random() * 0.15,
-              left: `${Math.random() * 100}%`,
-              bottom: "-5%",
-              animation: `particleFloat ${15 + Math.random() * 20}s linear infinite`,
-              animationDelay: `${Math.random() * 15}s`,
-            }}
-          />
-        ))}
+        <div className="absolute rounded-full" style={{ width: '3px', height: '3px', background: '#10b981', opacity: 0.12, left: '5%', bottom: '-5%', animation: 'particleFloat 18s linear infinite', animationDelay: '0s' }} />
+        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#3b82f6', opacity: 0.1, left: '15%', bottom: '-5%', animation: 'particleFloat 22s linear infinite', animationDelay: '3s' }} />
+        <div className="absolute rounded-full" style={{ width: '4px', height: '4px', background: '#8b5cf6', opacity: 0.08, left: '30%', bottom: '-5%', animation: 'particleFloat 25s linear infinite', animationDelay: '7s' }} />
+        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#10b981', opacity: 0.14, left: '45%', bottom: '-5%', animation: 'particleFloat 20s linear infinite', animationDelay: '12s' }} />
+        <div className="absolute rounded-full" style={{ width: '3px', height: '3px', background: '#3b82f6', opacity: 0.1, left: '60%', bottom: '-5%', animation: 'particleFloat 28s linear infinite', animationDelay: '5s' }} />
+        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#8b5cf6', opacity: 0.12, left: '75%', bottom: '-5%', animation: 'particleFloat 17s linear infinite', animationDelay: '9s' }} />
+        <div className="absolute rounded-full" style={{ width: '3px', height: '3px', background: '#10b981', opacity: 0.09, left: '88%', bottom: '-5%', animation: 'particleFloat 24s linear infinite', animationDelay: '15s' }} />
+        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#3b82f6', opacity: 0.11, left: '22%', bottom: '-5%', animation: 'particleFloat 19s linear infinite', animationDelay: '2s' }} />
+        <div className="absolute rounded-full" style={{ width: '4px', height: '4px', background: '#8b5cf6', opacity: 0.07, left: '52%', bottom: '-5%', animation: 'particleFloat 26s linear infinite', animationDelay: '11s' }} />
+        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#10b981', opacity: 0.13, left: '95%', bottom: '-5%', animation: 'particleFloat 21s linear infinite', animationDelay: '18s' }} />
       </div>
     </>
   );

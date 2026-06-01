@@ -293,6 +293,8 @@ body::after {
 a { color: inherit; text-decoration: none; }
 ::selection { background: rgba(16, 185, 129, 0.3); color: var(--color-text-primary); }
 img { max-width: 100%; height: auto; }
+svg:not([class*="w-"]):not([class*="h-"]) { width: 1em; height: 1em; }
+svg { display: inline-block !important; vertical-align: middle; flex-shrink: 0; max-width: none !important; }
 button { cursor: pointer; font-family: inherit; border: none; }
 input, textarea, select { font-family: inherit; font-size: inherit; }
 table { border-collapse: collapse; width: 100%; }

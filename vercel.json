@@ -6,6 +6,9 @@
   "functions": {
     "src/app/**/page.tsx": {
       "maxDuration": 30
+    },
+    "src/app/**/route.ts": {
+      "maxDuration": 30
     }
   }
 }

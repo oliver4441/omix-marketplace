@@ -7,6 +7,7 @@ import { createClient } from "@/utils/supabase/client";
 import { formatPrice, ORDER_STATUS_LABELS } from "@/lib/constants";
 import type { OrderStatus } from "@/lib/constants";
 import StarRating from "@/components/StarRating";
+import OmixAiChatPopup from "@/components/OmixAiChatPopup";
 
 interface DashboardProfile {
   id: string;
@@ -599,6 +600,12 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Omix-AI Seller Assistant */}
+      <OmixAiChatPopup
+        role="seller"
+        context={`Seller dashboard - Active listings: ${activeListings} - Sold: ${soldListings} - Total views: ${totalViews} - Orders: ${orders.length} - Rating: ${profile?.rating_avg ? profile.rating_avg.toFixed(1) : "No rating yet"} - Store: ${profile?.store_name || "Not set up"}`}
+      />
     </div>
   );
 }

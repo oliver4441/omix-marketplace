@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { formatPrice, CONDITIONS, CATEGORIES } from "@/lib/constants";
 import { addToCart } from "@/lib/actions/cart";
+import OmixAiChatPopup from "@/components/OmixAiChatPopup";
 
 interface ListingData {
   id: string;
@@ -470,6 +471,14 @@ export default function ListingDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Omix-AI Chat Popup */}
+      {listing && (
+        <OmixAiChatPopup
+          role="visitor"
+          context={`Viewing listing: ${listing.title} - ${formatPrice(listing.price)} - Condition: ${conditionLabel || listing.condition} - Location: ${listing.location_city || "N/A"} - Seller: ${listing.seller?.full_name || "Unknown"}`}
+        />
+      )}
     </div>
   );
 }

@@ -18,6 +18,7 @@ const publicPrefixes = [
   "/api/cart",
   "/api/mpesa",
   "/api/push",
+  "/api/ai",
   "/services",
 ];
 

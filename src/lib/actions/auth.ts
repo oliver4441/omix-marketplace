@@ -133,6 +133,11 @@ export async function signIn(formData: FormData) {
   const password = formData.get("password") as string;
   const callbackUrl = (formData.get("callbackUrl") as string) || "/";
 
+  // Validate callbackUrl — only allow local paths, not external URLs
+  const safeCallback = callbackUrl.startsWith("/") && !callbackUrl.startsWith("//")
+    ? callbackUrl
+    : "/";
+
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
@@ -149,7 +154,7 @@ export async function signIn(formData: FormData) {
       .eq("id", user.id);
   }
 
-  redirect(callbackUrl);
+  redirect(safeCallback);
 }
 
 /** @deprecated Use signIn instead */

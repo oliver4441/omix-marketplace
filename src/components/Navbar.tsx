@@ -45,13 +45,13 @@ export default function Navbar() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user: u } }) => {
       setUser(u);
-      if (u) { fetchProfile(u.id); fetchUnreadCount(u.id); fetchCartCount(u.id); }
+      if (u) { fetchProfile(u.id).catch(() => {}); fetchUnreadCount(u.id).catch(() => {}); fetchCartCount(u.id).catch(() => {}); }
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       const u = session?.user ?? null;
       setUser(u);
-      if (u) { fetchProfile(u.id); fetchUnreadCount(u.id); fetchCartCount(u.id); }
+      if (u) { fetchProfile(u.id).catch(() => {}); fetchUnreadCount(u.id).catch(() => {}); fetchCartCount(u.id).catch(() => {}); }
       else { setProfile(null); setUnreadCount(0); setCartCount(0); }
     });
     return () => subscription.unsubscribe();

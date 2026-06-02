@@ -11,6 +11,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://omix-marketplace.vercel.app"),
   title: "Marketplace — Buy & Sell in Kericho",
   description: "The trusted second-hand marketplace for Kericho, Kenya. Buy and sell electronics, furniture, clothing, vehicles, and more.",
   manifest: "/manifest.json",

@@ -20,25 +20,37 @@ export default async function AdminPage() {
 
   if (!profile?.is_admin) redirect("/");
 
-  const [
-    { count: activeListings },
-    { count: pendingListings },
-    { count: totalOrders },
-    { count: totalUsers },
-    { count: openDisputes },
-    { data: recentOrders },
-  ] = await Promise.all([
-    supabase.from("listings").select("*", { count: "exact", head: true }).eq("status", "active"),
-    supabase.from("listings").select("*", { count: "exact", head: true }).eq("status", "pending_review"),
-    supabase.from("orders").select("*", { count: "exact", head: true }),
-    supabase.from("profiles").select("*", { count: "exact", head: true }),
-    supabase.from("disputes").select("*", { count: "exact", head: true }).eq("status", "open"),
-    supabase
-      .from("orders")
-      .select("id, status, amount_cents, listings(title), profiles!orders_buyer_id_fkey(full_name)")
-      .order("created_at", { ascending: false })
-      .limit(5),
-  ]);
+  let activeListings = 0, pendingListings = 0, totalOrders = 0, totalUsers = 0, openDisputes = 0, recentOrders: any[] = [];
+
+  try {
+    const [
+      { count: activeListingsCount },
+      { count: pendingListingsCount },
+      { count: totalOrdersCount },
+      { count: totalUsersCount },
+      { count: openDisputesCount },
+      { data: recentOrdersData },
+    ] = await Promise.all([
+      supabase.from("listings").select("*", { count: "exact", head: true }).eq("status", "active"),
+      supabase.from("listings").select("*", { count: "exact", head: true }).eq("status", "pending_review"),
+      supabase.from("orders").select("*", { count: "exact", head: true }),
+      supabase.from("profiles").select("*", { count: "exact", head: true }),
+      supabase.from("disputes").select("*", { count: "exact", head: true }).eq("status", "open"),
+      supabase
+        .from("orders")
+        .select("id, status, amount_cents, listings(title), profiles!orders_buyer_id_fkey(full_name)")
+        .order("created_at", { ascending: false })
+        .limit(5),
+    ]);
+    activeListings = activeListingsCount ?? 0;
+    pendingListings = pendingListingsCount ?? 0;
+    totalOrders = totalOrdersCount ?? 0;
+    totalUsers = totalUsersCount ?? 0;
+    openDisputes = openDisputesCount ?? 0;
+    recentOrders = recentOrdersData ?? [];
+  } catch (err) {
+    console.error("Admin dashboard error:", err);
+  }
 
   const statCards = [
     { label: "Active Listings", value: activeListings ?? 0, href: "/admin/listings", color: "emerald" },

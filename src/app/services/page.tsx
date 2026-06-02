@@ -154,7 +154,11 @@ export default function ServicesPage() {
         </div>
       ) : !loading ? (
         <div className="text-center py-16 text-slate-400">
-          <p className="text-5xl mb-3">Services</p>
+          <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-slate-500" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3.25h3M12 17.25h.008v.008H12v-.008z" />
+            </svg>
+          </div>
           <p className="font-medium text-white">No services found</p>
           <p className="text-sm text-slate-500">Try adjusting your filters</p>
         </div>

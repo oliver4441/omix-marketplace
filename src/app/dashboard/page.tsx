@@ -241,7 +241,7 @@ export default function DashboardPage() {
         return;
       }
       setUserId(user.id);
-    });
+    }).catch(() => router.push("/auth/login"));
   }, [supabase, router]);
 
   useEffect(() => {

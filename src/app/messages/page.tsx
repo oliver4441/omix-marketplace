@@ -57,7 +57,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
         return;
       }
       setUserId(user.id);
-    });
+    }).catch(() => router.push("/auth/login"));
   }, [supabase, router]);
 
   const loadConversations = useCallback(async () => {

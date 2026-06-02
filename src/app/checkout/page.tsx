@@ -46,7 +46,7 @@ export default async function CheckoutPage() {
     title: item.listing?.title || "Unknown",
     price: item.listing?.price || 0,
     condition: item.listing?.condition || "",
-    location: item.listing?.location || "",
+    location: item.listing?.location_city || "",
     images: item.listing?.images || null,
     seller_name: item.listing?.seller?.full_name || "Unknown",
     quantity: item.quantity || 1,

@@ -180,7 +180,7 @@ function LiveBackground() {
           style={{
             background: "radial-gradient(circle, #10b981, transparent 70%)",
             top: "-10%",
-            left: "-5%",,
+            left: "-5%",
           }}
         />
         <div
@@ -188,7 +188,7 @@ function LiveBackground() {
           style={{
             background: "radial-gradient(circle, #3b82f6, transparent 70%)",
             bottom: "-10%",
-            right: "-5%",,
+            right: "-5%",
           }}
         />
         <div
@@ -196,7 +196,7 @@ function LiveBackground() {
           style={{
             background: "radial-gradient(circle, #8b5cf6, transparent 70%)",
             top: "40%",
-            left: "50%",,
+            left: "50%",
           }}
         />
       </div>

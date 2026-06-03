@@ -341,7 +341,7 @@ export default function OmixAiChatPopup({
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",: "all 0.2s",
+                  justifyContent: "center",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = "rgba(239,68,68,0.15)";
@@ -535,7 +535,7 @@ export default function OmixAiChatPopup({
                 background: "rgba(255,255,255,0.04)",
                 borderRadius: "14px",
                 border: "1px solid rgba(255,255,255,0.08)",
-                padding: "6px 6px 6px 14px",: "border-color 0.2s",
+                padding: "6px 6px 6px 14px",
               }}
             >
               <input
@@ -576,7 +576,7 @@ export default function OmixAiChatPopup({
                   cursor: input.trim() && !isLoading ? "pointer" : "not-allowed",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",: "all 0.2s",
+                  justifyContent: "center",
                   flexShrink: 0,
                 }}
               >

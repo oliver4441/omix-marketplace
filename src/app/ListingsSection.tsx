@@ -151,7 +151,7 @@ export default function ListingsSection() {
                 {listings.map((l) => {
                   const imgs = (l.listing_images || []).sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)).map((img) => img.image_url);
                   const p = prof(l.profiles);
-                  return <ProductCard key={l.id} id={l.id} title={l.title} price={l.price} condition={l.condition} location={l.location_city} images={imgs.length > 0 ? imgs : null} isNegotiable={l.is_negotiable} isFeatured={l.featured} viewCount={l.views} createdAt={l.created_at} sellerName={p.store_name || p.full_name} sellerVerified={p.verified_badge} sellerStoreSlug={p.store_slug} sellerRating={p.rating_avg} />;
+                  return <ProductCard key={l.id} id={l.id} title={l.title} price={l.price} condition={l.condition} location={l.location_city} images={imgs.length > 0 ? imgs : null} isNegotiable={l.is_negotiable} viewCount={l.views} createdAt={l.created_at} sellerName={p.store_name || p.full_name} sellerVerified={p.verified_badge} sellerStoreSlug={p.store_slug} sellerRating={p.rating_avg} />;
                 })}
               </div>
               {pages > 1 && (

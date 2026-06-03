@@ -13,6 +13,8 @@ interface ProductCardProps {
   location: string;
   images: string[] | null;
   isNegotiable?: boolean;
+  isFeatured?: boolean;
+  viewCount?: number;
   createdAt?: string;
   sellerName?: string;
   sellerVerified?: boolean;

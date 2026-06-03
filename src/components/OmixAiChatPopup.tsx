@@ -202,7 +202,7 @@ export default function OmixAiChatPopup({
           alignItems: "center",
           justifyContent: "center",
           cursor: "pointer",
-          zIndex: 9998,: "all 0.3s ease",
+          zIndex: 9998,
         }}
         title={`Ask Omix-AI (${role === "seller" ? "Seller" : "Support"})`}
       >
@@ -228,7 +228,7 @@ export default function OmixAiChatPopup({
               fontSize: "13px",
               color: "#e2e8f0",
               whiteSpace: "nowrap",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.4)",,
+              boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
             }}
           >
             Need help? Ask me
@@ -269,7 +269,7 @@ export default function OmixAiChatPopup({
             display: "flex",
             flexDirection: "column",
             zIndex: 9999,
-            overflow: "hidden",,
+            overflow: "hidden",
           }}
         >
           {/* Header */}
@@ -424,7 +424,7 @@ export default function OmixAiChatPopup({
                   display: "flex",
                   flexDirection: "column",
                   alignItems: msg.role === "user" ? "flex-end" : "flex-start",
-                  gap: "4px",,
+                  gap: "4px",
                 }}
               >
                 {msg.role === "assistant" && (
@@ -493,7 +493,7 @@ export default function OmixAiChatPopup({
                             height: "14px",
                             background: roleColor,
                             marginLeft: "3px",
-                            verticalAlign: "middle",,
+                            verticalAlign: "middle",
                           }}
                         />
                       )}

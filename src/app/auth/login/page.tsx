@@ -17,47 +17,42 @@ export default async function LoginPage({
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Welcome back</h1>
-          <p className="text-slate-400 mt-2">Sign in to your Omix account</p>
+          <h1 className="text-3xl font-bold text-[#222222]">Welcome back</h1>
+          <p className="text-[#6a6a6a] mt-2">Sign in to your Omix account</p>
         </div>
 
         {params.error && (
-          <div className="glass-card p-3 mb-4 text-sm text-red-400 border-red-500/20" style={{ background: "rgba(239,68,68,0.08)" }}>
+          <div className="bg-[rgba(255,56,92,0.06)] border border-[rgba(255,56,92,0.15)] p-3 mb-4 text-sm text-[#ff385c] rounded-xl">
             {params.error}
           </div>
         )}
         {params.created && (
-          <div className="glass-card p-3 mb-4 text-sm text-emerald-400 border-emerald-500/20" style={{ background: "rgba(16,185,129,0.08)" }}>
+          <div className="bg-[rgba(39,166,68,0.06)] border border-[rgba(39,166,68,0.15)] p-3 mb-4 text-sm text-[#27a644] rounded-xl">
             Account created successfully. Sign in below.
           </div>
         )}
 
-        <div className="glass-card p-6">
+        <div className="bg-white border border-[#ebebeb] rounded-[14px] p-6">
           <form action={handleLogin} className="space-y-4">
             <input type="hidden" name="callbackUrl" value={params.callbackUrl || "/"} />
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Email</label>
-              <input name="email" type="email" required className="glass-input" placeholder="you@example.com" />
+              <label className="block text-sm font-medium text-[#222222] mb-1.5">Email</label>
+              <input name="email" type="email" required className="airbnb-input" placeholder="you@example.com" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
-              <input name="password" type="password" required className="glass-input" placeholder="Your password" />
+              <label className="block text-sm font-medium text-[#222222] mb-1.5">Password</label>
+              <input name="password" type="password" required className="airbnb-input" placeholder="Your password" />
             </div>
-            <button type="submit" className="glass-btn w-full">Sign In</button>
+            <button type="submit" className="btn-primary w-full">Sign In</button>
           </form>
-
           <div className="mt-4 text-center">
-            <a href="/auth/forgot-password" className="text-sm text-slate-400 hover:text-emerald-400 transition-colors">
-              Forgot password?
-            </a>
+            <a href="/auth/forgot-password" className="text-sm text-[#6a6a6a] hover:text-[#ff385c] transition-colors">Forgot password?</a>
           </div>
         </div>
 
-        <p className="text-center text-sm text-slate-400 mt-6">
+        <p className="text-center text-sm text-[#6a6a6a] mt-6">
           New to Omix?{" "}
-          <a href="/auth/register" className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors">
-            Create an account
-          </a>
+          <a href="/auth/register" className="text-[#ff385c] hover:text-[#e00b41] font-medium transition-colors">Create an account</a>
         </p>
       </div>
     </div>

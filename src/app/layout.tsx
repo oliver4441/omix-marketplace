@@ -1,35 +1,18 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  themeColor: "#060a14",
-};
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://omix-marketplace.vercel.app"),
-  title: "Marketplace — Buy & Sell in Kericho",
-  description: "The trusted second-hand marketplace for Kericho, Kenya. Buy and sell electronics, furniture, clothing, vehicles, and more.",
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "Marketplace",
-  },
-  icons: {
-    icon: "/favicon.jpg",
-    apple: "/logo.jpg",
-  },
-  openGraph: {
-    title: "Marketplace",
-    description: "Buy & Sell in Kericho — The trusted P2P marketplace",
-    type: "website",
-    images: ["/logo.jpg"],
-  },
+  title: "Omix Marketplace — Buy & Sell in Kericho",
+  description: "The leading P2P marketplace in Kericho, Kenya. Buy and sell with confidence. Secure payments via M-Pesa.",
 };
 
 export default function RootLayout({
@@ -38,15 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-      </head>
-      <body className="flex flex-col min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <html lang="en" className={dmSans.className}>
+      <body>
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main className="min-h-screen">{children}</main>
         <Footer />
       </body>
     </html>

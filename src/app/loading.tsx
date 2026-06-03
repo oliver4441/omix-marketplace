@@ -21,7 +21,7 @@ export default function Loading() {
         <p className="text-slate-600 text-xs mt-1">Preparing your experience...</p>
 
         {/* Progress bar */}
-        <div className="w-48 h-1 bg-white/5 rounded-full mx-auto mt-4 overflow-hidden">
+        <div className="w-48 h-1 var(--bg-hover) rounded-full mx-auto mt-4 overflow-hidden">
           <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-blue-500" style={{ animation: 'preloaderFill 1.8s ease-in-out infinite' }} />
         </div>
       </div>

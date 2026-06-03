@@ -107,18 +107,18 @@ export default function ListingsSection() {
       <div className="flex gap-6">
         {/* Sidebar */}
         <aside className="w-56 shrink-0 hidden md:block">
-          <div className="bg-white rounded-[14px] border border-[#ebebeb] p-4 mb-4 sticky top-[88px]">
-            <h3 className="text-sm font-semibold text-[#222222] mb-3">Categories</h3>
+          <div className="bg-[var(--bg-card)] rounded-[14px] border border-[var(--border-light)] p-4 mb-4 sticky top-[88px]">
+            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Categories</h3>
             <div className="space-y-0.5">
               <Link href="/" className="block px-3 py-2 rounded-lg text-sm transition-colors bg-[rgba(255,56,92,0.06)] text-[#ff385c] font-medium">All Categories</Link>
-              {CATEGORIES.map((c) => <Link key={c.slug} href={`/?category=${c.slug}`} className="block px-3 py-2 rounded-lg text-sm transition-colors text-[#6a6a6a] hover:text-[#222222] hover:bg-[#f7f7f7]">{c.name}</Link>)}
+              {CATEGORIES.map((c) => <Link key={c.slug} href={`/?category=${c.slug}`} className="block px-3 py-2 rounded-lg text-sm transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">{c.name}</Link>)}
             </div>
           </div>
-          <div className="bg-white rounded-[14px] border border-[#ebebeb] p-4 sticky top-[340px]">
-            <h3 className="text-sm font-semibold text-[#222222] mb-3">Condition</h3>
+          <div className="bg-[var(--bg-card)] rounded-[14px] border border-[var(--border-light)] p-4 sticky top-[340px]">
+            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Condition</h3>
             <div className="space-y-0.5">
-              <Link href="/" className="block px-3 py-2 rounded-lg text-sm transition-colors text-[#6a6a6a] hover:text-[#222222] hover:bg-[#f7f7f7]">All Conditions</Link>
-              {CONDITIONS.map((c) => <Link key={c.value} href={`/?condition=${c.value}`} className="block px-3 py-2 rounded-lg text-sm transition-colors text-[#6a6a6a] hover:text-[#222222] hover:bg-[#f7f7f7]">{c.label}</Link>)}
+              <Link href="/" className="block px-3 py-2 rounded-lg text-sm transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">All Conditions</Link>
+              {CONDITIONS.map((c) => <Link key={c.value} href={`/?condition=${c.value}`} className="block px-3 py-2 rounded-lg text-sm transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">{c.label}</Link>)}
             </div>
           </div>
         </aside>
@@ -126,8 +126,8 @@ export default function ListingsSection() {
         {/* Main content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-5 gap-3 flex-wrap">
-            <p className="text-sm text-[#6a6a6a]">
-              <span className="text-[#222222] font-semibold">{total}</span> listing{total !== 1 ? "s" : ""} found
+            <p className="text-sm text-[var(--text-secondary)]">
+              <span className="text-[var(--text-primary)] font-semibold">{total}</span> listing{total !== 1 ? "s" : ""} found
               {error && <span className="text-[#ff385c] ml-2">(offline mode)</span>}
             </p>
             <form method="get" className="flex items-center gap-2">
@@ -142,8 +142,8 @@ export default function ListingsSection() {
           </div>
 
           {loading ? (
-            <div className="bg-white rounded-[14px] border border-[#ebebeb] p-12 text-center">
-              <p className="text-[#6a6a6a] text-sm">Loading listings...</p>
+            <div className="bg-[var(--bg-card)] rounded-[14px] border border-[var(--border-light)] p-12 text-center">
+              <p className="text-[var(--text-secondary)] text-sm">Loading listings...</p>
             </div>
           ) : listings.length > 0 ? (
             <>
@@ -157,13 +157,13 @@ export default function ListingsSection() {
               {pages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-8">
                   {page > 1 && <Link href={`/?page=${page - 1}${fs ? `&${fs}` : ""}`} className="btn-outline text-xs py-1.5 px-4">Previous</Link>}
-                  {Array.from({ length: Math.min(pages, 5) }, (_, i) => { const p = Math.max(1, Math.min(page - 2, pages - 4)) + i; return (p > pages || p < 1) ? null : <Link key={p} href={`/?page=${p}${fs ? `&${fs}` : ""}`} className={`w-9 h-9 rounded-lg text-sm flex items-center justify-center transition-colors ${p === page ? "bg-[#222222] text-white font-semibold" : "text-[#6a6a6a] hover:text-[#222222] hover:bg-[#f2f2f2] border border-[#ebebeb]"}`}>{p}</Link>; })}
+                  {Array.from({ length: Math.min(pages, 5) }, (_, i) => { const p = Math.max(1, Math.min(page - 2, pages - 4)) + i; return (p > pages || p < 1) ? null : <Link key={p} href={`/?page=${p}${fs ? `&${fs}` : ""}`} className={`w-9 h-9 rounded-lg text-sm flex items-center justify-center transition-colors ${p === page ? "bg-[#222222] text-[var(--text-primary)] font-semibold" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] border border-[var(--border-light)]"}`}>{p}</Link>; })}
                   {page < pages && <Link href={`/?page=${page + 1}${fs ? `&${fs}` : ""}`} className="btn-outline text-xs py-1.5 px-4">Next</Link>}
                 </div>
               )}
             </>
           ) : (
-            <div className="bg-white rounded-[14px] border border-[#ebebeb] p-12 text-center">
+            <div className="bg-[var(--bg-card)] rounded-[14px] border border-[var(--border-light)] p-12 text-center">
               {error ? (
                 <>
                   <div className="w-16 h-16 rounded-2xl bg-[rgba(255,56,92,0.06)] flex items-center justify-center mx-auto mb-4">
@@ -171,14 +171,14 @@ export default function ListingsSection() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>
                   </div>
-                  <p className="text-[#222222] text-lg font-medium mb-2">Connection Issue</p>
-                  <p className="text-[#6a6a6a] text-sm mb-4">Could not connect to the database. Please check your connection and try again.</p>
+                  <p className="text-[var(--text-primary)] text-lg font-medium mb-2">Connection Issue</p>
+                  <p className="text-[var(--text-secondary)] text-sm mb-4">Could not connect to the database. Please check your connection and try again.</p>
                   <button onClick={() => window.location.reload()} className="btn-primary text-sm">Retry</button>
                 </>
               ) : (
                 <>
-                  <p className="text-[#222222] text-lg font-medium mb-2">No listings found</p>
-                  <p className="text-[#6a6a6a] text-sm mb-4">Try adjusting your filters or be the first to list something.</p>
+                  <p className="text-[var(--text-primary)] text-lg font-medium mb-2">No listings found</p>
+                  <p className="text-[var(--text-secondary)] text-sm mb-4">Try adjusting your filters or be the first to list something.</p>
                   <Link href="/sell" className="btn-primary text-sm">Create First Listing</Link>
                 </>
               )}

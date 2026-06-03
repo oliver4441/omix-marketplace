@@ -56,13 +56,13 @@ export default async function AdminPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6 text-[#222222]">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-6 text-[var(--text-primary)]">Admin Dashboard</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         {statCards.map((card) => {
           const content = (
-            <div className="bg-white border border-[#ebebeb] rounded-[14px] p-5 transition-all hover:shadow-md" style={{ borderBottom: `3px solid ${card.color}` }}>
-              <p className="text-sm text-[#6a6a6a]">{card.label}</p>
+            <div className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-[14px] p-5 transition-all hover:shadow-md" style={{ borderBottom: `3px solid ${card.color}` }}>
+              <p className="text-sm text-[var(--text-secondary)]">{card.label}</p>
               <p className="text-3xl font-bold mt-1" style={{ color: card.color }}>{card.value}</p>
             </div>
           );
@@ -70,23 +70,23 @@ export default async function AdminPage() {
         })}
       </div>
 
-      <h2 className="text-lg font-semibold mb-4 text-[#222222]">Recent Orders</h2>
-      <div className="bg-white border border-[#ebebeb] rounded-[14px] overflow-x-auto">
+      <h2 className="text-lg font-semibold mb-4 text-[var(--text-primary)]">Recent Orders</h2>
+      <div className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-[14px] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#ebebeb]">
-              <th className="text-left p-3 text-[#8f8f8f] font-medium">Listing</th>
-              <th className="text-left p-3 text-[#8f8f8f] font-medium">Buyer</th>
-              <th className="text-left p-3 text-[#8f8f8f] font-medium">Amount</th>
-              <th className="text-left p-3 text-[#8f8f8f] font-medium">Status</th>
+            <tr className="border-b border-[var(--border-light)]">
+              <th className="text-left p-3 text-[var(--text-muted)] font-medium">Listing</th>
+              <th className="text-left p-3 text-[var(--text-muted)] font-medium">Buyer</th>
+              <th className="text-left p-3 text-[var(--text-muted)] font-medium">Amount</th>
+              <th className="text-left p-3 text-[var(--text-muted)] font-medium">Status</th>
             </tr>
           </thead>
           <tbody>
             {recentOrders?.map((order) => (
-              <tr key={order.id} className="border-b border-[#f2f2f2] hover:bg-[#f7f7f7] transition-colors">
-                <td className="p-3 text-[#222222]">{((order.listings as unknown as { title: string }[])?.[0]?.title) ?? "—"}</td>
-                <td className="p-3 text-[#222222]">{((order.profiles as unknown as { full_name: string }[])?.[0]?.full_name) ?? "—"}</td>
-                <td className="p-3 text-[#222222]">{formatPrice(order.amount_cents)}</td>
+              <tr key={order.id} className="border-b border-[#f2f2f2] hover:bg-[var(--bg-secondary)] transition-colors">
+                <td className="p-3 text-[var(--text-primary)]">{((order.listings as unknown as { title: string }[])?.[0]?.title) ?? "—"}</td>
+                <td className="p-3 text-[var(--text-primary)]">{((order.profiles as unknown as { full_name: string }[])?.[0]?.full_name) ?? "—"}</td>
+                <td className="p-3 text-[var(--text-primary)]">{formatPrice(order.amount_cents)}</td>
                 <td className="p-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     order.status === "completed" ? "bg-[rgba(39,166,68,0.08)] text-[#27a644]" :

@@ -156,11 +156,11 @@ export default function AiAssistantPage() {
       {/* Main Chat */}
       <div className="flex-1 flex flex-col">
         <div className="p-3 border-b border-white/[0.06] flex items-center gap-3" style={{ background: "rgba(10,15,26,0.3)" }}>
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-white/5 rounded-lg text-slate-400">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:var(--bg-hover) rounded-lg text-slate-400">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
           </button>
           <div>
-            <h2 className="font-medium text-sm text-white">Omix AI Assistant</h2>
+            <h2 className="font-medium text-sm text-[var(--text-primary)]">Omix AI Assistant</h2>
             <p className="text-xs text-slate-400">Your marketplace helper</p>
           </div>
         </div>
@@ -170,7 +170,7 @@ export default function AiAssistantPage() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar">
               {messages.map((msg) => (
                 <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${msg.role === "user" ? "bg-emerald-600 text-white rounded-br-sm" : "glass-card rounded-bl-sm"}`}>
+                  <div className={`max-w-[75%] rounded-2xl px-4 py-3 ${msg.role === "user" ? "bg-emerald-600 text-[var(--text-primary)] rounded-br-sm" : "glass-card rounded-bl-sm"}`}>
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                     <p className={`text-[10px] mt-1 ${msg.role === "user" ? "text-emerald-200" : "text-slate-400"}`}>
                       {new Date(msg.created_at).toLocaleTimeString("en-KE", { hour: "2-digit", minute: "2-digit" })}
@@ -209,7 +209,7 @@ export default function AiAssistantPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">Omix AI Assistant</h2>
+              <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Omix AI Assistant</h2>
               <p className="text-slate-400 mb-8 text-sm">Your smart helper for buying, selling, and everything marketplace.</p>
               <div className="grid grid-cols-2 gap-3">
                 {SUGGESTED_PROMPTS.map((prompt) => (

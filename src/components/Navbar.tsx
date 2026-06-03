@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface ProfileData {
   id: string;
@@ -25,6 +26,7 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const supabase = createClient();
+  const { theme, toggleTheme } = useTheme();
 
   const fetchProfile = useCallback(async (uid: string) => {
     const { data } = await supabase.from("profiles").select("id, full_name, avatar_url, is_admin, store_slug").eq("id", uid).single();
@@ -67,8 +69,7 @@ export default function Navbar() {
   }
 
   const navItem = "px-3 py-2 text-sm font-medium rounded-lg transition-colors";
-  const navOff = "text-[#6a6a6a] hover:text-[#222222] hover:bg-[#f2f2f2]";
-  const navOn = "text-[#ff385c] bg-[rgba(255,56,92,0.08)]";
+  const navOff = "hover:opacity-80";
 
   return (
     <nav className="nav-airbnb">
@@ -76,66 +77,81 @@ export default function Navbar() {
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/logo.jpg" alt="Omix" width={36} height={36} className="rounded-lg" />
-            <span className="text-xl font-bold text-[#222222] hidden sm:inline">Omix</span>
+            <span className="text-xl font-bold hidden sm:inline" style={{ color: "var(--text-primary)" }}>Omix</span>
           </Link>
           {user && (
             <div className="hidden md:flex items-center gap-1">
-              <Link href="/cart" className={`relative ${navItem} ${navOff}`}>
+              <Link href="/cart" className={`relative ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>
                 Cart
-                {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-[#ff385c] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{cartCount > 9 ? "9+" : cartCount}</span>}
+                {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-[#ff385c] text-[var(--text-primary)] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{cartCount > 9 ? "9+" : cartCount}</span>}
               </Link>
-              <Link href="/messages" className={`relative ${navItem} ${navOff}`}>
+              <Link href="/messages" className={`relative ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>
                 Messages
-                {unreadCount > 0 && <span className="absolute -top-1 -right-1 bg-[#ff385c] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{unreadCount > 9 ? "9+" : unreadCount}</span>}
+                {unreadCount > 0 && <span className="absolute -top-1 -right-1 bg-[#ff385c] text-[var(--text-primary)] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{unreadCount > 9 ? "9+" : unreadCount}</span>}
               </Link>
-              <Link href="/orders" className={`${navItem} ${navOff}`}>Orders</Link>
+              <Link href="/orders" className={`${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Orders</Link>
             </div>
           )}
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          {/* Theme toggle */}
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+            <div className="toggle-circle">
+              <span className="toggle-icon">{theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"}</span>
+            </div>
+          </button>
+
           {user ? (
             <>
               <Link href="/sell" className="btn-outline py-1.5 px-4 text-xs">Sell</Link>
               {profile?.store_slug && (
-                <Link href={`/store/${profile.store_slug}`} className={`${navItem} ${navOff}`}>My Store</Link>
+                <Link href={`/store/${profile.store_slug}`} className={`${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>My Store</Link>
               )}
-              <Link href="/dashboard" className={`${navItem} ${navOff}`}>Dashboard</Link>
-              {profile?.is_admin && <Link href="/admin" className={`${navItem} text-[#ff385c]`}>Admin</Link>}
-              <button onClick={handleLogout} className={`${navItem} ${navOff} cursor-pointer`}>Logout</button>
+              <Link href="/dashboard" className={`${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Dashboard</Link>
+              {profile?.is_admin && <Link href="/admin" className={`${navItem}`} style={{ color: "#ff385c" }}>Admin</Link>}
+              <button onClick={handleLogout} className={`${navItem} ${navOff} cursor-pointer`} style={{ color: "var(--text-secondary)" }}>Logout</button>
             </>
           ) : (
             <>
-              <Link href="/auth/login" className={`${navItem} ${navOff}`}>Sign In</Link>
+              <Link href="/auth/login" className={`${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Sign In</Link>
               <Link href="/auth/register" className="btn-primary py-1.5 px-4 text-xs">Register</Link>
             </>
           )}
         </div>
 
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden p-2 rounded-lg hover:bg-[#f2f2f2] text-[#6a6a6a]" aria-label="Menu">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" width={24} height={24} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            {mobileMenuOpen ? <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /> : <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />}
-          </svg>
-        </button>
+        <div className="flex md:hidden items-center gap-2">
+          {/* Mobile theme toggle */}
+          <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+            <div className="toggle-circle">
+              <span className="toggle-icon">{theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"}</span>
+            </div>
+          </button>
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 rounded-lg hover:opacity-80" style={{ color: "var(--text-secondary)" }} aria-label="Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" width={24} height={24} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              {mobileMenuOpen ? <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /> : <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#c1c1c1] bg-white">
+        <div className="md:hidden border-t" style={{ borderColor: "var(--border-light)", background: "var(--bg-primary)" }}>
           <div className="px-4 py-3 space-y-1">
             {user ? (
               <>
-                <Link href="/sell" className={`block ${navItem} text-[#ff385c]`}>Sell Item</Link>
-                <Link href="/cart" className={`block ${navItem} ${navOff}`}>Cart {cartCount > 0 && <span className="ml-1 badge badge-accent">{cartCount}</span>}</Link>
-                <Link href="/messages" className={`block ${navItem} ${navOff}`}>Messages {unreadCount > 0 && <span className="ml-1 badge bg-[rgba(255,56,92,0.08)] text-[#ff385c]">{unreadCount}</span>}</Link>
-                <Link href="/orders" className={`block ${navItem} ${navOff}`}>Orders</Link>
-                <Link href="/dashboard" className={`block ${navItem} ${navOff}`}>Dashboard</Link>
-                {profile?.store_slug && <Link href={`/store/${profile.store_slug}`} className={`block ${navItem} ${navOff}`}>My Store</Link>}
-                {profile?.is_admin && <Link href="/admin" className={`block ${navItem} text-[#ff385c]`}>Admin</Link>}
-                <button onClick={handleLogout} className={`w-full text-left block ${navItem} ${navOff}`}>Logout</button>
+                <Link href="/sell" className={`block ${navItem}`} style={{ color: "#ff385c" }}>Sell Item</Link>
+                <Link href="/cart" className={`block ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Cart {cartCount > 0 && <span className="ml-1 badge badge-accent">{cartCount}</span>}</Link>
+                <Link href="/messages" className={`block ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Messages {unreadCount > 0 && <span className="ml-1 badge" style={{ background: "rgba(255,56,92,0.1)", color: "#ff385c" }}>{unreadCount}</span>}</Link>
+                <Link href="/orders" className={`block ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Orders</Link>
+                <Link href="/dashboard" className={`block ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Dashboard</Link>
+                {profile?.store_slug && <Link href={`/store/${profile.store_slug}`} className={`block ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>My Store</Link>}
+                {profile?.is_admin && <Link href="/admin" className={`block ${navItem}`} style={{ color: "#ff385c" }}>Admin</Link>}
+                <button onClick={handleLogout} className={`w-full text-left block ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Logout</button>
               </>
             ) : (
               <>
-                <Link href="/auth/login" className={`block ${navItem} ${navOff}`}>Sign In</Link>
+                <Link href="/auth/login" className={`block ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Sign In</Link>
                 <Link href="/auth/register" className="btn-primary text-xs w-full justify-center mt-2">Register</Link>
               </>
             )}

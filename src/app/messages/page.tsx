@@ -247,7 +247,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
       {/* Conversations List */}
       <div className="w-80 border-r border-white/10 flex flex-col bg-[#0a0f1a]">
         <div className="p-4 border-b border-white/10">
-          <h2 className="text-lg font-bold text-white">Messages</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)]">Messages</h2>
         </div>
         <div className="flex-1 overflow-y-auto">
           {conversations.length === 0 ? (
@@ -262,7 +262,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
                 key={convo.id}
                 onClick={() => setActiveConversation(convo.id)}
                 className={`w-full p-3 flex items-start gap-3 text-left border-b border-white/5 transition-colors ${
-                  activeConversation === convo.id ? "bg-emerald-500/10" : "hover:bg-white/5"
+                  activeConversation === convo.id ? "bg-emerald-500/10" : "hover:var(--bg-hover)"
                 }`}
               >
                 <div className="w-10 h-10 rounded-full bg-emerald-500/15 flex items-center justify-center text-emerald-400 font-bold shrink-0">
@@ -283,7 +283,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
                   <p className="text-xs text-slate-500 truncate">{convo.last_message}</p>
                 </div>
                 {convo.unread_count > 0 && (
-                  <span className="bg-emerald-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shrink-0">
+                  <span className="bg-emerald-500 text-[var(--text-primary)] text-xs w-5 h-5 rounded-full flex items-center justify-center shrink-0">
                     {convo.unread_count}
                   </span>
                 )}
@@ -304,7 +304,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
                   {otherUser?.full_name?.[0]?.toUpperCase() || "?"}
                 </div>
                 <div>
-                  <p className="font-medium text-sm text-white">{otherUser?.full_name}</p>
+                  <p className="font-medium text-sm text-[var(--text-primary)]">{otherUser?.full_name}</p>
                   {listingTitle && (
                     <p className="text-xs text-slate-500">Re: {listingTitle}</p>
                   )}
@@ -334,7 +334,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
                     <div
                       className={`max-w-[70%] rounded-2xl px-4 py-2 ${
                         isMine
-                          ? "bg-emerald-600 text-white rounded-br-sm"
+                          ? "bg-emerald-600 text-[var(--text-primary)] rounded-br-sm"
                           : "bg-white/10 text-slate-200 border border-white/5 rounded-bl-sm"
                       }`}
                     >
@@ -349,7 +349,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
                                 onClick={async () => {
                                   await supabase.from("messages").update({ offer_status: "accepted" }).eq("id", msg.id);
                                 }}
-                                className="text-xs px-3 py-1 bg-emerald-600 text-white rounded-full"
+                                className="text-xs px-3 py-1 bg-emerald-600 text-[var(--text-primary)] rounded-full"
                               >
                                 Accept
                               </button>

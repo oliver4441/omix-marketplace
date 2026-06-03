@@ -18,7 +18,7 @@ interface ListingRow {
 export default function AdminListingsClient({ listings }: { listings: ListingRow[] }) {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-white mb-6">Manage Listings</h1>
+      <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-6">Manage Listings</h1>
       {listings && listings.length > 0 ? (
         <div className="space-y-4">
           {listings.map((l) => (
@@ -67,7 +67,7 @@ function ListingItem({ listing }: { listing: ListingRow }) {
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <h3 className="font-medium text-white">{listing.title}</h3>
+          <h3 className="font-medium text-[var(--text-primary)]">{listing.title}</h3>
           {listing.status === "reported" && (
             <span className="bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded-full">Reported</span>
           )}

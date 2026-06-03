@@ -109,7 +109,7 @@ export default async function OrderDetailPage({
                 <div className="flex flex-col items-center min-w-[60px]">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
-                      isComplete ? "bg-emerald-600 text-white" : "bg-white/15 text-slate-400"
+                      isComplete ? "bg-emerald-600 text-[var(--text-primary)]" : "bg-white/15 text-slate-400"
                     } ${isCurrent ? "ring-2 ring-emerald-300" : ""}`}
                   >
                     {isComplete ? "" : i + 1}
@@ -282,7 +282,7 @@ export default async function OrderDetailPage({
             {/* Actions */}
             <div className="mt-6 space-y-2">
               {isBuyer && orderData.status === "delivered" && !orderData.buyer_confirmed_receipt && (
-                <button className="w-full py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700">
+                <button className="w-full py-2 bg-emerald-600 text-[var(--text-primary)] rounded-lg text-sm font-medium hover:bg-emerald-700">
                   Confirm Receipt
                 </button>
               )}
@@ -294,7 +294,7 @@ export default async function OrderDetailPage({
               {(isBuyer || isSeller) && orderData.status === "pending" && (
                 <Link
                   href={`/messages`}
-                  className="block w-full py-2 border text-center rounded-lg text-sm font-medium hover:bg-white/5"
+                  className="block w-full py-2 border text-center rounded-lg text-sm font-medium hover:var(--bg-hover)"
                 >
                   Message {isBuyer ? "Seller" : "Buyer"}
                 </Link>

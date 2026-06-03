@@ -17,8 +17,8 @@ export default async function RegisterPage({
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#222222]">Create Account</h1>
-          <p className="text-[#6a6a6a] mt-2">Join Omix Marketplace today</p>
+          <h1 className="text-3xl font-bold text-[var(--text-primary)]">Create Account</h1>
+          <p className="text-[var(--text-secondary)] mt-2">Join Omix Marketplace today</p>
         </div>
 
         {params.error && (
@@ -27,29 +27,29 @@ export default async function RegisterPage({
           </div>
         )}
 
-        <div className="bg-white border border-[#ebebeb] rounded-[14px] p-6">
+        <div className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-[14px] p-6">
           <form action={handleRegister} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#222222] mb-1.5">Full Name</label>
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Full Name</label>
               <input name="full_name" type="text" required className="airbnb-input" placeholder="John Doe" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#222222] mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Email</label>
               <input name="email" type="email" required className="airbnb-input" placeholder="you@example.com" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#222222] mb-1.5">Phone (optional)</label>
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Phone (optional)</label>
               <input name="phone" type="tel" className="airbnb-input" placeholder="07XXXXXXXX" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#222222] mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">Password</label>
               <input name="password" type="password" required minLength={6} className="airbnb-input" placeholder="At least 6 characters" />
             </div>
             <button type="submit" className="btn-primary w-full">Create Account</button>
           </form>
         </div>
 
-        <p className="text-center text-sm text-[#6a6a6a] mt-6">
+        <p className="text-center text-sm text-[var(--text-secondary)] mt-6">
           Already have an account?{" "}
           <a href="/auth/login" className="text-[#ff385c] hover:text-[#e00b41] font-medium transition-colors">Sign in</a>
         </p>

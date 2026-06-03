@@ -113,8 +113,8 @@ export default function ListingDetailPage() {
     setOfferSending(false);
   }
 
-  if (loading) return <div className="max-w-6xl mx-auto px-4 py-12 text-center"><p className="text-[#6a6a6a]">Loading...</p></div>;
-  if (!listing) return <div className="max-w-6xl mx-auto px-4 py-12 text-center"><p className="text-[#6a6a6a]">Listing not found</p></div>;
+  if (loading) return <div className="max-w-6xl mx-auto px-4 py-12 text-center"><p className="text-[var(--text-secondary)]">Loading...</p></div>;
+  if (!listing) return <div className="max-w-6xl mx-auto px-4 py-12 text-center"><p className="text-[var(--text-secondary)]">Listing not found</p></div>;
 
   const conditionLabel = CONDITIONS.find((c) => c.value === listing.condition)?.label;
   const category = CATEGORIES.find((c) => c.id === listing.category_id);
@@ -126,20 +126,20 @@ export default function ListingDetailPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       {showLightbox && imageUrl && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={() => setShowLightbox(false)}>
-          <button className="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 z-10" onClick={() => setShowLightbox(false)}>✕</button>
+          <button className="absolute top-4 right-4 text-[var(--text-primary)] text-2xl hover:text-gray-300 z-10" onClick={() => setShowLightbox(false)}>✕</button>
           <img src={imageUrl} alt={listing.title} className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
 
-      <div className="text-sm text-[#8f8f8f] mb-5">
-        <Link href="/" className="hover:text-[#222222]">Home</Link>
-        {category && (<><span className="mx-2">›</span><Link href={`/?category=${category.slug}`} className="hover:text-[#222222]">{category.name}</Link></>)}
-        <span className="mx-2">›</span><span className="text-[#222222]">{listing.title}</span>
+      <div className="text-sm text-[var(--text-muted)] mb-5">
+        <Link href="/" className="hover:text-[var(--text-primary)]">Home</Link>
+        {category && (<><span className="mx-2">›</span><Link href={`/?category=${category.slug}`} className="hover:text-[var(--text-primary)]">{category.name}</Link></>)}
+        <span className="mx-2">›</span><span className="text-[var(--text-primary)]">{listing.title}</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
-          <div className="aspect-[4/3] bg-[#f7f7f7] rounded-[14px] overflow-hidden mb-3 cursor-zoom-in" onClick={() => imageUrl && setShowLightbox(true)}>
+          <div className="aspect-[4/3] bg-[var(--bg-secondary)] rounded-[14px] overflow-hidden mb-3 cursor-zoom-in" onClick={() => imageUrl && setShowLightbox(true)}>
             {imageUrl ? <img src={imageUrl} alt={listing.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" /> : (
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <svg className="w-12 h-12 text-[#ddd]" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" /></svg>
@@ -161,67 +161,67 @@ export default function ListingDetailPage() {
         <div className="lg:col-span-2 space-y-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              {conditionLabel && <span className="text-xs bg-[#f2f2f2] text-[#222222] px-2.5 py-1 rounded-full font-medium">{conditionLabel}</span>}
+              {conditionLabel && <span className="text-xs bg-[var(--bg-hover)] text-[var(--text-primary)] px-2.5 py-1 rounded-full font-medium">{conditionLabel}</span>}
               {listing.is_negotiable && <span className="text-xs bg-[rgba(255,56,92,0.06)] text-[#ff385c] px-2.5 py-1 rounded-full font-medium">Negotiable</span>}
             </div>
-            <h1 className="text-2xl font-bold text-[#222222]">{listing.title}</h1>
-            <p className="text-3xl font-bold text-[#222222] mt-2">{formatPrice(listing.price)}</p>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">{listing.title}</h1>
+            <p className="text-3xl font-bold text-[var(--text-primary)] mt-2">{formatPrice(listing.price)}</p>
           </div>
 
           {listing.description && (
-            <div className="bg-[#f7f7f7] rounded-[14px] p-4">
-              <h3 className="font-medium text-sm text-[#222222] mb-2">Description</h3>
-              <p className="text-sm text-[#6a6a6a] whitespace-pre-wrap">{listing.description}</p>
+            <div className="bg-[var(--bg-secondary)] rounded-[14px] p-4">
+              <h3 className="font-medium text-sm text-[var(--text-primary)] mb-2">Description</h3>
+              <p className="text-sm text-[var(--text-secondary)] whitespace-pre-wrap">{listing.description}</p>
             </div>
           )}
 
           {!isOwner && listing.status === "active" && (
             <div className="space-y-2">
               <button onClick={handleContactSeller} className="w-full py-3 btn-primary rounded-[14px] font-medium text-base">Chat with Seller</button>
-              {waLink && <a href={waLink} target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-[#25D366] text-white rounded-[14px] font-medium hover:bg-[#1da851] text-center block">WhatsApp Seller</a>}
+              {waLink && <a href={waLink} target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-[#25D366] text-[var(--text-primary)] rounded-[14px] font-medium hover:bg-[#1da851] text-center block">WhatsApp Seller</a>}
               <div className="grid grid-cols-4 gap-2">
                 <button onClick={async () => { const result = await (await import("@/lib/actions/cart")).addToCart(id); if (result?.error) alert(result.error); else router.push("/cart"); }} className="py-2.5 btn-outline rounded-[14px] text-sm font-medium">Add to Cart</button>
                 <button onClick={() => setShowOfferInput(!showOfferInput)} className="py-2.5 btn-outline rounded-[14px] text-sm font-medium">Make Offer</button>
-                <button onClick={handleFavorite} className={`py-2.5 rounded-[14px] text-sm font-medium border ${isFavorited ? "border-[#ff385c] text-[#ff385c] bg-[rgba(255,56,92,0.06)]" : "border-[#c1c1c1] text-[#222222] hover:bg-[#f7f7f7]"}`}>{isFavorited ? "Saved" : "Save"}</button>
+                <button onClick={handleFavorite} className={`py-2.5 rounded-[14px] text-sm font-medium border ${isFavorited ? "border-[#ff385c] text-[#ff385c] bg-[rgba(255,56,92,0.06)]" : "border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]"}`}>{isFavorited ? "Saved" : "Save"}</button>
                 <button onClick={async () => { try { await navigator.clipboard.writeText(window.location.href); } catch (_e) { /* */ } }} className="py-2.5 btn-outline rounded-[14px] text-sm font-medium">Share</button>
               </div>
               {showOfferInput && (
-                <div className="bg-[#f7f7f7] rounded-[14px] p-4">
-                  <p className="text-sm font-medium text-[#222222] mb-2">Listed at {formatPrice(listing.price)}</p>
+                <div className="bg-[var(--bg-secondary)] rounded-[14px] p-4">
+                  <p className="text-sm font-medium text-[var(--text-primary)] mb-2">Listed at {formatPrice(listing.price)}</p>
                   <div className="flex gap-2">
                     <input value={offerAmount} onChange={(e) => setOfferAmount(e.target.value)} type="number" placeholder="Your offer (KES)" className="flex-1 airbnb-input rounded-xl text-sm" />
                     <button onClick={handleSendOffer} disabled={offerSending || !offerAmount} className="px-4 py-2 btn-primary rounded-xl text-sm font-medium disabled:opacity-50">Send</button>
                   </div>
-                  <p className="text-xs text-[#8f8f8f] mt-1">This will start a chat with your offer</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">This will start a chat with your offer</p>
                 </div>
               )}
             </div>
           )}
 
           {listing.status !== "active" && (
-            <div className={`py-3 px-4 rounded-xl text-center font-medium ${listing.status === "sold" ? "bg-[#f2f2f2] text-[#8f8f8f]" : "bg-[rgba(255,56,92,0.06)] text-[#ff385c]"}`}>
+            <div className={`py-3 px-4 rounded-xl text-center font-medium ${listing.status === "sold" ? "bg-[var(--bg-hover)] text-[var(--text-muted)]" : "bg-[rgba(255,56,92,0.06)] text-[#ff385c]"}`}>
               {listing.status === "sold" ? "This item has been sold" : `Status: ${listing.status}`}
             </div>
           )}
 
-          <div className="bg-[#f7f7f7] rounded-[14px] p-4 space-y-2.5 text-sm">
-            <div className="flex justify-between"><span className="text-[#6a6a6a]">Condition</span><span className="font-medium text-[#222222]">{conditionLabel || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-[#6a6a6a]">Location</span><span className="font-medium text-[#222222]">{listing.location_city || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-[#6a6a6a]">Category</span><span className="font-medium text-[#222222]">{category?.name || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-[#6a6a6a]">Views</span><span className="font-medium text-[#222222]">{listing.views.toLocaleString()}</span></div>
-            <div className="flex justify-between"><span className="text-[#6a6a6a]">Posted</span><span className="font-medium text-[#222222]">{new Date(listing.created_at).toLocaleDateString("en-KE", { month: "short", day: "numeric" })}</span></div>
+          <div className="bg-[var(--bg-secondary)] rounded-[14px] p-4 space-y-2.5 text-sm">
+            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Condition</span><span className="font-medium text-[var(--text-primary)]">{conditionLabel || "—"}</span></div>
+            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Location</span><span className="font-medium text-[var(--text-primary)]">{listing.location_city || "—"}</span></div>
+            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Category</span><span className="font-medium text-[var(--text-primary)]">{category?.name || "—"}</span></div>
+            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Views</span><span className="font-medium text-[var(--text-primary)]">{listing.views.toLocaleString()}</span></div>
+            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Posted</span><span className="font-medium text-[var(--text-primary)]">{new Date(listing.created_at).toLocaleDateString("en-KE", { month: "short", day: "numeric" })}</span></div>
           </div>
 
-          <div className="border border-[#ebebeb] rounded-[14px] overflow-hidden">
+          <div className="border border-[var(--border-light)] rounded-[14px] overflow-hidden">
             <Link href={listing.seller?.store_slug ? `/store/${listing.seller.store_slug}` : "#"}>
-              <div className="p-4 flex items-center gap-3 hover:bg-[#f7f7f7] cursor-pointer">
-                <div className="w-11 h-11 rounded-full bg-[#f2f2f2] flex items-center justify-center text-lg text-[#6a6a6a] font-bold shrink-0">{listing.seller?.full_name?.[0]?.toUpperCase() || "?"}</div>
+              <div className="p-4 flex items-center gap-3 hover:bg-[var(--bg-secondary)] cursor-pointer">
+                <div className="w-11 h-11 rounded-full bg-[var(--bg-hover)] flex items-center justify-center text-lg text-[var(--text-secondary)] font-bold shrink-0">{listing.seller?.full_name?.[0]?.toUpperCase() || "?"}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1">
-                    <p className="font-medium text-sm text-[#222222] truncate">{listing.seller?.store_name || listing.seller?.full_name || "Seller"}</p>
+                    <p className="font-medium text-sm text-[var(--text-primary)] truncate">{listing.seller?.store_name || listing.seller?.full_name || "Seller"}</p>
                     {listing.seller?.verified_badge && <span className="text-[#ff385c] text-xs">✓</span>}
                   </div>
-                  {listing.seller?.rating_count > 0 && <p className="text-xs text-[#8f8f8f]">Rating: {listing.seller.rating_avg.toFixed(1)} ({listing.seller.rating_count} reviews)</p>}
+                  {listing.seller?.rating_count > 0 && <p className="text-xs text-[var(--text-muted)]">Rating: {listing.seller.rating_avg.toFixed(1)} ({listing.seller.rating_count} reviews)</p>}
                 </div>
                 <span className="text-xs text-[#ff385c] font-medium">View Store →</span>
               </div>

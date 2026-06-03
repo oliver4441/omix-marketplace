@@ -333,7 +333,7 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">Dashboard</h1>
             <p className="text-slate-500 text-sm mt-1">
               Welcome back, {profile?.full_name || "seller"}! Here&apos;s your store overview.
             </p>
@@ -355,7 +355,7 @@ export default function DashboardPage() {
               <svg className="w-4 h-4" width={16} height={16} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
               Messages
               {unreadNotifs > 0 && (
-                <span className="w-5 h-5 bg-emerald-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="w-5 h-5 bg-emerald-500 text-[var(--text-primary)] text-[10px] font-bold rounded-full flex items-center justify-center">
                   {unreadNotifs}
                 </span>
               )}
@@ -425,7 +425,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Earnings Chart */}
           <div className="glass-card p-5">
-            <h3 className="font-semibold text-sm text-white mb-4 flex items-center gap-2">
+            <h3 className="font-semibold text-sm text-[var(--text-primary)] mb-4 flex items-center gap-2">
               <svg className="w-4 h-4 text-emerald-400" width={16} height={16} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
               Earnings (Last 7 Days)
             </h3>
@@ -437,7 +437,7 @@ export default function DashboardPage() {
 
           {/* Rating Card */}
           <div className="glass-card p-5">
-            <h3 className="font-semibold text-sm text-white mb-4 flex items-center gap-2">
+            <h3 className="font-semibold text-sm text-[var(--text-primary)] mb-4 flex items-center gap-2">
               <svg className="w-4 h-4 text-amber-400" width={16} height={16} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
               Your Rating
             </h3>
@@ -477,7 +477,7 @@ export default function DashboardPage() {
           <div className="lg:col-span-2">
             <div className="glass-card">
               <div className="flex items-center justify-between p-4 border-b border-white/5">
-                <h2 className="font-semibold text-sm text-white">My Listings</h2>
+                <h2 className="font-semibold text-sm text-[var(--text-primary)]">My Listings</h2>
                 <span className="text-xs text-slate-500">{listings.length} total</span>
               </div>
 
@@ -491,7 +491,7 @@ export default function DashboardPage() {
                 <div className="divide-y divide-white/5">
                   {listings.slice(0, 10).map((l) => (
                     <div key={l.id} className="p-4 flex items-center gap-4 hover:bg-white/[0.02] transition-colors">
-                      <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-white/5">
+                      <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 var(--bg-hover)">
                         {l.listing_images?.find((i) => i.is_primary)?.image_url ||
                          l.listing_images?.[0]?.image_url ? (
                           <img
@@ -558,7 +558,7 @@ export default function DashboardPage() {
             {/* Recent Orders */}
             <div className="glass-card">
               <div className="flex items-center justify-between p-4 border-b border-white/5">
-                <h2 className="font-semibold text-sm text-white">Recent Orders</h2>
+                <h2 className="font-semibold text-sm text-[var(--text-primary)]">Recent Orders</h2>
               </div>
               {orders.length === 0 ? (
                 <div className="p-6 text-center text-slate-500 text-sm">
@@ -616,7 +616,7 @@ export default function DashboardPage() {
             {/* Recent Notifications */}
             <div className="glass-card">
               <div className="flex items-center justify-between p-4 border-b border-white/5">
-                <h2 className="font-semibold text-sm text-white">Notifications</h2>
+                <h2 className="font-semibold text-sm text-[var(--text-primary)]">Notifications</h2>
               </div>
               {notifications.length === 0 ? (
                 <div className="p-6 text-center text-slate-500 text-sm">
@@ -653,7 +653,7 @@ export default function DashboardPage() {
 
             {/* Quick Actions */}
             <div className="glass-card p-4">
-              <h2 className="font-semibold text-sm text-white mb-3">Quick Actions</h2>
+              <h2 className="font-semibold text-sm text-[var(--text-primary)] mb-3">Quick Actions</h2>
               <div className="grid grid-cols-2 gap-2">
                 <Link
                   href="/sell"

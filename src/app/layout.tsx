@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -12,20 +13,18 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Omix Marketplace — Buy & Sell in Kericho",
-  description: "The leading P2P marketplace in Kericho, Kenya. Buy and sell with confidence. Secure payments via M-Pesa.",
+  description: "The leading P2P marketplace in Kericho, Kenya.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={dmSans.className}>
+    <html lang="en" className={dmSans.className} suppressHydrationWarning>
       <body>
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <ThemeProvider>
+          <Navbar />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

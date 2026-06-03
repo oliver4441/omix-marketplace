@@ -169,14 +169,14 @@ export default function ImageUploader({
                 className="object-cover"
               />
               {i === 0 && (
-                <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[10px] px-1.5 py-0.5 rounded">
+                <span className="absolute top-1 left-1 bg-emerald-600 text-[var(--text-primary)] text-[10px] px-1.5 py-0.5 rounded">
                   Cover
                 </span>
               )}
               <button
                 type="button"
                 onClick={() => removeExisting(i)}
-                className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600"
+                className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-[var(--text-primary)] rounded-full text-xs flex items-center justify-center hover:bg-red-600"
               >
                 ×
               </button>
@@ -200,14 +200,14 @@ export default function ImageUploader({
                 className="object-cover"
               />
               {existing.length === 0 && i === 0 && (
-                <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[10px] px-1.5 py-0.5 rounded">
+                <span className="absolute top-1 left-1 bg-emerald-600 text-[var(--text-primary)] text-[10px] px-1.5 py-0.5 rounded">
                   Cover
                 </span>
               )}
               <button
                 type="button"
                 onClick={() => removePreview(i)}
-                className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600"
+                className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-[var(--text-primary)] rounded-full text-xs flex items-center justify-center hover:bg-red-600"
               >
                 ×
               </button>
@@ -218,7 +218,7 @@ export default function ImageUploader({
                     <button
                       type="button"
                       onClick={() => movePreview(i, i - 1)}
-                      className="w-5 h-5 bg-black/60 text-white rounded text-[10px] hover:bg-black/80"
+                      className="w-5 h-5 bg-black/60 text-[var(--text-primary)] rounded text-[10px] hover:bg-black/80"
                     >
                       ←
                     </button>
@@ -227,7 +227,7 @@ export default function ImageUploader({
                     <button
                       type="button"
                       onClick={() => movePreview(i, i + 1)}
-                      className="w-5 h-5 bg-black/60 text-white rounded text-[10px] hover:bg-black/80"
+                      className="w-5 h-5 bg-black/60 text-[var(--text-primary)] rounded text-[10px] hover:bg-black/80"
                     >
                       →
                     </button>

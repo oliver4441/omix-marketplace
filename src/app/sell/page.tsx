@@ -67,32 +67,32 @@ export default function SellPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <div className="flex items-center gap-2 mb-6">
-        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= 1 ? "bg-[#222222] text-white" : "bg-[#f2f2f2] text-[#8f8f8f]"}`}>1</div>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= 1 ? "bg-[#222222] text-[var(--text-primary)]" : "bg-[var(--bg-hover)] text-[var(--text-muted)]"}`}>1</div>
         <div className={`flex-1 h-0.5 rounded ${step >= 2 ? "bg-[#222222]" : "bg-[#ebebeb]"}`} />
-        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= 2 ? "bg-[#222222] text-white" : "bg-[#f2f2f2] text-[#8f8f8f]"}`}>2</div>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= 2 ? "bg-[#222222] text-[var(--text-primary)]" : "bg-[var(--bg-hover)] text-[var(--text-muted)]"}`}>2</div>
       </div>
 
-      <h1 className="text-2xl font-bold mb-1 text-[#222222]">{step === 1 ? "List an Item for Sale" : "Add Photos"}</h1>
-      <p className="text-[#6a6a6a] mb-6">{step === 1 ? "Tell us about what you're selling" : "Great! Now add some photos to attract buyers"}</p>
+      <h1 className="text-2xl font-bold mb-1 text-[var(--text-primary)]">{step === 1 ? "List an Item for Sale" : "Add Photos"}</h1>
+      <p className="text-[var(--text-secondary)] mb-6">{step === 1 ? "Tell us about what you're selling" : "Great! Now add some photos to attract buyers"}</p>
 
       <form onSubmit={handleCreateListing} className="space-y-4">
         {step === 1 && (
-          <div className="bg-white border border-[#ebebeb] rounded-[14px] p-6 space-y-4">
+          <div className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-[14px] p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#222222] mb-1">Title *</label>
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Title *</label>
               <input name="title" required maxLength={120} placeholder="e.g., iPhone 12 Pro 128GB - Excellent Condition" className="airbnb-input" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#222222] mb-1">Description</label>
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Description</label>
               <textarea name="description" rows={5} placeholder="Describe your item — condition, specs, reason for selling..." className="airbnb-input resize-none" />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#222222] mb-1">Price (KES) *</label>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Price (KES) *</label>
                 <input name="price" type="number" required min="1" placeholder="5000" className="airbnb-input" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#222222] mb-1">Condition *</label>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Condition *</label>
                 <select name="condition" required defaultValue="good" className="airbnb-input">
                   {CONDITIONS.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
@@ -100,17 +100,17 @@ export default function SellPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#222222] mb-1">Category *</label>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Category *</label>
                 <select name="category_id" required className="airbnb-input">
                   {CATEGORIES.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#222222] mb-1">Location *</label>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Location *</label>
                 <input name="location" required placeholder="e.g., Kericho Town" className="airbnb-input" />
               </div>
             </div>
-            <label className="flex items-center gap-2 text-sm text-[#222222]">
+            <label className="flex items-center gap-2 text-sm text-[var(--text-primary)]">
               <input type="checkbox" name="is_negotiable" defaultChecked className="rounded accent-[#222222]" />
               Price is negotiable
             </label>
@@ -122,14 +122,14 @@ export default function SellPage() {
         )}
 
         {step === 2 && (
-          <div className="bg-white border border-[#ebebeb] rounded-[14px] p-6 space-y-4">
+          <div className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-[14px] p-6 space-y-4">
             <ImageUploader maxImages={5} maxSizeMB={5} onImagesChange={(files) => setUploadedFiles(files)} />
             {error && <div className="bg-[rgba(255,56,92,0.06)] border border-[rgba(255,56,92,0.15)] text-[#ff385c] text-sm px-3 py-2 rounded-xl">{error}</div>}
             <div className="flex gap-3">
               <button type="button" onClick={() => setStep(1)} className="flex-1 py-3 btn-outline rounded-xl font-medium">Back</button>
               <button type="submit" disabled={publishing} className="flex-1 py-3 btn-primary rounded-xl font-medium disabled:opacity-50">{publishing ? "Publishing..." : "Publish Listing"}</button>
             </div>
-            <p className="text-xs text-[#8f8f8f] text-center">By listing, you agree to Marketplace terms. Listing fee: free.</p>
+            <p className="text-xs text-[var(--text-muted)] text-center">By listing, you agree to Marketplace terms. Listing fee: free.</p>
           </div>
         )}
       </form>

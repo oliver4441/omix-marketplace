@@ -37,7 +37,7 @@ function getOrderInfo(o: DisputeRow['orders']): { amount_cents: number; title: s
 export default function AdminDisputesClient({ disputes }: { disputes: DisputeRow[] }) {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6 text-white">Dispute Resolution</h1>
+      <h1 className="text-2xl font-bold mb-6 text-[var(--text-primary)]">Dispute Resolution</h1>
       {disputes && disputes.length > 0 ? (
         <div className="space-y-4">
           {disputes.map((d) => (
@@ -77,7 +77,7 @@ function DisputeItem({ dispute }: { dispute: DisputeRow }) {
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="font-medium text-white">Order #{dispute.order_id?.slice(0, 8)}</h3>
+            <h3 className="font-medium text-[var(--text-primary)]">Order #{dispute.order_id?.slice(0, 8)}</h3>
             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
               dispute.status === "open" ? "bg-red-500/15 text-red-400" :
               dispute.status === "resolved" ? "bg-emerald-500/15 text-emerald-400" :

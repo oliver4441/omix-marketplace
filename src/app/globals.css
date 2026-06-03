@@ -1,56 +1,103 @@
 @import "tailwindcss";
 
-/* ===== AIRBNB DESIGN SYSTEM ===== */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-rausch: #ff385c;
   --color-rausch-dark: #e00b41;
-  --color-near-black: #222222;
-  --color-border: #c1c1c1;
 }
 
 /* ===== BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { color-scheme: light; }
+html {
+  color-scheme: light dark;
+}
 
 body {
   font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #ffffff;
-  color: #222222;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Light theme (default) */
+body, html:not(.dark) body {
+  background: #ffffff;
+  color: #222222;
+}
+
+/* Dark theme */
+html.dark body {
+  background: #0a0f1a;
+  color: #e2e8f0;
 }
 
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; height: auto; display: block; }
 button { cursor: pointer; font-family: inherit; border: none; background: none; padding: 0; }
 input, textarea, select { font-family: inherit; font-size: inherit; }
-
-/* ===== SVG RESET — prevent oversized icons ===== */
 svg { flex-shrink: 0; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+.dark ::-webkit-scrollbar-thumb { background: #2a3040; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #3a4050; }
+
+/* ===== THEME COLORS ===== */
+:root, html:not(.dark) {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f7f7;
+  --bg-card: #ffffff;
+  --bg-hover: #f2f2f2;
+  --text-primary: #222222;
+  --text-secondary: #6a6a6a;
+  --text-muted: #8f8f8f;
+  --border: #c1c1c1;
+  --border-light: #ebebeb;
+}
+
+html.dark {
+  --bg-primary: #0a0f1a;
+  --bg-secondary: #111827;
+  --bg-card: #1a2235;
+  --bg-hover: #1e293b;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #2a3040;
+  --border-light: #1e293b;
+}
 
 /* ===== AIRBNB CARD ===== */
 .airbnb-card {
-  background: #fff;
+  background: var(--bg-card);
   border-radius: 14px;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
   box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.dark .airbnb-card {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
 }
 .airbnb-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
+.dark .airbnb-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
 
 /* ===== AIRBNB INPUT ===== */
 .airbnb-input {
-  background: #fff;
-  border: 1.5px solid #c1c1c1;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border);
   border-radius: 8px;
-  color: #222;
+  color: var(--text-primary);
   padding: 10px 14px;
   font-size: 14px;
   line-height: 1.4;
@@ -58,15 +105,14 @@ svg { flex-shrink: 0; }
   outline: none;
   width: 100%;
   appearance: none;
-  -webkit-appearance: none;
 }
-.airbnb-input:focus { border-color: #222; box-shadow: 0 0 0 2px rgba(34,34,34,0.08); }
-.airbnb-input::placeholder { color: #8f8f8f; }
+.airbnb-input:focus { border-color: var(--text-primary); box-shadow: 0 0 0 2px rgba(255,56,92,0.15); }
+.airbnb-input::placeholder { color: var(--text-muted); }
 
 /* ===== BUTTONS ===== */
 .btn-primary {
-  background: #222;
-  color: #fff;
+  background: #222222;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   padding: 10px 20px;
@@ -80,12 +126,14 @@ svg { flex-shrink: 0; }
   gap: 6px;
 }
 .btn-primary:hover { background: #ff385c; }
+.dark .btn-primary { background: #ff385c; }
+.dark .btn-primary:hover { background: #e00b41; }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .btn-outline {
   background: transparent;
-  color: #222;
-  border: 1.5px solid #c1c1c1;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border);
   border-radius: 8px;
   padding: 9px 18px;
   font-weight: 600;
@@ -94,8 +142,9 @@ svg { flex-shrink: 0; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.15s ease;
 }
-.btn-outline:hover { border-color: #222; background: #f7f7f7; }
+.btn-outline:hover { border-color: var(--text-primary); background: var(--bg-hover); }
 
 /* ===== BADGES / PILLS ===== */
 .badge {
@@ -108,32 +157,34 @@ svg { flex-shrink: 0; }
   font-size: 12px;
   font-weight: 500;
   line-height: 1.3;
-  background: #fff;
-  color: #6a6a6a;
-  border: 1px solid #c1c1c1;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
   white-space: nowrap;
   flex-shrink: 0;
 }
 .badge-accent {
-  background: rgba(255,56,92,0.08);
+  background: rgba(255,56,92,0.1);
   color: #ff385c;
-  border-color: rgba(255,56,92,0.2);
+  border-color: rgba(255,56,92,0.25);
   font-weight: 600;
 }
 
 /* ===== NAVBAR ===== */
 .nav-airbnb {
-  background: #fff;
-  border-bottom: 1px solid #ebebeb;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-light);
   position: sticky;
   top: 0;
   z-index: 50;
+  transition: background-color 0.2s ease;
 }
 
 /* ===== FOOTER ===== */
 .footer-airbnb {
-  background: #f7f7f7;
-  border-top: 1px solid #ebebeb;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+  color: var(--text-secondary);
 }
 
 /* ===== LISTINGS GRID ===== */
@@ -156,6 +207,42 @@ svg { flex-shrink: 0; }
 @keyframes pageIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== THEME TOGGLE ===== */
+.theme-toggle {
+  width: 48px;
+  height: 26px;
+  border-radius: 13px;
+  background: var(--border);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--text-muted); }
+.theme-toggle .toggle-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease, background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.dark .theme-toggle .toggle-circle {
+  transform: translateX(22px);
+}
+.theme-toggle .toggle-icon {
+  font-size: 12px;
+  line-height: 1;
 }
 
 /* ===== MOBILE ===== */

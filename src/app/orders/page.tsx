@@ -24,7 +24,7 @@ export default async function PurchaseHistoryPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
         <svg className="w-12 h-12 text-slate-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
-        <p className="text-lg font-medium text-white">No orders yet</p>
+        <p className="text-lg font-medium text-[var(--text-primary)]">No orders yet</p>
         <p className="text-slate-400 text-sm mt-1">Your purchase and sale history will appear here.</p>
         <Link href="/" className="inline-block mt-4 px-4 py-2 glass-btn text-sm font-medium">
           Browse Listings
@@ -42,13 +42,13 @@ export default async function PurchaseHistoryPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6 text-white">Purchase History</h1>
+      <h1 className="text-2xl font-bold mb-6 text-[var(--text-primary)]">Purchase History</h1>
 
       {/* Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <div className="glass-card p-4">
           <p className="text-xs text-slate-500">Total Orders</p>
-          <p className="text-xl font-bold text-white">{orders.length}</p>
+          <p className="text-xl font-bold text-[var(--text-primary)]">{orders.length}</p>
         </div>
         <div className="glass-card p-4">
           <p className="text-xs text-slate-500">Completed</p>
@@ -76,7 +76,7 @@ export default async function PurchaseHistoryPage() {
           return (
             <Link key={order.id} href={`/orders/${order.id}`}>
               <div className="glass-card p-4 hover:border-emerald-500/30 transition-colors cursor-pointer flex gap-4">
-                <div className="w-20 h-20 bg-white/5 rounded-xl overflow-hidden shrink-0">
+                <div className="w-20 h-20 var(--bg-hover) rounded-xl overflow-hidden shrink-0">
                   {images[0] ? (
                     <Image src={images[0]} alt={listing?.title || ""} width={80} height={80} className="w-full h-full object-cover" />
                   ) : (

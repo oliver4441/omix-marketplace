@@ -75,7 +75,7 @@ export default async function PurchaseHistoryPage() {
 
           return (
             <Link key={order.id} href={`/orders/${order.id}`}>
-              <div className="glass-card p-4 hover:border-emerald-500/30 transition-colors cursor-pointer flex gap-4">
+              <div className="glass-card p-4 hover:border-emerald-500/30 cursor-pointer flex gap-4">
                 <div className="w-20 h-20 var(--bg-hover) rounded-xl overflow-hidden shrink-0">
                   {images[0] ? (
                     <Image src={images[0]} alt={listing?.title || ""} width={80} height={80} className="w-full h-full object-cover" />

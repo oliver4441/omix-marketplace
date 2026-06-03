@@ -49,7 +49,7 @@ export default function ProductCard(props: ProductCardProps) {
     <Link href={`/listings/${id}`} className="airbnb-card group block h-full">
       <div className="aspect-[4/3] relative overflow-hidden rounded-t-[14px]" style={{ background: "var(--bg-secondary)" }}>
         {imageUrl && !imgError ? (
-          <Image src={imageUrl} alt={title} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover transition-transform duration-300 group-hover:scale-105" onError={() => setImgError(true)} />
+          <Image src={imageUrl} alt={title} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover" onError={() => setImgError(true)} />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center gap-2">
             <svg className="w-8 h-8" style={{ color: "var(--text-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -59,22 +59,22 @@ export default function ProductCard(props: ProductCardProps) {
           </div>
         )}
 
-        <div className="absolute top-2.5 left-2.5">
-          <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: "var(--bg-card)", color: "var(--text-primary)", border: "1px solid var(--border)" }}>
+        <div className="absolute top-2 left-2">
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: "var(--bg-card)", color: "var(--text-primary)", border: "1px solid var(--border)" }}>
             {conditionLabel(condition)}
           </span>
         </div>
 
-        <div className="absolute top-2.5 right-2.5">
-          <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-            <svg className="w-3.5 h-3.5" style={{ color: "var(--text-secondary)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <div className="absolute top-2 right-2">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+            <svg className="w-4 h-4" style={{ color: "var(--text-secondary)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>
           </div>
         </div>
 
         {timeAgo && (
-          <div className="absolute bottom-2.5 left-2.5">
+          <div className="absolute bottom-2 left-2">
             <span className="text-[10px] text-[var(--text-primary)] px-2 py-0.5 rounded-full" style={{ background: "rgba(0,0,0,0.6)" }}>
               {timeAgo}
             </span>
@@ -82,13 +82,13 @@ export default function ProductCard(props: ProductCardProps) {
         )}
       </div>
 
-      <div className="p-3 space-y-1.5">
-        <h3 className="font-medium text-[13px] leading-snug line-clamp-2 min-h-[2rem]" style={{ color: "var(--text-primary)" }}>
+      <div className="p-2.5 space-y-1">
+        <h3 className="font-medium text-[13px] leading-snug line-clamp-2 min-h-[2.2rem]" style={{ color: "var(--text-primary)" }}>
           {title}
         </h3>
 
-        <div className="flex items-baseline gap-2 pt-0.5">
-          <p className="text-base font-bold" style={{ color: "var(--text-primary)" }}>{formatPrice(price)}</p>
+        <div className="flex items-baseline gap-2">
+          <p className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>{formatPrice(price)}</p>
           {isNegotiable && <span className="text-[10px] font-medium text-[#ff385c]">Negotiable</span>}
         </div>
 
@@ -103,11 +103,11 @@ export default function ProductCard(props: ProductCardProps) {
         )}
 
         {sellerName && (
-          <div className="flex items-center gap-2 pt-1.5 border-t mt-1.5" style={{ borderColor: "var(--border-light)" }}>
-            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-semibold shrink-0" style={{ background: "var(--bg-secondary)", color: "var(--text-secondary)" }}>
+          <div className="flex items-center gap-1.5 pt-1 border-t" style={{ borderColor: "var(--border-light)" }}>
+            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-semibold shrink-0" style={{ background: "var(--bg-secondary)", color: "var(--text-secondary)" }}>
               {sellerName.charAt(0).toUpperCase()}
             </div>
-            <span className="text-[11px] truncate flex-1" style={{ color: "var(--text-muted)" }}>{sellerName}</span>
+            <span className="text-[10px] truncate flex-1" style={{ color: "var(--text-muted)" }}>{sellerName}</span>
             {sellerVerified && (
               <svg className="w-3.5 h-3.5 shrink-0 text-[#ff385c]" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />

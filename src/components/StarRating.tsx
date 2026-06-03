@@ -38,7 +38,7 @@ export default function StarRating({
         onClick={() => interactive && onChange?.(i)}
         className={`${sizeMap[size]} ${
           interactive
-            ? "cursor-pointer hover:scale-110 transition-transform focus:outline-none"
+            ? "cursor-pointer focus:outline-none"
             : "cursor-default"
         } ${filled ? "text-amber-400" : "text-slate-300"}`}
         aria-label={interactive ? `Rate ${i} star${i > 1 ? "s" : ""}` : undefined}
@@ -84,7 +84,7 @@ export function StarRatingInput({
         key={i}
         type="button"
         onClick={() => onChange(i)}
-        className={`text-3xl transition-all hover:scale-115 focus:outline-none ${
+        className={`text-3xl focus:outline-none ${
           i <= value ? "text-amber-400" : "text-slate-500 hover:text-amber-200"
         }`}
       >
@@ -121,7 +121,7 @@ export function RatingDistribution({
           <span className="w-12 text-slate-300">{r.stars} star</span>
           <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-amber-400 rounded-full transition-all"
+              className="h-full bg-amber-400 rounded-full"
               style={{ width: `${(r.count / maxCount) * 100}%` }}
             />
           </div>

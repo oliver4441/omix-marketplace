@@ -114,7 +114,7 @@ export default function ServicesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((service) => (
             <Link key={service.id} href={`/services/${service.id}`}>
-              <div className="glass-card p-5 hover:border-emerald-500/30 transition-colors cursor-pointer h-full">
+              <div className="glass-card p-5 hover:border-emerald-500/30 cursor-pointer h-full">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold shrink-0">
                     {(Array.isArray(service.provider) ? service.provider[0]?.full_name?.[0] : service.provider?.full_name?.[0]) || "?"}

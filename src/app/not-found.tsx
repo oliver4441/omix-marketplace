@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center px-4">
+    <div className="min-h-[60dvh] flex items-center justify-center px-4">
       <div className="text-center max-w-md glass-card p-8">
         <div className="w-16 h-16 rounded-2xl var(--bg-hover) flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8 text-slate-400" width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

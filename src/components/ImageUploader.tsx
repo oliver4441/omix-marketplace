@@ -120,7 +120,7 @@ export default function ImageUploader({
           onDragOver={handleDrag}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
+          className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer ${
             dragActive
               ? "border-emerald-500 bg-emerald-50"
               : "border-white/15 hover:border-emerald-400 hover:bg-emerald-500/50"

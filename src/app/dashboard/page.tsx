@@ -156,7 +156,7 @@ function StatCard({
   };
 
   return (
-    <div className={`bg-gradient-to-br ${gradients[accent]} border rounded-xl p-4 transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-black/20`}>
+    <div className={`bg-gradient-to-br ${gradients[accent]} border rounded-xl p-4`}>
       <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm mb-3 ${iconBg[accent]}`}>
         {icon}
       </div>
@@ -180,8 +180,7 @@ function LiveBackground() {
           style={{
             background: "radial-gradient(circle, #10b981, transparent 70%)",
             top: "-10%",
-            left: "-5%",
-            animation: "blobPulse 12s ease-in-out infinite alternate",
+            left: "-5%",,
           }}
         />
         <div
@@ -189,8 +188,7 @@ function LiveBackground() {
           style={{
             background: "radial-gradient(circle, #3b82f6, transparent 70%)",
             bottom: "-10%",
-            right: "-5%",
-            animation: "blobPulse 15s ease-in-out infinite alternate-reverse",
+            right: "-5%",,
           }}
         />
         <div
@@ -198,23 +196,12 @@ function LiveBackground() {
           style={{
             background: "radial-gradient(circle, #8b5cf6, transparent 70%)",
             top: "40%",
-            left: "50%",
-            animation: "blobPulse 18s ease-in-out infinite alternate",
+            left: "50%",,
           }}
         />
       </div>
       {/* Floating particles - fixed positions to avoid hydration mismatch */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute rounded-full" style={{ width: '3px', height: '3px', background: '#10b981', opacity: 0.12, left: '5%', bottom: '-5%', animation: 'particleFloat 18s linear infinite', animationDelay: '0s' }} />
-        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#3b82f6', opacity: 0.1, left: '15%', bottom: '-5%', animation: 'particleFloat 22s linear infinite', animationDelay: '3s' }} />
-        <div className="absolute rounded-full" style={{ width: '4px', height: '4px', background: '#8b5cf6', opacity: 0.08, left: '30%', bottom: '-5%', animation: 'particleFloat 25s linear infinite', animationDelay: '7s' }} />
-        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#10b981', opacity: 0.14, left: '45%', bottom: '-5%', animation: 'particleFloat 20s linear infinite', animationDelay: '12s' }} />
-        <div className="absolute rounded-full" style={{ width: '3px', height: '3px', background: '#3b82f6', opacity: 0.1, left: '60%', bottom: '-5%', animation: 'particleFloat 28s linear infinite', animationDelay: '5s' }} />
-        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#8b5cf6', opacity: 0.12, left: '75%', bottom: '-5%', animation: 'particleFloat 17s linear infinite', animationDelay: '9s' }} />
-        <div className="absolute rounded-full" style={{ width: '3px', height: '3px', background: '#10b981', opacity: 0.09, left: '88%', bottom: '-5%', animation: 'particleFloat 24s linear infinite', animationDelay: '15s' }} />
-        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#3b82f6', opacity: 0.11, left: '22%', bottom: '-5%', animation: 'particleFloat 19s linear infinite', animationDelay: '2s' }} />
-        <div className="absolute rounded-full" style={{ width: '4px', height: '4px', background: '#8b5cf6', opacity: 0.07, left: '52%', bottom: '-5%', animation: 'particleFloat 26s linear infinite', animationDelay: '11s' }} />
-        <div className="absolute rounded-full" style={{ width: '2px', height: '2px', background: '#10b981', opacity: 0.13, left: '95%', bottom: '-5%', animation: 'particleFloat 21s linear infinite', animationDelay: '18s' }} />
       </div>
     </>
   );
@@ -301,10 +288,10 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[70vh] relative flex items-center justify-center">
+      <div className="min-h-[70dvh] relative flex items-center justify-center">
         <LiveBackground />
         <div className="relative z-10 text-center">
-          <div className="inline-block w-10 h-10 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin mb-4" />
+          <div className="inline-block w-10 h-10 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full mb-4" />
           <p className="text-slate-400 text-sm">Loading your dashboard...</p>
         </div>
       </div>
@@ -340,7 +327,7 @@ export default function DashboardPage() {
             {profile?.store_slug && (
               <Link
                 href={`/store/${profile.store_slug}`}
-                className="text-sm text-emerald-400 hover:text-emerald-300 inline-flex items-center gap-1 mt-1 transition-colors"
+                className="text-sm text-emerald-400 hover:text-emerald-300 inline-flex items-center gap-1 mt-1"
               >
                 <svg className="w-3.5 h-3.5" width={14} height={14} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                 View your store
@@ -370,7 +357,7 @@ export default function DashboardPage() {
             {profile?.is_admin && (
               <Link
                 href="/admin"
-                className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-medium hover:bg-slate-700 transition-colors border border-white/10"
+                className="px-4 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-medium hover:bg-slate-700 border border-white/10"
               >
                 Admin
               </Link>
@@ -461,7 +448,7 @@ export default function DashboardPage() {
                 {profile?.store_slug && (
                   <Link
                     href={`/store/${profile.store_slug}`}
-                    className="text-sm text-emerald-400 hover:text-emerald-300 mt-2 inline-flex items-center gap-1 transition-colors"
+                    className="text-sm text-emerald-400 hover:text-emerald-300 mt-2 inline-flex items-center gap-1"
                   >
                     View public profile
                     <svg className="w-3.5 h-3.5" width={14} height={14} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
@@ -490,7 +477,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="divide-y divide-white/5">
                   {listings.slice(0, 10).map((l) => (
-                    <div key={l.id} className="p-4 flex items-center gap-4 hover:bg-white/[0.02] transition-colors">
+                    <div key={l.id} className="p-4 flex items-center gap-4 hover:bg-white/[0.02]">
                       <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 var(--bg-hover)">
                         {l.listing_images?.find((i) => i.is_primary)?.image_url ||
                          l.listing_images?.[0]?.image_url ? (
@@ -542,7 +529,7 @@ export default function DashboardPage() {
                       </div>
                       <Link
                         href={`/listings/${l.id}`}
-                        className="text-xs text-emerald-400 hover:text-emerald-300 shrink-0 transition-colors"
+                        className="text-xs text-emerald-400 hover:text-emerald-300 shrink-0"
                       >
                         View
                       </Link>
@@ -657,26 +644,26 @@ export default function DashboardPage() {
               <div className="grid grid-cols-2 gap-2">
                 <Link
                   href="/sell"
-                  className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl text-xs font-medium text-center hover:bg-emerald-500/20 transition-colors border border-emerald-500/10"
+                  className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl text-xs font-medium text-center hover:bg-emerald-500/20 border border-emerald-500/10"
                 >
                   New Listing
                 </Link>
                 <Link
                   href="/messages"
-                  className="p-3 bg-blue-500/10 text-blue-400 rounded-xl text-xs font-medium text-center hover:bg-blue-500/20 transition-colors border border-blue-500/10"
+                  className="p-3 bg-blue-500/10 text-blue-400 rounded-xl text-xs font-medium text-center hover:bg-blue-500/20 border border-blue-500/10"
                 >
                   Messages
                 </Link>
                 <Link
                   href="/services"
-                  className="p-3 bg-purple-500/10 text-purple-400 rounded-xl text-xs font-medium text-center hover:bg-purple-500/20 transition-colors border border-purple-500/10"
+                  className="p-3 bg-purple-500/10 text-purple-400 rounded-xl text-xs font-medium text-center hover:bg-purple-500/20 border border-purple-500/10"
                 >
                   Services
                 </Link>
                 {profile?.is_admin && (
                   <Link
                     href="/admin"
-                    className="p-3 bg-slate-500/10 text-slate-400 rounded-xl text-xs font-medium text-center hover:bg-slate-500/20 transition-colors border border-slate-500/10"
+                    className="p-3 bg-slate-500/10 text-slate-400 rounded-xl text-xs font-medium text-center hover:bg-slate-500/20 border border-slate-500/10"
                   >
                     Admin Panel
                   </Link>

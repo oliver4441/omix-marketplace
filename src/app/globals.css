@@ -12,15 +12,17 @@
 
 html {
   color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
   overflow-x: hidden;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Light theme (default) */
@@ -38,8 +40,13 @@ html.dark body {
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; height: auto; display: block; }
 button { cursor: pointer; font-family: inherit; border: none; background: none; padding: 0; }
-input, textarea, select { font-family: inherit; font-size: inherit; }
+input, textarea, select { font-family: inherit; font-size: 16px; }
 svg { flex-shrink: 0; }
+
+/* Prevent iOS zoom on input focus */
+@media (max-width: 640px) {
+  input, textarea, select { font-size: 16px !important; }
+}
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -79,17 +86,9 @@ html.dark {
   overflow: hidden;
   border: 1px solid var(--border);
   box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 .dark .airbnb-card {
   box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
-}
-.airbnb-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-}
-.dark .airbnb-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
 
 /* ===== AIRBNB INPUT ===== */
@@ -101,10 +100,10 @@ html.dark {
   padding: 10px 14px;
   font-size: 14px;
   line-height: 1.4;
-  transition: border-color 0.15s ease;
   outline: none;
   width: 100%;
   appearance: none;
+  -webkit-appearance: none;
 }
 .airbnb-input:focus { border-color: var(--text-primary); box-shadow: 0 0 0 2px rgba(255,56,92,0.15); }
 .airbnb-input::placeholder { color: var(--text-muted); }
@@ -119,11 +118,11 @@ html.dark {
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.15s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  min-height: 44px;
 }
 .btn-primary:hover { background: #ff385c; }
 .dark .btn-primary { background: #ff385c; }
@@ -142,7 +141,7 @@ html.dark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  min-height: 44px;
 }
 .btn-outline:hover { border-color: var(--text-primary); background: var(--bg-hover); }
 
@@ -162,6 +161,7 @@ html.dark {
   border: 1px solid var(--border);
   white-space: nowrap;
   flex-shrink: 0;
+  min-height: 32px;
 }
 .badge-accent {
   background: rgba(255,56,92,0.1);
@@ -177,7 +177,7 @@ html.dark {
   position: sticky;
   top: 0;
   z-index: 50;
-  transition: background-color 0.2s ease;
+  padding-top: env(safe-area-inset-top);
 }
 
 /* ===== FOOTER ===== */
@@ -185,6 +185,7 @@ html.dark {
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-light);
   color: var(--text-secondary);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* ===== LISTINGS GRID ===== */
@@ -202,13 +203,6 @@ html.dark {
   overflow: hidden;
 }
 
-/* ===== PAGE TRANSITION ===== */
-.page-enter { animation: pageIn 0.3s ease-out; }
-@keyframes pageIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 /* ===== THEME TOGGLE ===== */
 .theme-toggle {
   width: 48px;
@@ -218,11 +212,9 @@ html.dark {
   border: none;
   cursor: pointer;
   position: relative;
-  transition: background 0.3s ease;
   padding: 0;
   flex-shrink: 0;
 }
-.theme-toggle:hover { background: var(--text-muted); }
 .theme-toggle .toggle-circle {
   width: 22px;
   height: 22px;
@@ -231,7 +223,6 @@ html.dark {
   position: absolute;
   top: 2px;
   left: 2px;
-  transition: transform 0.3s ease, background 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,6 +240,6 @@ html.dark {
 @media (max-width: 640px) {
   .tile-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
 }

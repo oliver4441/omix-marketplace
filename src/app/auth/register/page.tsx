@@ -14,7 +14,7 @@ export default async function RegisterPage({
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[80dvh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-[var(--text-primary)]">Create Account</h1>
@@ -51,7 +51,7 @@ export default async function RegisterPage({
 
         <p className="text-center text-sm text-[var(--text-secondary)] mt-6">
           Already have an account?{" "}
-          <a href="/auth/login" className="text-[#ff385c] hover:text-[#e00b41] font-medium transition-colors">Sign in</a>
+          <a href="/auth/login" className="text-[#ff385c] hover:text-[#e00b41] font-medium">Sign in</a>
         </p>
       </div>
     </div>

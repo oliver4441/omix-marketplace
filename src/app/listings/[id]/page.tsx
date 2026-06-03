@@ -140,7 +140,7 @@ export default function ListingDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
           <div className="aspect-[4/3] bg-[var(--bg-secondary)] rounded-[14px] overflow-hidden mb-3 cursor-zoom-in" onClick={() => imageUrl && setShowLightbox(true)}>
-            {imageUrl ? <img src={imageUrl} alt={listing.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" /> : (
+            {imageUrl ? <img src={imageUrl} alt={listing.title} className="w-full h-full object-cover" /> : (
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <svg className="w-12 h-12 text-[#ddd]" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" /></svg>
                 <span className="text-xs text-[#c1c1c1] mt-2">No photo</span>

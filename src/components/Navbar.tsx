@@ -68,26 +68,26 @@ export default function Navbar() {
     router.refresh();
   }
 
-  const navItem = "px-3 py-2 text-sm font-medium rounded-lg transition-colors";
+  const navItem = "px-3 py-2.5 text-sm font-medium rounded-lg";
   const navOff = "hover:opacity-80";
 
   return (
     <nav className="nav-airbnb">
-      <div className="max-w-7xl mx-auto px-4 h-[72px] flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <Image src="/logo.jpg" alt="Omix" width={36} height={36} className="rounded-lg" />
-            <span className="text-xl font-bold hidden sm:inline" style={{ color: "var(--text-primary)" }}>Omix</span>
+      <div className="max-w-7xl mx-auto px-4 h-[60px] flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/logo.jpg" alt="Omix" width={32} height={32} className="rounded-lg" />
+            <span className="text-lg font-bold hidden sm:inline" style={{ color: "var(--text-primary)" }}>Omix</span>
           </Link>
           {user && (
             <div className="hidden md:flex items-center gap-1">
               <Link href="/cart" className={`relative ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>
                 Cart
-                {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-[#ff385c] text-[var(--text-primary)] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{cartCount > 9 ? "9+" : cartCount}</span>}
+                {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-[#ff385c] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{cartCount > 9 ? "9+" : cartCount}</span>}
               </Link>
               <Link href="/messages" className={`relative ${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>
                 Messages
-                {unreadCount > 0 && <span className="absolute -top-1 -right-1 bg-[#ff385c] text-[var(--text-primary)] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{unreadCount > 9 ? "9+" : unreadCount}</span>}
+                {unreadCount > 0 && <span className="absolute -top-1 -right-1 bg-[#ff385c] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{unreadCount > 9 ? "9+" : unreadCount}</span>}
               </Link>
               <Link href="/orders" className={`${navItem} ${navOff}`} style={{ color: "var(--text-secondary)" }}>Orders</Link>
             </div>
@@ -95,7 +95,6 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          {/* Theme toggle */}
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
             <div className="toggle-circle">
               <span className="toggle-icon">{theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"}</span>
@@ -121,7 +120,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex md:hidden items-center gap-2">
-          {/* Mobile theme toggle */}
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
             <div className="toggle-circle">
               <span className="toggle-icon">{theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"}</span>

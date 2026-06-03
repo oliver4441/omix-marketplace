@@ -110,15 +110,15 @@ export default function ListingsSection() {
           <div className="bg-[var(--bg-card)] rounded-[14px] border border-[var(--border-light)] p-4 mb-4 sticky top-[88px]">
             <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Categories</h3>
             <div className="space-y-0.5">
-              <Link href="/" className="block px-3 py-2 rounded-lg text-sm transition-colors bg-[rgba(255,56,92,0.06)] text-[#ff385c] font-medium">All Categories</Link>
-              {CATEGORIES.map((c) => <Link key={c.slug} href={`/?category=${c.slug}`} className="block px-3 py-2 rounded-lg text-sm transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">{c.name}</Link>)}
+              <Link href="/" className="block px-3 py-2 rounded-lg text-sm bg-[rgba(255,56,92,0.06)] text-[#ff385c] font-medium">All Categories</Link>
+              {CATEGORIES.map((c) => <Link key={c.slug} href={`/?category=${c.slug}`} className="block px-3 py-2 rounded-lg text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">{c.name}</Link>)}
             </div>
           </div>
           <div className="bg-[var(--bg-card)] rounded-[14px] border border-[var(--border-light)] p-4 sticky top-[340px]">
             <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Condition</h3>
             <div className="space-y-0.5">
-              <Link href="/" className="block px-3 py-2 rounded-lg text-sm transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">All Conditions</Link>
-              {CONDITIONS.map((c) => <Link key={c.value} href={`/?condition=${c.value}`} className="block px-3 py-2 rounded-lg text-sm transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">{c.label}</Link>)}
+              <Link href="/" className="block px-3 py-2 rounded-lg text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">All Conditions</Link>
+              {CONDITIONS.map((c) => <Link key={c.value} href={`/?condition=${c.value}`} className="block px-3 py-2 rounded-lg text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]">{c.label}</Link>)}
             </div>
           </div>
         </aside>
@@ -157,7 +157,7 @@ export default function ListingsSection() {
               {pages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-8">
                   {page > 1 && <Link href={`/?page=${page - 1}${fs ? `&${fs}` : ""}`} className="btn-outline text-xs py-1.5 px-4">Previous</Link>}
-                  {Array.from({ length: Math.min(pages, 5) }, (_, i) => { const p = Math.max(1, Math.min(page - 2, pages - 4)) + i; return (p > pages || p < 1) ? null : <Link key={p} href={`/?page=${p}${fs ? `&${fs}` : ""}`} className={`w-9 h-9 rounded-lg text-sm flex items-center justify-center transition-colors ${p === page ? "bg-[#222222] text-[var(--text-primary)] font-semibold" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] border border-[var(--border-light)]"}`}>{p}</Link>; })}
+                  {Array.from({ length: Math.min(pages, 5) }, (_, i) => { const p = Math.max(1, Math.min(page - 2, pages - 4)) + i; return (p > pages || p < 1) ? null : <Link key={p} href={`/?page=${p}${fs ? `&${fs}` : ""}`} className={`w-9 h-9 rounded-lg text-sm flex items-center justify-center ${p === page ? "bg-[#222222] text-[var(--text-primary)] font-semibold" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] border border-[var(--border-light)]"}`}>{p}</Link>; })}
                   {page < pages && <Link href={`/?page=${page + 1}${fs ? `&${fs}` : ""}`} className="btn-outline text-xs py-1.5 px-4">Next</Link>}
                 </div>
               )}

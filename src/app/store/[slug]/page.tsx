@@ -229,7 +229,7 @@ export default function SellerStorePage() {
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-colors ${
+            className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium ${
               tab === t ? "bg-white/15 text-[var(--text-primary)] shadow-sm" : "text-slate-400 hover:text-slate-300"
             }`}
           >
@@ -245,7 +245,7 @@ export default function SellerStorePage() {
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {listings.map((listing) => (
                 <Link key={listing.id} href={`/listings/${listing.id}`}>
-                  <div className="glass-card overflow-hidden hover:border-emerald-500/30 transition-colors cursor-pointer h-full">
+                  <div className="glass-card overflow-hidden hover:border-emerald-500/30 cursor-pointer h-full">
                     <div className="aspect-square var(--bg-hover) relative">
                       {listing.images?.length > 0 ? (
                         <img

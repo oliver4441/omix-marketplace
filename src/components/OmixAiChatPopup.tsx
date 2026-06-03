@@ -202,9 +202,7 @@ export default function OmixAiChatPopup({
           alignItems: "center",
           justifyContent: "center",
           cursor: "pointer",
-          zIndex: 9998,
-          transition: "all 0.3s ease",
-          animation: showGreeting ? "omix-ai-pulse 2s infinite" : "none",
+          zIndex: 9998,: "all 0.3s ease",
         }}
         title={`Ask Omix-AI (${role === "seller" ? "Seller" : "Support"})`}
       >
@@ -230,8 +228,7 @@ export default function OmixAiChatPopup({
               fontSize: "13px",
               color: "#e2e8f0",
               whiteSpace: "nowrap",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-              animation: "omix-ai-tooltip 0.3s ease",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.4)",,
             }}
           >
             Need help? Ask me
@@ -272,8 +269,7 @@ export default function OmixAiChatPopup({
             display: "flex",
             flexDirection: "column",
             zIndex: 9999,
-            overflow: "hidden",
-            animation: "omix-ai-slideUp 0.3s ease",
+            overflow: "hidden",,
           }}
         >
           {/* Header */}
@@ -345,8 +341,7 @@ export default function OmixAiChatPopup({
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  transition: "all 0.2s",
+                  justifyContent: "center",: "all 0.2s",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = "rgba(239,68,68,0.15)";
@@ -429,8 +424,7 @@ export default function OmixAiChatPopup({
                   display: "flex",
                   flexDirection: "column",
                   alignItems: msg.role === "user" ? "flex-end" : "flex-start",
-                  gap: "4px",
-                  animation: "omix-ai-fadeIn 0.2s ease",
+                  gap: "4px",,
                 }}
               >
                 {msg.role === "assistant" && (
@@ -484,7 +478,6 @@ export default function OmixAiChatPopup({
                             borderRadius: "50%",
                             background: roleColor,
                             opacity: 0.4,
-                            animation: `omix-ai-dotPulse 1.4s ease-in-out ${i * 0.2}s infinite`,
                           }}
                         />
                       ))}
@@ -500,8 +493,7 @@ export default function OmixAiChatPopup({
                             height: "14px",
                             background: roleColor,
                             marginLeft: "3px",
-                            verticalAlign: "middle",
-                            animation: "omix-ai-blink 0.8s infinite",
+                            verticalAlign: "middle",,
                           }}
                         />
                       )}
@@ -543,8 +535,7 @@ export default function OmixAiChatPopup({
                 background: "rgba(255,255,255,0.04)",
                 borderRadius: "14px",
                 border: "1px solid rgba(255,255,255,0.08)",
-                padding: "6px 6px 6px 14px",
-                transition: "border-color 0.2s",
+                padding: "6px 6px 6px 14px",: "border-color 0.2s",
               }}
             >
               <input
@@ -585,8 +576,7 @@ export default function OmixAiChatPopup({
                   cursor: input.trim() && !isLoading ? "pointer" : "not-allowed",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  transition: "all 0.2s",
+                  justifyContent: "center",: "all 0.2s",
                   flexShrink: 0,
                 }}
               >
@@ -609,73 +599,7 @@ export default function OmixAiChatPopup({
         </div>
       )}
 
-      {/* Global styles for animations */}
-      <style jsx global>{`
-        @keyframes omix-ai-slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px) scale(0.96);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-        @keyframes omix-ai-fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(6px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes omix-ai-pulse {
-          0%,
-          100% {
-            box-shadow: 0 0 20px ${roleColor}44, 0 4px 24px rgba(0, 0, 0, 0.5);
-          }
-          50% {
-            box-shadow: 0 0 30px ${roleColor}66, 0 4px 32px rgba(0, 0, 0, 0.6);
-          }
-        }
-        @keyframes omix-ai-tooltip {
-          from {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes omix-ai-blink {
-          0%,
-          100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0;
-          }
-        }
-        .omix-ai-btn:hover {
-          transform: scale(1.08);
-          box-shadow: 0 0 30px ${roleColor}66, 0 6px 32px rgba(0, 0, 0, 0.6) !important;
-        }
-        @keyframes omix-ai-dotPulse {
-          0%,
-          80%,
-          100% {
-            transform: scale(0.6);
-            opacity: 0.3;
-          }
-          40% {
-            transform: scale(1);
-            opacity: 0.8;
-          }
-        }
-      `}</style>
+      
     </>
   );
 }

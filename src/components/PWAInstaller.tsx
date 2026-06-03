@@ -55,7 +55,7 @@ export default function PWAInstaller() {
   if (installed || !showBanner) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50 bg-emerald-600 text-[var(--text-primary)] rounded-2xl shadow-2xl p-4 animate-slide-up">
+    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50 bg-emerald-600 text-[var(--text-primary)] rounded-2xl shadow-2xl p-4 ">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-xl shrink-0">
           
@@ -70,13 +70,13 @@ export default function PWAInstaller() {
       <div className="flex gap-2 mt-3">
         <button
           onClick={handleInstall}
-          className="flex-1 py-2 glass-card text-emerald-400 rounded-lg text-sm font-medium hover:bg-emerald-50 transition"
+          className="flex-1 py-2 glass-card text-emerald-400 rounded-lg text-sm font-medium hover:bg-emerald-50"
         >
           Install Now
         </button>
         <button
           onClick={() => setShowBanner(false)}
-          className="px-3 py-2 text-emerald-100 text-sm hover:bg-white/10 rounded-lg transition"
+          className="px-3 py-2 text-emerald-100 text-sm hover:bg-white/10 rounded-lg"
         >
           Later
         </button>

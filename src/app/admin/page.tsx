@@ -61,7 +61,7 @@ export default async function AdminPage() {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         {statCards.map((card) => {
           const content = (
-            <div className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-[14px] p-5 transition-all hover:shadow-md" style={{ borderBottom: `3px solid ${card.color}` }}>
+            <div className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-[14px] p-5 hover:shadow-md" style={{ borderBottom: `3px solid ${card.color}` }}>
               <p className="text-sm text-[var(--text-secondary)]">{card.label}</p>
               <p className="text-3xl font-bold mt-1" style={{ color: card.color }}>{card.value}</p>
             </div>
@@ -83,7 +83,7 @@ export default async function AdminPage() {
           </thead>
           <tbody>
             {recentOrders?.map((order) => (
-              <tr key={order.id} className="border-b border-[#f2f2f2] hover:bg-[var(--bg-secondary)] transition-colors">
+              <tr key={order.id} className="border-b border-[#f2f2f2] hover:bg-[var(--bg-secondary)]">
                 <td className="p-3 text-[var(--text-primary)]">{((order.listings as unknown as { title: string }[])?.[0]?.title) ?? "—"}</td>
                 <td className="p-3 text-[var(--text-primary)]">{((order.profiles as unknown as { full_name: string }[])?.[0]?.full_name) ?? "—"}</td>
                 <td className="p-3 text-[var(--text-primary)]">{formatPrice(order.amount_cents)}</td>

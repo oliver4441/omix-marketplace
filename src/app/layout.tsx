@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -14,6 +14,17 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: "Omix Marketplace — Buy & Sell in Kericho",
   description: "The leading P2P marketplace in Kericho, Kenya.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0f1a" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

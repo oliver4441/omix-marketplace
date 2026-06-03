@@ -14,7 +14,7 @@ export default async function LoginPage({
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[80dvh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-[var(--text-primary)]">Welcome back</h1>
@@ -46,13 +46,13 @@ export default async function LoginPage({
             <button type="submit" className="btn-primary w-full">Sign In</button>
           </form>
           <div className="mt-4 text-center">
-            <a href="/auth/forgot-password" className="text-sm text-[var(--text-secondary)] hover:text-[#ff385c] transition-colors">Forgot password?</a>
+            <a href="/auth/forgot-password" className="text-sm text-[var(--text-secondary)] hover:text-[#ff385c]">Forgot password?</a>
           </div>
         </div>
 
         <p className="text-center text-sm text-[var(--text-secondary)] mt-6">
           New to Omix?{" "}
-          <a href="/auth/register" className="text-[#ff385c] hover:text-[#e00b41] font-medium transition-colors">Create an account</a>
+          <a href="/auth/register" className="text-[#ff385c] hover:text-[#e00b41] font-medium">Create an account</a>
         </p>
       </div>
     </div>

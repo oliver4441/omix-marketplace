@@ -261,7 +261,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
               <button
                 key={convo.id}
                 onClick={() => setActiveConversation(convo.id)}
-                className={`w-full p-3 flex items-start gap-3 text-left border-b border-white/5 transition-colors ${
+                className={`w-full p-3 flex items-start gap-3 text-left border-b border-white/5 ${
                   activeConversation === convo.id ? "bg-emerald-500/10" : "hover:var(--bg-hover)"
                 }`}
               >
@@ -314,7 +314,7 @@ export default function MessagesPage({ params }: { params: Promise<{ conversatio
                 {conversations.find((c) => c.id === activeConversation)?.listing_id && (
                   <Link
                     href={`/listings/${conversations.find((c) => c.id === activeConversation)?.listing_id}`}
-                    className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+                    className="text-xs text-emerald-400 hover:text-emerald-300"
                   >
                     View Listing
                   </Link>

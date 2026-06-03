@@ -131,21 +131,21 @@ export default function AiAssistantPage() {
   return (
     <div className="max-w-6xl mx-auto h-[calc(100vh-4rem)] flex">
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? "w-64" : "w-0"} transition-all duration-200 border-r border-white/[0.06] overflow-hidden flex flex-col shrink-0`} style={{ background: "rgba(10,15,26,0.5)" }}>
+      <div className={`${sidebarOpen ? "w-64" : "w-0"} border-r border-white/[0.06] overflow-hidden flex flex-col shrink-0`} style={{ background: "rgba(10,15,26,0.5)" }}>
         <div className="p-4 border-b border-white/[0.06]">
           <button onClick={() => handleNewChat("")} className="glass-btn w-full text-sm">New Chat</button>
         </div>
         <div className="flex-1 overflow-y-auto no-scrollbar">
           {conversations.map((conv) => (
             <div key={conv.id}
-              className={`group flex items-center justify-between px-3 py-2.5 cursor-pointer transition-colors ${activeConv === conv.id ? "bg-emerald-500/10" : "hover:bg-white/[0.03]"}`}
+              className={`group flex items-center justify-between px-3 py-2.5 cursor-pointer ${activeConv === conv.id ? "bg-emerald-500/10" : "hover:bg-white/[0.03]"}`}
               onClick={() => setActiveConv(conv.id)}>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-slate-500 truncate">{conv.title}</p>
                 <p className="text-[11px] text-slate-300">{new Date(conv.updated_at).toLocaleDateString("en-KE", { month: "short", day: "numeric" })}</p>
               </div>
               <button onClick={(e) => { e.stopPropagation(); handleDelete(conv.id); }}
-                className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-400 p-1 transition-colors">
+                className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-400 p-1">
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -182,9 +182,9 @@ export default function AiAssistantPage() {
                 <div className="flex justify-start">
                   <div className="glass-card rounded-2xl rounded-bl-sm px-4 py-3">
                     <div className="flex gap-1.5">
-                      <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                      <span className="w-2 h-2 bg-gray-500 rounded-full"  />
+                      <span className="w-2 h-2 bg-gray-500 rounded-full"  />
+                      <span className="w-2 h-2 bg-gray-500 rounded-full"  />
                     </div>
                   </div>
                 </div>
@@ -214,7 +214,7 @@ export default function AiAssistantPage() {
               <div className="grid grid-cols-2 gap-3">
                 {SUGGESTED_PROMPTS.map((prompt) => (
                   <button key={prompt.text} onClick={() => handleNewChat(prompt.text)}
-                    className="glass-card p-3 text-left text-sm text-slate-500 hover:text-emerald-400 transition-colors">
+                    className="glass-card p-3 text-left text-sm text-slate-500 hover:text-emerald-400">
                     {prompt.text}
                   </button>
                 ))}

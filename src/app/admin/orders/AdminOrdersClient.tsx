@@ -55,7 +55,7 @@ function OrderRowItem({ order }: { order: OrderRow }) {
 
   return (
     <>
-      <tr key={order.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+      <tr key={order.id} className="border-b border-white/5 hover:bg-white/[0.02]">
         <td className="p-3 font-mono text-xs text-slate-400">{order.id.slice(0, 8)}</td>
         <td className="p-3 text-slate-300">{(Array.isArray(order.listings) ? order.listings[0]?.title : order.listings?.title) ?? "—"}</td>
         <td className="p-3 text-slate-300">{(Array.isArray(order.profiles) ? order.profiles[0]?.full_name : order.profiles?.full_name) ?? "—"}</td>

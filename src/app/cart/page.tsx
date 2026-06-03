@@ -80,7 +80,7 @@ export default async function CartPage() {
                   {item.images?.[0] ? <Image src={item.images[0]} alt={item.title} width={96} height={96} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[#c1c1c1] text-sm">No img</div>}
                 </Link>
                 <div className="flex-1 min-w-0">
-                  <Link href={`/listings/${item.listing_id}`}><h3 className="font-medium text-sm hover:text-[#ff385c] transition-colors line-clamp-2 text-[var(--text-primary)]">{item.title}</h3></Link>
+                  <Link href={`/listings/${item.listing_id}`}><h3 className="font-medium text-sm hover:text-[#ff385c] line-clamp-2 text-[var(--text-primary)]">{item.title}</h3></Link>
                   <div className="flex items-center gap-2 mt-1 flex-wrap">
                     <span className="text-xs text-[var(--text-muted)]">{item.condition}</span>
                     <span className="text-xs text-[#c1c1c1]">|</span>

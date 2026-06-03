@@ -59,7 +59,7 @@ function UserRowItem({ user }: { user: UserRow }) {
 
   return (
     <>
-      <tr className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+      <tr className="border-b border-white/5 hover:bg-white/[0.02]">
         <td className="p-3 font-medium text-slate-200">{user.full_name || "—"}</td>
         <td className="p-3 text-slate-400">{user.email}</td>
         <td className="p-3 text-slate-400">{user.phone || "—"}</td>

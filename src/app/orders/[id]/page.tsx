@@ -163,7 +163,7 @@ export default async function OrderDetailPage({
                 )}
               </Link>
               <div>
-                <Link href={`/listings/${listing?.id}`} className="font-medium hover:text-emerald-400 transition">
+                <Link href={`/listings/${listing?.id}`} className="font-medium hover:text-emerald-400">
                   {listing?.title}
                 </Link>
                 <p className="text-sm text-slate-400 mt-0.5">{listing?.condition} - {listing?.location_city}</p>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Omix Systems - Get a free website audit or start your project today.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Contact — Omix Systems</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 48px;
+    }
+    .contact-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px;
+    }
+    .form-group { margin-bottom: 24px; }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .form-group textarea { min-height: 140px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    
+    .contact-info { padding: 20px 0; }
+    .contact-info h3 { font-size: 1.5rem; margin-bottom: 24px; }
+    .contact-item {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 28px;
+      align-items: flex-start;
+    }
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(37, 99, 235, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .contact-item h4 { margin-bottom: 4px; }
+    .contact-item p { color: var(--text-muted); font-size: 0.9375rem; }
+    
+    .response-time {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin-top: 40px;
+    }
+    .response-time h4 { margin-bottom: 12px; }
+    .response-time p { color: var(--text-muted); }
+    .response-time strong { color: var(--accent); }
+    
+    .whatsapp-cta {
+      background: #25D366;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .whatsapp-cta .icon { font-size: 2rem; }
+    .whatsapp-cta h4 { color: #fff; margin-bottom: 4px; }
+    .whatsapp-cta p { color: rgba(255,255,255,0.8); font-size: 0.875rem; }
+    .whatsapp-cta a {
+      background: #fff;
+      color: #25D366;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    
+    .project-types {
+      margin-top: 40px;
+    }
+    .project-types h4 { margin-bottom: 16px; }
+    .project-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .project-option {
+      padding: 8px 16px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .project-option:hover, .project-option.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .whatsapp-cta { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="favicon.svg" alt="Omix Systems" width="36" height="36">
+      Omix <span>Systems</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html" class="active">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+    <button class="mobile-menu" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="inbox.html">Inbox</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html" class="active">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('mobileNav').classList.toggle('active');
+      document.getElementById('mobileOverlay').classList.toggle('active');
+      document.body.style.overflow = document.getElementById('mobileNav').classList.contains('active') ? 'hidden' : '';
+    }
+  </script>
+
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <h1>Let's Talk</h1>
+        <p>Ready to get your business online? Get a free consultation and quote within 24 hours.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-form">
+            <form id="contactForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Your Name</label>
+                  <input type="text" id="name" name="name" placeholder="John Kamau" required>
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" placeholder="0712 345 678" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="john@company.co.ke" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="business">Business Name</label>
+                <input type="text" id="business" name="business" placeholder="Kamau & Sons Enterprises">
+              </div>
+              
+              <div class="form-group">
+                <label for="service">Service Interested In</label>
+                <select id="service" name="service">
+                  <option value="">Select a service...</option>
+                  <option value="landing">Landing Page (From KES 15,000)</option>
+                  <option value="business">Business Website (From KES 35,000)</option>
+                  <option value="ecommerce">E-Commerce Store (From KES 75,000)</option>
+                  <option value="audit">Free Website Audit</option>
+                  <option value="other">Other / Not Sure</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="message">Tell Us About Your Project</label>
+                <textarea id="message" name="message" placeholder="Describe your business, what you need, and any specific requirements..."></textarea>
+              </div>
+
+              <div class="project-types">
+                <h4>Budget Range (Optional)</h4>
+                <div class="project-options">
+                  <span class="project-option">Under KES 20K</span>
+                  <span class="project-option">KES 20K - 50K</span>
+                  <span class="project-option">KES 50K - 100K</span>
+                  <span class="project-option">KES 100K+</span>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 24px;">
+                Send Message
+              </button>
+            </form>
+          </div>
+          
+          <div class="contact-info">
+            <h3>Get In Touch</h3>
+            
+            <div class="contact-item">
+              <div class="contact-icon">📧</div>
+              <div>
+                <h4>Email</h4>
+                <p>omixsystems@gmail.com</p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <div class="contact-icon">💬</div>
+              <div>
+                <h4>WhatsApp</h4>
+                <p>+254 700 123 456</p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <div class="contact-icon">🌐</div>
+              <div>
+                <h4>Website</h4>
+                <p>omixsystems.store</p>
+              </div>
+            </div>
+            
+            <div class="contact-item">
+              <div class="contact-icon">⏰</div>
+              <div>
+                <h4>Working Hours</h4>
+                <p>Monday - Saturday<br>9:00 AM - 6:00 PM EAT</p>
+              </div>
+            </div>
+            
+            <div class="response-time">
+              <h4>⚡ Typical Response Time</h4>
+              <p>We respond to all inquiries within <strong>24 hours</strong>, usually much faster during business hours.</p>
+            </div>
+            
+            <div class="whatsapp-cta">
+              <div class="icon">💬</div>
+              <div>
+                <h4>Prefer WhatsApp?</h4>
+                <p>Chat with us directly for quick answers</p>
+              </div>
+              <a href="https://wa.me/254732649442" target="_blank">Chat Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <h2>Not Ready to Talk Yet?</h2>
+        <p>Download our free guide: "5 Signs Your Business Needs a Website (Even If You Have Google Maps)"</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-primary btn-accent">Download Free Guide</a>
+          <a href="portfolio.html" class="btn btn-outline">View Our Work</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Omix Systems — Online Map Integration eXperts | Nairobi, Kenya &nbsp;·&nbsp; <a href="inbox.html" style="color: #a78bfa;">Omix Inbox</a></p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+      this.reset();
+    });
+    
+    document.querySelectorAll('.project-option').forEach(option => {
+      option.addEventListener('click', function() {
+        this.classList.toggle('selected');
+      });
+    });
+  </script>
+</body>
+</html>

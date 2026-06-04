@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Omix Systems Services - Web development, Google Maps optimization, WhatsApp integration for Kenyan businesses.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Services — Omix Systems</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      transition: all 0.3s;
+    }
+    .service-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+    .service-icon {
+      width: 72px;
+      height: 72px;
+      background: rgba(37, 99, 235, 0.1);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 24px;
+    }
+    .service-card h3 { font-size: 1.5rem; margin-bottom: 12px; }
+    .service-card p { color: var(--text-muted); margin-bottom: 24px; line-height: 1.7; }
+    .service-features { list-style: none; margin-bottom: 24px; }
+    .service-features li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .service-features li::before { content: '✓'; color: var(--success); font-weight: bold; }
+    .service-price { font-size: 2rem; font-weight: 700; color: var(--accent); margin-bottom: 20px; }
+    .service-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+    
+    .process-list {
+      counter-reset: step;
+      list-style: none;
+    }
+    .process-list li {
+      display: flex;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .process-list li::before {
+      counter-increment: step;
+      content: counter(step);
+      width: 48px;
+      height: 48px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .process-content h4 { margin-bottom: 8px; }
+    .process-content p { color: var(--text-muted); }
+    
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .stack-item {
+      text-align: center;
+      padding: 32px 16px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .stack-item .icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .stack-item h4 { margin-bottom: 8px; }
+    .stack-item p { color: var(--text-muted); font-size: 0.875rem; }
+    
+    @media (max-width: 768px) {
+      .stack-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="favicon.svg" alt="Omix Systems" width="36" height="36">
+      Omix <span>Systems</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html" class="active">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+    <button class="mobile-menu" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="inbox.html">Inbox</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('mobileNav').classList.toggle('active');
+      document.getElementById('mobileOverlay').classList.toggle('active');
+      document.body.style.overflow = document.getElementById('mobileNav').classList.contains('active') ? 'hidden' : '';
+    }
+  </script>
+
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <h1>Our Services</h1>
+        <p>Comprehensive web solutions designed for Kenyan businesses. From landing pages to full e-commerce platforms.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="grid-3">
+          <div class="service-card">
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="var(--primary)"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            </div>
+            <h3>Landing Pages</h3>
+            <p>Single-page websites perfect for service-based businesses. Fast-loading, mobile-optimized, and designed to convert visitors into customers.</p>
+            <ul class="service-features">
+              <li>Mobile responsive design</li>
+              <li>WhatsApp integration</li>
+              <li>Google Maps embed</li>
+              <li>Contact forms</li>
+              <li>SEO optimization</li>
+            </ul>
+            <div class="service-price">From KES 15,000 <span>/starting</span></div>
+            <a href="contact.html" class="btn btn-primary">Get Quote</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="var(--primary)"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+            </div>
+            <h3>Business Websites</h3>
+            <p>Multi-page websites with services, about, gallery, and contact sections. Perfect for established businesses looking to build credibility.</p>
+            <ul class="service-features">
+              <li>Up to 7 pages</li>
+              <li>Content management</li>
+              <li>M-Pesa integration</li>
+              <li>Booking systems</li>
+              <li>Analytics dashboard</li>
+            </ul>
+            <div class="service-price">From KES 35,000 <span>/starting</span></div>
+            <a href="contact.html" class="btn btn-primary">Get Quote</a>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">🛒</div>
+            <h3>E-Commerce Stores</h3>
+            <p>Full online stores with product catalogs, cart, checkout, and M-Pesa/STK Push payments. Start selling online in days.</p>
+            <ul class="service-features">
+              <li>Unlimited products</li>
+              <li>M-Pesa & card payments</li>
+              <li>Order management</li>
+              <li>Inventory tracking</li>
+              <li>Delivery integration</li>
+            </ul>
+            <div class="service-price">From KES 75,000 <span>/starting</span></div>
+            <a href="contact.html" class="btn btn-primary">Get Quote</a>
+          </div>
+
+          <div class="service-card" style="border-color: rgba(109, 40, 217, 0.3);">
+            <div class="service-icon" style="background: rgba(109, 40, 217, 0.1);">
+              <svg viewBox="0 0 100 100" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" stroke="#6D28D9" stroke-width="8" />
+                <path d="M30 40L50 55L70 40" stroke="#6D28D9" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+                <rect x="25" y="35" width="50" height="35" rx="4" stroke="#6D28D9" stroke-width="4" />
+              </svg>
+            </div>
+            <h3 style="color: #a78bfa;">Omix Inbox</h3>
+            <p>AI-powered email management for Kenyan SMEs. Never miss a lead again. Classifies, drafts replies, and escalates high-value opportunities instantly.</p>
+            <ul class="service-features">
+              <li>AI email classification</li>
+              <li>Auto-reply engine</li>
+              <li>Telegram lead alerts</li>
+              <li>Weekly digest reports</li>
+              <li>Multi-mailbox support</li>
+            </ul>
+            <div class="service-price">From KES 3,000 <span>/month</span></div>
+            <a href="inbox.html" class="btn btn-primary" style="background: #6D28D9;">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--bg-card); padding: 80px 0;">
+      <div class="container">
+        <h2 class="section-title">Add-On Services</h2>
+        <p class="section-subtitle">Enhance your website with these powerful features.</p>
+        
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="margin-bottom: 12px;">📍 Google Business Setup</h3>
+            <p style="color: var(--text-muted); margin-bottom: 16px;">Complete setup and optimization of your Google Business Profile to maximize local visibility.</p>
+            <div style="font-weight: 700; color: var(--accent);">KES 5,000</div>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom: 12px;">💬 WhatsApp Business API</h3>
+            <p style="color: var(--text-muted); margin-bottom: 16px;">Automated responses, quick replies, and lead collection through WhatsApp.</p>
+            <div style="font-weight: 700; color: var(--accent);">KES 8,000</div>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom: 12px;">📊 SEO Package</h3>
+            <p style="color: var(--text-muted); margin-bottom: 16px;">On-page SEO, meta tags, sitemap, and local SEO optimization for Google.</p>
+            <div style="font-weight: 700; color: var(--accent);">KES 10,000</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Our Process</h2>
+        <p class="section-subtitle">From idea to launch in as little as 24 hours.</p>
+        
+        <ul class="process-list">
+          <li>
+            <div class="process-content">
+              <h4>Discovery Call</h4>
+              <p>We discuss your business, goals, and requirements. You'll get a clear scope and quote within 24 hours.</p>
+            </div>
+          </li>
+          <li>
+            <div class="process-content">
+              <h4>Design & Development</h4>
+              <p>We build your site with your feedback at each stage. Most projects are ready within 3-5 business days.</p>
+            </div>
+          </li>
+          <li>
+            <div class="process-content">
+              <h4>Review & Refine</h4>
+              <p>You review the site and request any changes. We fine-tune until you're 100% satisfied.</p>
+            </div>
+          </li>
+          <li>
+            <div class="process-content">
+              <h4>Launch & Support</h4>
+              <p>We deploy your site, optimize for search, and provide 30 days of free support.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Technology Stack</h2>
+        <p class="section-subtitle">We use modern, reliable technologies for fast and secure websites.</p>
+        
+        <div class="stack-grid">
+          <div class="stack-item">
+            <div class="icon">⚛️</div>
+            <h4>React / Next.js</h4>
+            <p>Modern frontend</p>
+          </div>
+          <div class="stack-item">
+            <div class="icon">🔥</div>
+            <h4>Firebase</h4>
+            <p>Database & Auth</p>
+          </div>
+          <div class="stack-item">
+            <div class="icon">💾</div>
+            <h4>Vercel</h4>
+            <p>Fast hosting</p>
+          </div>
+          <div class="stack-item">
+            <div class="icon">📱</div>
+            <h4>M-Pesa API</h4>
+            <p>Payments</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to Get Started?</h2>
+        <p>Tell us about your project and we'll get back to you within 24 hours.</p>
+        <div class="cta-buttons">
+          <a href="contact.html" class="btn btn-primary btn-accent">Start Your Project</a>
+          <a href="pricing.html" class="btn btn-outline">View Pricing</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Omix Systems — Online Map Integration eXperts | Nairobi, Kenya &nbsp;·&nbsp; <a href="inbox.html" style="color: #a78bfa;">Omix Inbox</a></p>
+    </div>
+  </footer>
+</body>
+</html>

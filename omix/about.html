@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Omix Systems - Online Map Integration eXperts. Professional web development for Kenyan businesses.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>About — Omix Systems</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .about-image {
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .about-image img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+    .about-content h2 { font-size: 2rem; margin-bottom: 20px; }
+    .about-content p { color: var(--text-muted); margin-bottom: 16px; line-height: 1.8; }
+    
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .value-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .value-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .value-card h3 { margin-bottom: 8px; }
+    .value-card p { color: var(--text-muted); font-size: 0.9375rem; }
+    
+    .team-section { margin-top: 80px; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+    .team-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+    }
+    .team-avatar {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .team-card h3 { margin-bottom: 4px; }
+    .team-role { color: var(--primary); font-size: 0.875rem; margin-bottom: 16px; }
+    .team-card p { color: var(--text-muted); font-size: 0.875rem; }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 48px;
+      margin: 80px 0;
+      border: 1px solid var(--border);
+    }
+    .stat-item { text-align: center; }
+    .stat-number { font-size: 3rem; font-weight: 700; color: var(--accent); }
+    .stat-text { color: var(--text-muted); margin-top: 8px; }
+    
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .values-grid, .team-grid, .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="favicon.svg" alt="Omix Systems" width="36" height="36">
+      Omix <span>Systems</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="about.html" class="active">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+    <button class="mobile-menu" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="inbox.html">Inbox</a>
+    <a href="about.html" class="active">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('mobileNav').classList.toggle('active');
+      document.getElementById('mobileOverlay').classList.toggle('active');
+      document.body.style.overflow = document.getElementById('mobileNav').classList.contains('active') ? 'hidden' : '';
+    }
+  </script>
+
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <h1>About Omix Systems</h1>
+        <p>We're not just web developers — we're your digital growth partners.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-content">
+            <h2>📍 Online Map Integration eXperts</h2>
+            <p>Omix Systems was founded with a simple observation: In Kenya, businesses are discoverable on Google Maps but invisible on the web. We bridge that gap.</p>
+            <p>We specialize in creating professional websites that work as hard as our clients do — fast-loading, mobile-first, and designed to convert visitors into customers.</p>
+            <p>Our name "Omix" stands for <strong>Optimal Modular Intelligent X-platforms</strong>. We build flexible, scalable web solutions that grow with your business.</p>
+            <p>Based in Nairobi, we understand the unique challenges Kenyan businesses face: M-Pesa payments, mobile-first users, and the need for fast, affordable solutions.</p>
+          </div>
+          <div class="about-image">
+            <img src="images/about-office.jpg" alt="Omix Systems workspace">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Why Choose Us</h2>
+        <p class="section-subtitle">We're not the biggest agency, but we might be the right fit for you.</p>
+        
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon">⚡</div>
+            <h3>Speed</h3>
+            <p>Most websites delivered in 3-7 days. We know your time matters and we respect it.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">💯</div>
+            <h3>Quality</h3>
+            <p>Every pixel matters. We obsess over fast load times, clean code, and beautiful design.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">💬</div>
+            <h3>Communication</h3>
+            <p>You'll always know what's happening with your project. No black boxes, no surprises.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🤝</div>
+            <h3>Partnership</h3>
+            <p>We see ourselves as an extension of your team. Your success is our success.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">500+</div>
+          <div class="stat-text">Projects Completed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">98%</div>
+          <div class="stat-text">Client Satisfaction</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">24hrs</div>
+          <div class="stat-text">Avg. Response Time</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">3+</div>
+          <div class="stat-text">Years Experience</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section team-section">
+      <div class="container">
+        <h2 class="section-title">Our Approach</h2>
+        <p class="section-subtitle">Three principles guide everything we build.</p>
+        
+        <div class="values-grid">
+          <div class="value-card" style="border-left: 4px solid var(--primary);">
+            <h3>🎯 Results-Driven</h3>
+            <p>We don't build pretty websites that don't convert. Every decision we make is based on "will this help our client get more customers?"</p>
+          </div>
+          <div class="value-card" style="border-left: 4px solid var(--accent);">
+            <h3>📱 Mobile-First</h3>
+            <p>Over 80% of Kenyan internet users are on mobile. We design for that reality, not desktop users in San Francisco.</p>
+          </div>
+          <div class="value-card" style="border-left: 4px solid var(--success);">
+            <h3>💰 Value-First</h3>
+            <p>Professional websites don't have to cost millions. We deliver enterprise-quality work at prices that make sense for Kenyan businesses.</p>
+          </div>
+          <div class="value-card" style="border-left: 4px solid #8b5cf6;">
+            <h3>🔧 Long-Term Support</h3>
+            <p>We don't disappear after launch. Every project comes with free support and we're always a message away.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to Work Together?</h2>
+        <p>Let's discuss your project and see how we can help your business grow online.</p>
+        <div class="cta-buttons">
+          <a href="contact.html" class="btn btn-primary btn-accent">Start a Conversation</a>
+          <a href="portfolio.html" class="btn btn-outline">View Our Work</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Omix Systems — Online Map Integration eXperts | Nairobi, Kenya &nbsp;·&nbsp; <a href="inbox.html" style="color: #a78bfa;">Omix Inbox</a></p>
+    </div>
+  </footer>
+</body>
+</html>

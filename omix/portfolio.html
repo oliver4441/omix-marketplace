@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Omix Systems Portfolio - Web development projects for Kenyan businesses.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Portfolio — Omix Systems</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .portfolio-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .portfolio-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-8px);
+      box-shadow: var(--shadow);
+    }
+    .portfolio-image {
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+    .portfolio-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .portfolio-card:hover .portfolio-image img { transform: scale(1.05); }
+    .portfolio-image::after {
+      content: 'View Project';
+      position: absolute;
+      inset: 0;
+      background: rgba(37, 99, 235, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .portfolio-card:hover .portfolio-image::after { opacity: 1; }
+    .portfolio-content { padding: 28px; }
+    .portfolio-tag {
+      display: inline-block;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .portfolio-content h3 { font-size: 1.25rem; margin-bottom: 8px; }
+    .portfolio-content p { color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 16px; }
+    .portfolio-stats {
+      display: flex;
+      gap: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .portfolio-stat { font-size: 0.875rem; color: var(--text-muted); }
+    .portfolio-stat strong { color: var(--text); }
+    
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 10px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    
+    .testimonial-highlight {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      margin: 80px 0;
+    }
+    .testimonial-quote {
+      font-size: 1.5rem;
+      font-style: italic;
+      margin-bottom: 24px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .testimonial-author { font-weight: 600; }
+    .testimonial-company { color: var(--text-muted); }
+    
+    @media (max-width: 768px) {
+      .portfolio-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="favicon.svg" alt="Omix Systems" width="36" height="36">
+      Omix <span>Systems</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+    <button class="mobile-menu" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="portfolio.html" class="active">Portfolio</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="inbox.html">Inbox</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('mobileNav').classList.toggle('active');
+      document.getElementById('mobileOverlay').classList.toggle('active');
+      document.body.style.overflow = document.getElementById('mobileNav').classList.contains('active') ? 'hidden' : '';
+    }
+  </script>
+
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <h1>Our Portfolio</h1>
+        <p>Real websites for real Kenyan businesses. Every project is designed to convert visitors into customers.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="portfolio-grid">
+          <div class="portfolio-card">
+            <a href="https://devtrack-ashy.vercel.app/" target="_blank" rel="noopener noreferrer">
+              <div class="portfolio-image"><img src="images/devtrack.jpg" alt="DevTrack project"></div>
+            </a>
+            <div class="portfolio-content">
+              <span class="portfolio-tag">Business</span>
+              <h3><a href="https://devtrack-ashy.vercel.app/" target="_blank" rel="noopener noreferrer">DevTrack</a></h3>
+              <p>Project management dashboard for a Kenyan software agency with client portals.</p>
+              <div class="portfolio-stats">
+                <div class="portfolio-stat"><strong>60%</strong> faster delivery</div>
+                <div class="portfolio-stat"><strong>24hrs</strong> delivery</div>
+              </div>
+              <a href="https://devtrack-ashy.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-block; margin-top: 16px; text-align: center;">Visit Live Site</a>
+            </div>
+          </div>
+
+          <div class="portfolio-card">
+            <a href="https://goldensource-agencies.web.app/" target="_blank" rel="noopener noreferrer">
+              <div class="portfolio-image"><img src="images/devtrack.jpg" alt="GoldenSource Agencies"></div>
+            </a>
+            <div class="portfolio-content">
+              <span class="portfolio-tag">IT Services</span>
+              <h3><a href="https://goldensource-agencies.web.app/" target="_blank" rel="noopener noreferrer">GoldenSource Agencies</a></h3>
+              <p>IT services company with a professional online presence and customer engagement platform.</p>
+              <div class="portfolio-stats">
+                <div class="portfolio-stat"><strong>3x</strong> more inquiries</div>
+                <div class="portfolio-stat"><strong>Full</strong> online presence</div>
+              </div>
+              <a href="https://goldensource-agencies.web.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-block; margin-top: 16px; text-align: center;">Visit Live Site</a>
+            </div>
+          </div>
+
+          <div class="portfolio-card" style="border-color: rgba(109, 40, 217, 0.3);">
+            <a href="inbox.html">
+              <div class="portfolio-image" style="background: linear-gradient(135deg, #6D28D9, #2563EB); display: flex; align-items: center; justify-content: center;">
+                <img src="images/omix-inbox-logo.svg" alt="Omix Inbox" style="width: 80px; height: 80px; object-fit: contain; padding: 20px;">
+              </div>
+            </a>
+            <div class="portfolio-content">
+              <span class="portfolio-tag" style="background: rgba(109, 40, 217, 0.1); color: #a78bfa;">AI Product</span>
+              <h3><a href="inbox.html" style="color: #a78bfa;">Omix Inbox</a></h3>
+              <p>AI-powered email management for Kenyan SMEs. Your inbox, automated. Your leads, captured.</p>
+              <div class="portfolio-stats">
+                <div class="portfolio-stat"><strong>AI</strong> classified</div>
+                <div class="portfolio-stat"><strong>&lt;15min</strong> lead response</div>
+              </div>
+              <a href="inbox.html" class="btn btn-primary" style="display: inline-block; margin-top: 16px; text-align: center; background: #6D28D9;">View Product</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <h2>Want to Be Our Next Success Story?</h2>
+        <p>Join hundreds of Kenyan businesses that have grown with Omix Systems.</p>
+        <div class="cta-buttons">
+          <a href="contact.html" class="btn btn-primary btn-accent">Start Your Project</a>
+          <a href="contact.html" class="btn btn-outline">Request Free Audit</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Omix Systems — Online Map Integration eXperts | Nairobi, Kenya &nbsp;·&nbsp; <a href="inbox.html" style="color: #a78bfa;">Omix Inbox</a></p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Omix Systems Blog - Web development tips, digital marketing insights, and business growth strategies for Kenyan businesses.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Blog — Omix Systems</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .blog-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .blog-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+    .blog-image {
+      height: 200px;
+      overflow: hidden;
+    }
+    .blog-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .blog-card:hover .blog-image img { transform: scale(1.05); }
+    .blog-content { padding: 28px; }
+    .blog-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    .blog-category {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .blog-content h3 { font-size: 1.25rem; margin-bottom: 12px; line-height: 1.4; }
+    .blog-content h3 a:hover { color: var(--primary); }
+    .blog-excerpt { color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 16px; line-height: 1.6; }
+    .read-more { color: var(--primary); font-weight: 600; font-size: 0.875rem; }
+    
+    .featured-post {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .featured-image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+    }
+    .featured-content { padding: 48px; }
+    .featured-label {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .featured-content h2 { font-size: 2rem; margin-bottom: 16px; }
+    .featured-content p { color: var(--text-muted); margin-bottom: 24px; line-height: 1.8; }
+    
+    .categories {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .category-btn {
+      padding: 8px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .category-btn:hover, .category-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    
+    .newsletter {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      margin-top: 80px;
+    }
+    .newsletter h3 { font-size: 1.5rem; margin-bottom: 12px; }
+    .newsletter p { color: var(--text-muted); margin-bottom: 24px; }
+    .newsletter-form {
+      display: flex;
+      gap: 12px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .newsletter-form input {
+      flex: 1;
+      padding: 14px 20px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    .newsletter-form input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+      .blog-grid { grid-template-columns: 1fr; }
+      .featured-post { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="favicon.svg" alt="Omix Systems" width="36" height="36">
+      Omix <span>Systems</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="inbox.html">Inbox</a>
+      <a href="about.html">About</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+    <button class="mobile-menu" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="inbox.html">Inbox</a>
+    <a href="about.html">About</a>
+    <a href="blog.html" class="active">Blog</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="contact.html" class="btn btn-outline">Free Audit</a>
+      <a href="contact.html" class="btn btn-primary">Start Project</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('mobileNav').classList.toggle('active');
+      document.getElementById('mobileOverlay').classList.toggle('active');
+      document.body.style.overflow = document.getElementById('mobileNav').classList.contains('active') ? 'hidden' : '';
+    }
+  </script>
+
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <h1>Blog</h1>
+        <p>Insights on web development, digital marketing, and growing your business online.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="featured-post">
+          <div class="featured-image"><img src="images/blog-seo.jpg" alt="Google Maps and websites" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div class="featured-content">
+            <span class="featured-label">Featured</span>
+            <h2>Why Google Maps Alone Is Not Enough for Your Business</h2>
+            <p>Google Maps solves the discovery problem. It does not solve the conversion problem. Learn why every Kenyan business needs a website, not just a Maps listing.</p>
+            <div class="blog-meta">
+              <span>March 2025</span>
+              <span>•</span>
+              <span>8 min read</span>
+            </div>
+            <a href="#" class="btn btn-primary">Read Article</a>
+          </div>
+        </div>
+
+        <div class="categories">
+          <button class="category-btn active">All Posts</button>
+          <button class="category-btn">Web Design</button>
+          <button class="category-btn">Digital Marketing</button>
+          <button class="category-btn">M-Pesa</button>
+          <button class="category-btn">SEO</button>
+        </div>
+
+        <div class="blog-grid">
+          <article class="blog-card">
+            <div class="blog-image"><img src="images/blog-mobile.jpg" alt="Mobile-first design"></div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">Web Design</span>
+                <span>•</span>
+                <span>Feb 2025</span>
+              </div>
+              <h3><a href="#">Why Mobile-First Design Matters for Kenyan Businesses</a></h3>
+              <p class="blog-excerpt">With over 80% of Kenyan internet users on mobile, your website must be designed for small screens first.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <div class="blog-image"><img src="images/blog-mpesa.jpg" alt="M-Pesa payments"></div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">M-Pesa</span>
+                <span>•</span>
+                <span>Feb 2025</span>
+              </div>
+              <h3><a href="#">How to Accept M-Pesa Payments on Your Website</a></h3>
+              <p class="blog-excerpt">A step-by-step guide to integrating M-Pesa STK Push into your website using Safaricom's API.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <div class="blog-image" style="background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);">🔍</div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">SEO</span>
+                <span>•</span>
+                <span>Jan 2025</span>
+              </div>
+              <h3><a href="#">Local SEO Guide for Kenyan Businesses</a></h3>
+              <p class="blog-excerpt">How to rank higher on Google when customers search for businesses like yours in Nairobi and across Kenya.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <div class="blog-image"><img src="images/blog-whatsapp.jpg" alt="WhatsApp Business"></div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">Digital Marketing</span>
+                <span>•</span>
+                <span>Jan 2025</span>
+              </div>
+              <h3><a href="#">WhatsApp Business: Your Secret Marketing Tool</a></h3>
+              <p class="blog-excerpt">How to use WhatsApp Business to automate customer service and boost sales by up to 200%.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <div class="blog-image" style="background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);">⚡</div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">Web Design</span>
+                <span>•</span>
+                <span>Dec 2024</span>
+              </div>
+              <h3><a href="#">Website Speed: Why It Matters More Than You Think</a></h3>
+              <p class="blog-excerpt">Every second of load time costs you customers. Here's how to make your website blazing fast.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <div class="blog-image" style="background: linear-gradient(135deg, #92400e 0%, #f59e0b 100%);">🏪</div>
+            <div class="blog-content">
+              <div class="blog-meta">
+                <span class="blog-category">Business</span>
+                <span>•</span>
+                <span>Dec 2024</span>
+              </div>
+              <h3><a href="#">From Maps to Web: The Digital Transformation Journey</a></h3>
+              <p class="blog-excerpt">Real stories from Kenyan businesses that made the shift from Google Maps to professional websites.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="newsletter">
+          <h3>📧 Get Weekly Insights</h3>
+          <p>Join 2,000+ Kenyan business owners getting our newsletter on digital growth.</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email">
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Omix Systems — Online Map Integration eXperts | Nairobi, Kenya &nbsp;·&nbsp; <a href="inbox.html" style="color: #a78bfa;">Omix Inbox</a></p>
+    </div>
+  </footer>
+</body>
+</html>

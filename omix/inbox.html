@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Omix Inbox — AI-powered email management for Kenyan SMEs. Turn every inquiry into a sale.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Omix Inbox — Omix Systems</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root { --inbox: #6D28D9; --inbox-light: #a78bfa; --inbox-bg: rgba(109, 40, 217, 0.1); }
+    .inbox-hero { text-align: center; padding: 120px 0 60px; }
+    .inbox-hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 24px; }
+    .inbox-hero h1 span { color: var(--inbox-light); }
+    .inbox-hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 32px; }
+    .inbox-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--inbox-bg); border: 1px solid rgba(109, 40, 217, 0.3);
+      padding: 8px 16px; border-radius: 50px; font-size: 0.875rem;
+      color: var(--inbox-light); margin-bottom: 24px; font-weight: 600;
+    }
+    .inbox-problem { padding: 80px 0; text-align: center; background: linear-gradient(180deg, transparent 0%, var(--inbox-bg) 50%, transparent 100%); border-radius: 2rem; margin: 40px 0; }
+    .inbox-stat {
+      background: var(--inbox-bg); border: 1px solid rgba(109, 40, 217, 0.2);
+      padding: 32px; border-radius: 1rem; display: inline-block; margin: 24px auto;
+    }
+    .inbox-stat-value { font-size: 3rem; font-weight: 800; color: var(--inbox-light); display: block; }
+    .inbox-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .inbox-step {
+      padding: 32px; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; position: relative; transition: all 0.3s;
+    }
+    .inbox-step:hover { border-color: var(--inbox); transform: translateY(-4px); }
+    .inbox-step-num { font-size: 0.875rem; font-weight: 700; color: var(--inbox-light); text-transform: uppercase; margin-bottom: 8px; display: block; }
+    .inbox-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
+    .inbox-feature {
+      padding: 32px; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; transition: all 0.3s;
+    }
+    .inbox-feature:hover { border-color: var(--inbox); }
+    .inbox-feature-icon { font-size: 2rem; margin-bottom: 16px; }
+    .inbox-pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .inbox-price-card {
+      padding: 40px; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; display: flex; flex-direction: column; transition: all 0.3s;
+    }
+    .inbox-price-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .inbox-price-card.popular { border-color: var(--inbox); position: relative; background: linear-gradient(180deg, var(--inbox-bg) 0%, var(--bg-card) 100%); }
+    .inbox-price-card.popular::before {
+      content: "Most Popular"; position: absolute; top: -12px; right: 20px;
+      background: var(--inbox); padding: 4px 16px; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 700; color: #fff;
+    }
+    .inbox-price-name { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; }
+    .inbox-price-amount { font-size: 2.5rem; font-weight: 700; margin-bottom: 16px; }
+    .inbox-price-amount span { font-size: 1rem; font-weight: 400; color: var(--text-muted); }
+    .inbox-price-features { list-style: none; margin-bottom: 32px; flex-grow: 1; }
+    .inbox-price-features li { padding: 10px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); font-size: 0.9375rem; }
+    .inbox-price-features li::before { content: '✓'; color: var(--success); font-weight: 700; }
+    .inbox-price-features li.disabled { color: var(--text-muted); text-decoration: line-through; }
+    .inbox-price-features li.disabled::before { content: '✗'; color: var(--text-muted); }
+    .inbox-cta {
+      max-width: 500px; margin: 0 auto; background: var(--bg-card);
+      padding: 48px; border-radius: 20px; border: 1px solid var(--border); text-align: center;
+    }
+    .inbox-cta h2 { margin-bottom: 12px; }
+    .inbox-cta p { color: var(--text-muted); margin-bottom: 24px; }
+    .inbox-cta input {
+      width: 100%; padding: 12px 16px; background: var(--bg-dark);
+      border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+      font-family: inherit; margin-bottom: 12px;
+    }
+    .inbox-cta input:focus { outline: none; border-color: var(--inbox); }
+    @media (max-width: 768px) {
+      .inbox-hero h1 { font-size: 2.5rem; }
+      .inbox-steps, .inbox-features, .inbox-pricing { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="favicon.svg" alt="Omix Systems" width="36" height="36">
+      Omix <span>Systems</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="inbox.html" class="active" style="color: #a78bfa;">Inbox</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-outline" style="border-color: #6D28D9; color: #a78bfa;">Free Trial</a>
+      <a href="contact.html" class="btn btn-primary" style="background: #6D28D9;">Get Started</a>
+    </div>
+    <button class="mobile-menu" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="inbox.html" class="active" style="color: #a78bfa;">Inbox</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="contact.html" class="btn btn-outline" style="border-color: #6D28D9; color: #a78bfa;">Free Trial</a>
+      <a href="contact.html" class="btn btn-primary" style="background: #6D28D9;">Get Started</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('mobileNav').classList.toggle('active');
+      document.getElementById('mobileOverlay').classList.toggle('active');
+      document.body.style.overflow = document.getElementById('mobileNav').classList.contains('active') ? 'hidden' : '';
+    }
+  </script>
+
+  <main>
+    <div class="container">
+      <div class="inbox-hero">
+        <div class="inbox-badge">
+          <img src="images/omix-inbox-logo.svg" alt="" width="20" height="20" style="vertical-align: middle;">
+          Omix Inbox
+        </div>
+        <h1>Your inbox, automated.<br><span>Your leads, captured.</span></h1>
+        <p>The AI-powered email management service designed for Kenyan SMEs. Turn every inquiry into a sale without lifting a finger.</p>
+        <div class="cta-buttons">
+          <a href="#cta" class="btn btn-primary" style="background: #6D28D9;">Start Free Trial</a>
+          <a href="#how-it-works" class="btn btn-outline" style="border-color: #6D28D9; color: #a78bfa;">See How It Works</a>
+        </div>
+      </div>
+
+      <div class="inbox-problem">
+        <h2>The Invisible Leak</h2>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Most Kenyan SMEs lose business not from bad products, but from slow replies.</p>
+        <div class="inbox-stat">
+          <span class="inbox-stat-value">KES 50,000+</span>
+          <span style="color: var(--text-muted);">Average monthly revenue lost to missed email leads</span>
+        </div>
+        <p style="margin-top: 24px; color: var(--text-muted); max-width: 600px; margin-left: auto; margin-right: auto;">Omix Inbox fixes this by monitoring your email 24/7, ensuring every potential customer gets an instant, professional response.</p>
+      </div>
+
+      <section id="how-it-works" class="section">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Three simple steps to never miss a lead again.</p>
+        <div class="inbox-steps">
+          <div class="inbox-step">
+            <span class="inbox-step-num">Step 01</span>
+            <h3>Connect Your Email</h3>
+            <p style="color: var(--text-muted);">Simply link your IMAP account or forward your business emails to your Omix address. Setup takes 2 minutes.</p>
+          </div>
+          <div class="inbox-step">
+            <span class="inbox-step-num">Step 02</span>
+            <h3>AI Classification</h3>
+            <p style="color: var(--text-muted);">Our AI reads every incoming message. It separates leads from spam and prioritizes urgent inquiries.</p>
+          </div>
+          <div class="inbox-step">
+            <span class="inbox-step-num">Step 03</span>
+            <h3>Instant Capture</h3>
+            <p style="color: var(--text-muted);">Leads hit your phone instantly via Telegram. Never keep a potential customer waiting again.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <h2 class="section-title">Features Built for Growth</h2>
+        <p class="section-subtitle">Everything you need to turn email chaos into a sales machine.</p>
+        <div class="inbox-features">
+          <div class="inbox-feature">
+            <div class="inbox-feature-icon">⚡</div>
+            <h3>AI Auto-Replies</h3>
+            <p style="color: var(--text-muted);">Send instant quotes and timelines based on your business rules. Never keep a lead waiting.</p>
+          </div>
+          <div class="inbox-feature">
+            <div class="inbox-feature-icon">🎯</div>
+            <h3>Lead Scoring</h3>
+            <p style="color: var(--text-muted);">Only get notified for high-value inquiries. Our AI knows what's a "just looking" vs "ready to buy".</p>
+          </div>
+          <div class="inbox-feature">
+            <div class="inbox-feature-icon">🔔</div>
+            <h3>Missed-Inquiry Alerts</h3>
+            <p style="color: var(--text-muted);">If a human hasn't followed up on a hot lead, we'll nudge you before the customer goes elsewhere.</p>
+          </div>
+          <div class="inbox-feature">
+            <div class="inbox-feature-icon">📊</div>
+            <h3>Weekly Digest</h3>
+            <p style="color: var(--text-muted);">Get a bird's eye view of your inbox health, lead conversion rates, and growth trends every Monday.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" class="section">
+        <h2 class="section-title">Simple, Transparent Pricing</h2>
+        <p class="section-subtitle">From KES 3,000/month. Lower than a junior admin, higher value for your business.</p>
+        <div class="inbox-pricing">
+          <div class="inbox-price-card">
+            <div class="inbox-price-name">Starter</div>
+            <div class="inbox-price-amount">KES 3,000<span>/mo</span></div>
+            <ul class="inbox-price-features">
+              <li>1 Mailbox</li>
+              <li>AI Classification</li>
+              <li>Telegram Escalation</li>
+              <li>Basic Auto-Reply Drafts</li>
+              <li>Weekly Digest</li>
+              <li class="disabled">Web Dashboard</li>
+              <li class="disabled">Multi-mailbox</li>
+            </ul>
+            <a href="#cta" class="btn btn-outline" style="border-color: #6D28D9; color: #a78bfa;">Get Started</a>
+          </div>
+          <div class="inbox-price-card popular">
+            <div class="inbox-price-name" style="color: #a78bfa;">Pro</div>
+            <div class="inbox-price-amount">KES 10,000<span>/mo</span></div>
+            <ul class="inbox-price-features">
+              <li>Up to 3 Mailboxes</li>
+              <li>AI Classification</li>
+              <li>Full Web Dashboard</li>
+              <li>Advanced Auto-Reply Engine</li>
+              <li>SMS/WhatsApp Alerts</li>
+              <li>Priority Lead Scoring</li>
+              <li>Weekly Growth Digest</li>
+            </ul>
+            <a href="#cta" class="btn btn-primary" style="background: #6D28D9;">Start 14-Day Trial</a>
+          </div>
+          <div class="inbox-price-card">
+            <div class="inbox-price-name">Enterprise</div>
+            <div class="inbox-price-amount">Custom</div>
+            <ul class="inbox-price-features">
+              <li>Unlimited Mailboxes</li>
+              <li>Custom AI Training</li>
+              <li>Dedicated Instance</li>
+              <li>CRM Integration</li>
+              <li>API Access</li>
+              <li>Phone Support</li>
+              <li>Onboarding Concierge</li>
+            </ul>
+            <a href="#cta" class="btn btn-outline" style="border-color: #6D28D9; color: #a78bfa;">Contact Sales</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="section" style="padding-bottom: 120px;">
+        <div class="inbox-cta">
+          <h2>Start saving time today</h2>
+          <p>Join hundreds of Kenyan SMEs automating their sales pipeline.</p>
+          <form action="https://api.omixsys.com/inbox/leads" method="POST">
+            <input type="email" name="email" placeholder="Business Email" required>
+            <input type="tel" name="phone" placeholder="Phone Number (e.g. 0712...)" required>
+            <button type="submit" class="btn btn-primary" style="background: #6D28D9; width: 100%;">Start Free Trial</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Omix Systems — Online Map Integration eXperts | Nairobi, Kenya &nbsp;·&nbsp; <a href="inbox.html" style="color: #a78bfa;">Omix Inbox</a></p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,3 +1,4 @@
+/* Build: 1780558087-8068eed2 */
 import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";

@@ -313,7 +313,7 @@ export default function DashboardPage() {
   const unreadNotifs = notifications.filter((n) => !n.is_read).length;
 
   return (
-    <div className="page-enter relative z-10">
+    <div className="relative z-10">
       <LiveBackground />
 
       <div className="max-w-6xl mx-auto px-4 py-8">

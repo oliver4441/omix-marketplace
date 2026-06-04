@@ -25,22 +25,19 @@ export default function HomePage() {
               <Link href="/services" className="btn-outline text-xs md:text-sm px-4 py-2">Browse Services</Link>
             </div>
           </div>
-
           <form className="max-w-2xl mx-auto mb-5" method="get">
             <div className="flex items-center px-3 py-2 gap-2 md:px-4 md:py-2 rounded-full" style={{ background: "var(--bg-card)", boxShadow: "0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05)", border: "1px solid var(--border)" }}>
               <svg className="w-4 h-4 flex-shrink-0" style={{ color: "var(--text-muted)" }} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
               <input name="q" placeholder="Search electronics, furniture..." className="flex-1 bg-transparent outline-none text-sm" style={{ color: "var(--text-primary)" }} />
-              <button type="submit" className="bg-[#ff385c] text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-[#e00b41] flex-shrink-0">
+              <button type="submit" className="bg-[#ff385c] text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-4.35-4.35" /></svg>
               </button>
             </div>
           </form>
-
           <div className="flex flex-wrap justify-center gap-1.5 mb-6">
             <Link href="/" className="badge text-[11px] badge-accent">All</Link>
             {CATEGORIES.map((c) => <Link key={c.slug} href={`/?category=${c.slug}`} className="badge text-[11px]">{c.name}</Link>)}
           </div>
-
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 max-w-3xl mx-auto">
             {[
               { label: "M-Pesa", sub: "Secure Payments" },
@@ -61,9 +58,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       <ListingsSection />
     </div>
   );
 }
-// Cache bust: 1780554710

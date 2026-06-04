@@ -1,4 +1,3 @@
-/* Build: 1780558087-8068eed2 */
 import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
@@ -14,7 +13,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Omix Marketplace — Buy & Sell in Kericho",
-  description: "The leading P2P marketplace in Kericho, Kenya.",
+  description: "The cleanest P2P marketplace in Kericho, Kenya. Buy and sell electronics, furniture, vehicles, and services.",
 };
 
 export const viewport: Viewport = {
@@ -30,11 +29,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={dmSans.className} suppressHydrationWarning>
+    <html lang="en" className={`${dmSans.className} dark`} suppressHydrationWarning>
       <body>
         <ThemeProvider>
           <Navbar />
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-[80dvh]">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

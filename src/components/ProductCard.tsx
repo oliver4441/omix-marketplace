@@ -3,124 +3,82 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { formatPrice } from "@/lib/constants";
 
-interface ProductCardProps {
+interface Listing {
   id: string;
   title: string;
   price: number;
   condition: string;
   location: string;
+  category: string;
   images: string[] | null;
-  isNegotiable?: boolean;
-  isFeatured?: boolean;
-  viewCount?: number;
-  createdAt?: string;
-  sellerName?: string;
-  sellerVerified?: boolean;
-  sellerStoreSlug?: string | null;
-  sellerRating?: number;
+  seller_name?: string;
 }
 
-function conditionLabel(val: string): string {
-  if (val === "like_new") return "Like New";
-  return val.charAt(0).toUpperCase() + val.slice(1);
+function formatKES(amount: number) {
+  return new Intl.NumberFormat("en-KE", {
+    style: "currency",
+    currency: "KES",
+    maximumFractionDigits: 0,
+  }).format(amount);
 }
 
-function getRelativeTime(dateStr: string): string {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "Just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  return new Date(dateStr).toLocaleDateString("en-KE", { month: "short", day: "numeric" });
-}
+const CATEGORY_ICONS: Record<string, string> = {
+  Electronics: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+  Furniture: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4",
+  Clothing: "M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z",
+  Services: "M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+  Vehicles: "M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0",
+  "Home & Garden": "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4",
+  Books: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
+  Sports: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+  "Health & Beauty": "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+  Others: "M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z",
+};
 
-export default function ProductCard(props: ProductCardProps) {
-  const { id, title, price, condition, location, images, isNegotiable, createdAt, sellerName, sellerVerified, sellerRating } = props;
+export default function ProductCard({ listing }: { listing: Listing }) {
   const [imgError, setImgError] = useState(false);
-  const imageUrl = images && images.length > 0 ? images[0] : null;
-  const timeAgo = createdAt ? getRelativeTime(createdAt) : null;
+  const imageUrl = listing.images && listing.images.length > 0 ? listing.images[0] : null;
+  const iconPath = CATEGORY_ICONS[listing.category] || CATEGORY_ICONS["Others"];
 
   return (
-    <Link href={`/listings/${id}`} className="airbnb-card group block h-full">
-      <div className="aspect-[4/3] relative overflow-hidden rounded-t-[14px]" style={{ background: "var(--bg-secondary)" }}>
+    <Link href={`/listings/${listing.id}`} className="card block">
+      <div className="aspect-square relative overflow-hidden" style={{ background: "var(--bg-secondary)" }}>
         {imageUrl && !imgError ? (
-          <Image src={imageUrl} alt={title} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover" onError={() => setImgError(true)} />
+          <Image
+            src={imageUrl}
+            alt={listing.title}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover"
+            onError={() => setImgError(true)}
+          />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-            <svg className="w-8 h-8" style={{ color: "var(--text-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
-            </svg>
-            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>No photo</span>
-          </div>
-        )}
-
-        <div className="absolute top-2 left-2">
-          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: "var(--bg-card)", color: "var(--text-primary)", border: "1px solid var(--border)" }}>
-            {conditionLabel(condition)}
-          </span>
-        </div>
-
-        <div className="absolute top-2 right-2">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-            <svg className="w-4 h-4" style={{ color: "var(--text-secondary)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+          <div className="w-full h-full flex items-center justify-center" style={{ background: "var(--bg-secondary)" }}>
+            <svg className="w-10 h-10" style={{ color: "var(--text-muted)", opacity: 0.4 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d={iconPath} />
             </svg>
           </div>
-        </div>
-
-        {timeAgo && (
-          <div className="absolute bottom-2 left-2">
-            <span className="text-[10px] text-[var(--text-primary)] px-2 py-0.5 rounded-full" style={{ background: "rgba(0,0,0,0.6)" }}>
-              {timeAgo}
-            </span>
-          </div>
         )}
+        <div className="absolute top-2 left-2 bg-white/90 dark:bg-black/90 text-xs font-bold px-2 py-1 rounded-lg shadow-sm" style={{ color: "var(--text-primary)" }}>
+          {listing.condition}
+        </div>
       </div>
-
-      <div className="p-2.5 space-y-1">
-        <h3 className="font-medium text-[13px] leading-snug line-clamp-2 min-h-[2.2rem]" style={{ color: "var(--text-primary)" }}>
-          {title}
-        </h3>
-
-        <div className="flex items-baseline gap-2">
-          <p className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>{formatPrice(price)}</p>
-          {isNegotiable && <span className="text-[10px] font-medium text-[#ff385c]">Negotiable</span>}
+      <div className="p-3">
+        <div className="flex justify-between items-start gap-2">
+          <h3 className="font-bold text-sm line-clamp-2" style={{ color: "var(--text-primary)" }}>
+            {listing.title}
+          </h3>
         </div>
-
-        {location && (
-          <div className="flex items-center gap-1">
-            <svg className="w-3 h-3 shrink-0" style={{ color: "var(--text-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-            </svg>
-            <span className="text-[11px] truncate" style={{ color: "var(--text-muted)" }}>{location}</span>
-          </div>
-        )}
-
-        {sellerName && (
-          <div className="flex items-center gap-1.5 pt-1 border-t" style={{ borderColor: "var(--border-light)" }}>
-            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-semibold shrink-0" style={{ background: "var(--bg-secondary)", color: "var(--text-secondary)" }}>
-              {sellerName.charAt(0).toUpperCase()}
-            </div>
-            <span className="text-[10px] truncate flex-1" style={{ color: "var(--text-muted)" }}>{sellerName}</span>
-            {sellerVerified && (
-              <svg className="w-3.5 h-3.5 shrink-0 text-[#ff385c]" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-              </svg>
-            )}
-            {sellerRating !== undefined && sellerRating > 0 && (
-              <span className="text-[10px] flex items-center gap-0.5 shrink-0" style={{ color: "var(--text-secondary)" }}>
-                <svg className="w-3 h-3 text-[#ff385c]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                {sellerRating.toFixed(1)}
-              </span>
-            )}
-          </div>
-        )}
+        <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{listing.category}</p>
+        <p className="font-bold text-[#ff385c] mt-1">{formatKES(listing.price)}</p>
+        <div className="flex items-center gap-1 mt-1">
+          <svg className="w-3 h-3 shrink-0" style={{ color: "var(--text-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>
+          <span className="text-xs truncate" style={{ color: "var(--text-muted)" }}>{listing.location}</span>
+        </div>
       </div>
     </Link>
   );

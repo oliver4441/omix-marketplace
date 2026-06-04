@@ -3,38 +3,25 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-rausch: #ff385c;
-  --color-rausch-dark: #e00b41;
+  --color-accent: #ff385c;
+  --color-accent-dark: #e00b41;
 }
 
 /* ===== BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
-  color-scheme: light dark;
+  color-scheme: dark;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
   overflow-x: hidden;
-}
-
-/* Light theme (default) */
-body, html:not(.dark) body {
-  background: #ffffff;
-  color: #222222;
-}
-
-/* Dark theme */
-html.dark body {
-  background: #0a0f1a;
-  color: #e2e8f0;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -43,7 +30,6 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 input, textarea, select { font-family: inherit; font-size: 16px; }
 svg { flex-shrink: 0; }
 
-/* Prevent iOS zoom on input focus */
 @media (max-width: 640px) {
   input, textarea, select { font-size: 16px !important; }
 }
@@ -52,10 +38,9 @@ svg { flex-shrink: 0; }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 .dark ::-webkit-scrollbar-thumb { background: #2a3040; }
-.dark ::-webkit-scrollbar-thumb:hover { background: #3a4050; }
 
-/* ===== THEME COLORS ===== */
-:root, html:not(.dark) {
+/* ===== THEME ===== */
+:root {
   --bg-primary: #ffffff;
   --bg-secondary: #f7f7f7;
   --bg-card: #ffffff;
@@ -79,43 +64,47 @@ html.dark {
   --border-light: #1e293b;
 }
 
-/* ===== AIRBNB CARD ===== */
-.airbnb-card {
+/* ===== HERO ===== */
+.hero-section {
+  background: linear-gradient(to bottom, var(--bg-secondary), var(--bg-primary));
+}
+
+/* ===== CARD ===== */
+.card {
   background: var(--bg-card);
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--border);
   box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
 }
-.dark .airbnb-card {
+.dark .card {
   box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* ===== AIRBNB INPUT ===== */
-.airbnb-input {
+/* ===== INPUT ===== */
+.input {
   background: var(--bg-primary);
   border: 1.5px solid var(--border);
   border-radius: 8px;
   color: var(--text-primary);
   padding: 10px 14px;
   font-size: 14px;
-  line-height: 1.4;
   outline: none;
   width: 100%;
   appearance: none;
   -webkit-appearance: none;
 }
-.airbnb-input:focus { border-color: var(--text-primary); box-shadow: 0 0 0 2px rgba(255,56,92,0.15); }
-.airbnb-input::placeholder { color: var(--text-muted); }
+.input:focus { border-color: var(--text-primary); box-shadow: 0 0 0 2px rgba(255,56,92,0.15); }
+.input::placeholder { color: var(--text-muted); }
 
 /* ===== BUTTONS ===== */
 .btn-primary {
-  background: #222222;
+  background: #ff385c;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: 14px;
   padding: 10px 20px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   cursor: pointer;
   display: inline-flex;
@@ -124,16 +113,14 @@ html.dark {
   gap: 6px;
   min-height: 44px;
 }
-.btn-primary:hover { background: #ff385c; }
-.dark .btn-primary { background: #ff385c; }
-.dark .btn-primary:hover { background: #e00b41; }
+.btn-primary:hover { background: #e00b41; }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .btn-outline {
   background: transparent;
   color: var(--text-primary);
   border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border-radius: 14px;
   padding: 9px 18px;
   font-weight: 600;
   font-size: 14px;
@@ -145,33 +132,35 @@ html.dark {
 }
 .btn-outline:hover { border-color: var(--text-primary); background: var(--bg-hover); }
 
-/* ===== BADGES / PILLS ===== */
-.badge {
+/* ===== BADGE / PILL ===== */
+.pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 5px 12px;
-  margin: 3px;
-  border-radius: 9999px;
+  padding: 6px 14px;
+  border-radius: 14px;
   font-size: 12px;
   font-weight: 500;
-  line-height: 1.3;
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
   white-space: nowrap;
   flex-shrink: 0;
-  min-height: 32px;
+  min-height: 36px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
 }
-.badge-accent {
-  background: rgba(255,56,92,0.1);
-  color: #ff385c;
-  border-color: rgba(255,56,92,0.25);
-  font-weight: 600;
+.pill-active {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+.dark .pill-active {
+  background: #ffffff;
+  color: #0a0f1a;
+  border-color: #ffffff;
 }
 
 /* ===== NAVBAR ===== */
-.nav-airbnb {
+.nav {
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-light);
   position: sticky;
@@ -181,18 +170,11 @@ html.dark {
 }
 
 /* ===== FOOTER ===== */
-.footer-airbnb {
+.footer {
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-light);
   color: var(--text-secondary);
   padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* ===== LISTINGS GRID ===== */
-.tile-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
 }
 
 /* ===== LINE CLAMP ===== */
@@ -238,9 +220,5 @@ html.dark {
 
 /* ===== MOBILE ===== */
 @media (max-width: 640px) {
-  .tile-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+  .hero-section { padding-top: 2rem; padding-bottom: 2rem; }
 }
-/* Build: 1780558087-d4dc2e01 */

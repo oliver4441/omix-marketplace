@@ -1,234 +1,167 @@
-"use client";
-
-import { useEffect, useState, useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { getListing } from "@/lib/actions/listings";
+import { getListings } from "@/lib/actions/listings";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
-import { formatPrice, CONDITIONS, CATEGORIES } from "@/lib/constants";
+import Image from "next/image";
 
-interface ListingImage {
-  id: string;
-  image_url: string;
-  is_primary: boolean;
+function formatKES(amount: number) {
+  return new Intl.NumberFormat("en-KE", {
+    style: "currency",
+    currency: "KES",
+    maximumFractionDigits: 0,
+  }).format(amount);
 }
 
-interface ListingSeller {
-  id: string;
-  full_name: string;
-  store_name: string | null;
-  store_slug: string | null;
-  avatar_url: string | null;
-  seller_bio: string | null;
-  rating_avg: number;
-  rating_count: number;
-  verified_badge: boolean;
-  location_city: string;
-  phone: string | null;
-}
+export default async function ListingPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const listing = await getListing(id);
 
-interface ListingData {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  condition: string;
-  is_negotiable: boolean;
-  location_city: string;
-  views: number;
-  status: string;
-  created_at: string;
-  seller_id: string;
-  category_id: number;
-  images: ListingImage[];
-  seller: ListingSeller;
-  reviews: { id: string; rating: number; comment: string; created_at: string; reviewer: { full_name: string } }[];
-}
-
-export default function ListingDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const supabase = createClient();
-  const id = params.id as string;
-
-  const [listing, setListing] = useState<ListingData | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [isFavorited, setIsFavorited] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [activeImage, setActiveImage] = useState(0);
-  const [showOfferInput, setShowOfferInput] = useState(false);
-  const [offerAmount, setOfferAmount] = useState("");
-  const [offerSending, setOfferSending] = useState(false);
-  const [showLightbox, setShowLightbox] = useState(false);
-
-  const fetchListing = useCallback(async () => {
-    const { data } = await supabase
-      .from("listings")
-      .select("*, listing_images(id, image_url, is_primary), seller:profiles!listings_seller_id_fkey(id, full_name, phone, store_name, store_slug, avatar_url, seller_bio, rating_avg, rating_count, verified_badge, location_city)")
-      .eq("id", id).single();
-
-    if (data) {
-      const l = data as ListingData;
-      setListing({ ...l, seller: l.seller || ({} as ListingSeller), images: (l.images || []).sort((a: ListingImage, b: ListingImage) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0)), reviews: [] });
-      await supabase.from("listings").update({ views: (l.views || 0) + 1 }).eq("id", id);
-    }
-    setLoading(false);
-  }, [id, supabase]);
-
-  useEffect(() => {
-    fetchListing();
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUserId(user?.id || null);
-      if (user) { supabase.from("user_favorites").select("listing_id").eq("user_id", user.id).eq("listing_id", id).then(({ data }) => setIsFavorited(!!data?.length)); }
-    });
-    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") setShowLightbox(false); };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [fetchListing, supabase, id]);
-
-  async function handleFavorite() {
-    if (!userId) { router.push("/auth/login"); return; }
-    if (isFavorited) { await supabase.from("user_favorites").delete().eq("user_id", userId).eq("listing_id", id); setIsFavorited(false); }
-    else { await supabase.from("user_favorites").insert({ user_id: userId, listing_id: id }); setIsFavorited(true); }
+  if (!listing) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>Listing not found</h2>
+            <Link href="/" className="text-[#ff385c] font-medium">Go back home</Link>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
-  async function handleContactSeller() {
-    if (!userId || !listing) { router.push("/auth/login"); return; }
-    if (userId === listing.seller_id) return;
-    const { data: existing } = await supabase.from("conversations").select("id, conversation_members!inner(user_id)").eq("listing_id", id).single();
-    if (existing) { router.push("/messages"); return; }
-    const { data: conv } = await supabase.from("conversations").insert({ listing_id: id, order_id: null }).select("id").single();
-    if (conv) { await supabase.from("conversation_members").insert([{ conversation_id: conv.id, user_id: userId }, { conversation_id: conv.id, user_id: listing.seller_id }]); router.push("/messages"); }
-  }
-
-  async function handleSendOffer() {
-    if (!userId || !listing || !offerAmount) return;
-    setOfferSending(true);
-    const amount = Math.round(parseFloat(offerAmount) * 100);
-    const { data: conv } = await supabase.from("conversations").insert({ listing_id: id, order_id: null }).select("id").single();
-    if (conv) {
-      await supabase.from("conversation_members").insert([{ conversation_id: conv.id, user_id: userId }, { conversation_id: conv.id, user_id: listing.seller_id }]);
-      await supabase.from("messages").insert({ conversation_id: conv.id, sender_id: userId, message_type: "offer", content: `Offered ${formatPrice(amount)}`, offer_cents: amount, offer_status: "pending" });
-      router.push("/messages");
-    }
-    setOfferSending(false);
-  }
-
-  if (loading) return <div className="max-w-6xl mx-auto px-4 py-12 text-center"><p className="text-[var(--text-secondary)]">Loading...</p></div>;
-  if (!listing) return <div className="max-w-6xl mx-auto px-4 py-12 text-center"><p className="text-[var(--text-secondary)]">Listing not found</p></div>;
-
-  const conditionLabel = CONDITIONS.find((c) => c.value === listing.condition)?.label;
-  const category = CATEGORIES.find((c) => c.id === listing.category_id);
-  const isOwner = userId === listing.seller_id;
-  const imageUrl = listing.images?.[activeImage]?.image_url;
-  const waLink = listing.seller?.phone ? `https://wa.me/${listing.seller.phone.replace(/^0/, "254")}?text=${encodeURIComponent(`Hi, I'm interested in: ${listing.title} - ${formatPrice(listing.price)} on Omix`)}` : null;
+  const { listings: related } = await getListings({
+    category: listing.category,
+    limit: 5,
+  });
+  const relatedFiltered = related.filter((l) => l.id !== listing.id).slice(0, 4);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {showLightbox && imageUrl && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={() => setShowLightbox(false)}>
-          <button className="absolute top-4 right-4 text-[var(--text-primary)] text-2xl hover:text-gray-300 z-10" onClick={() => setShowLightbox(false)}>✕</button>
-          <img src={imageUrl} alt={listing.title} className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
-        </div>
-      )}
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
 
-      <div className="text-sm text-[var(--text-muted)] mb-5">
-        <Link href="/" className="hover:text-[var(--text-primary)]">Home</Link>
-        {category && (<><span className="mx-2">›</span><Link href={`/?category=${category.slug}`} className="hover:text-[var(--text-primary)]">{category.name}</Link></>)}
-        <span className="mx-2">›</span><span className="text-[var(--text-primary)]">{listing.title}</span>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        <div className="lg:col-span-3">
-          <div className="aspect-[4/3] bg-[var(--bg-secondary)] rounded-[14px] overflow-hidden mb-3 cursor-zoom-in" onClick={() => imageUrl && setShowLightbox(true)}>
-            {imageUrl ? <img src={imageUrl} alt={listing.title} className="w-full h-full object-cover" /> : (
-              <div className="w-full h-full flex flex-col items-center justify-center">
-                <svg className="w-12 h-12 text-[#ddd]" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" /></svg>
-                <span className="text-xs text-[#c1c1c1] mt-2">No photo</span>
-              </div>
-            )}
-          </div>
-          {listing.images.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto">
-              {listing.images.map((img, i) => (
-                <button key={img.id} onClick={() => setActiveImage(i)} className={`w-20 h-20 rounded-xl overflow-hidden shrink-0 border-2 ${i === activeImage ? "border-[#222222]" : "border-transparent"}`}>
-                  <img src={img.image_url} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="lg:col-span-2 space-y-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              {conditionLabel && <span className="text-xs bg-[var(--bg-hover)] text-[var(--text-primary)] px-2.5 py-1 rounded-full font-medium">{conditionLabel}</span>}
-              {listing.is_negotiable && <span className="text-xs bg-[rgba(255,56,92,0.06)] text-[#ff385c] px-2.5 py-1 rounded-full font-medium">Negotiable</span>}
-            </div>
-            <h1 className="text-2xl font-bold text-[var(--text-primary)]">{listing.title}</h1>
-            <p className="text-3xl font-bold text-[var(--text-primary)] mt-2">{formatPrice(listing.price)}</p>
-          </div>
-
-          {listing.description && (
-            <div className="bg-[var(--bg-secondary)] rounded-[14px] p-4">
-              <h3 className="font-medium text-sm text-[var(--text-primary)] mb-2">Description</h3>
-              <p className="text-sm text-[var(--text-secondary)] whitespace-pre-wrap">{listing.description}</p>
-            </div>
-          )}
-
-          {!isOwner && listing.status === "active" && (
-            <div className="space-y-2">
-              <button onClick={handleContactSeller} className="w-full py-3 btn-primary rounded-[14px] font-medium text-base">Chat with Seller</button>
-              {waLink && <a href={waLink} target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-[#25D366] text-[var(--text-primary)] rounded-[14px] font-medium hover:bg-[#1da851] text-center block">WhatsApp Seller</a>}
-              <div className="grid grid-cols-4 gap-2">
-                <button onClick={async () => { const result = await (await import("@/lib/actions/cart")).addToCart(id); if (result?.error) alert(result.error); else router.push("/cart"); }} className="py-2.5 btn-outline rounded-[14px] text-sm font-medium">Add to Cart</button>
-                <button onClick={() => setShowOfferInput(!showOfferInput)} className="py-2.5 btn-outline rounded-[14px] text-sm font-medium">Make Offer</button>
-                <button onClick={handleFavorite} className={`py-2.5 rounded-[14px] text-sm font-medium border ${isFavorited ? "border-[#ff385c] text-[#ff385c] bg-[rgba(255,56,92,0.06)]" : "border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]"}`}>{isFavorited ? "Saved" : "Save"}</button>
-                <button onClick={async () => { try { await navigator.clipboard.writeText(window.location.href); } catch (_e) { /* */ } }} className="py-2.5 btn-outline rounded-[14px] text-sm font-medium">Share</button>
-              </div>
-              {showOfferInput && (
-                <div className="bg-[var(--bg-secondary)] rounded-[14px] p-4">
-                  <p className="text-sm font-medium text-[var(--text-primary)] mb-2">Listed at {formatPrice(listing.price)}</p>
-                  <div className="flex gap-2">
-                    <input value={offerAmount} onChange={(e) => setOfferAmount(e.target.value)} type="number" placeholder="Your offer (KES)" className="flex-1 airbnb-input rounded-xl text-sm" />
-                    <button onClick={handleSendOffer} disabled={offerSending || !offerAmount} className="px-4 py-2 btn-primary rounded-xl text-sm font-medium disabled:opacity-50">Send</button>
-                  </div>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">This will start a chat with your offer</p>
+      <main className="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
+          {/* Image */}
+          <div className="w-full md:w-1/2 lg:w-3/5">
+            <div className="card overflow-hidden aspect-[4/3]">
+              {listing.images && listing.images.length > 0 ? (
+                <Image
+                  src={listing.images[0]}
+                  alt={listing.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
+                  priority
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center" style={{ background: "var(--bg-secondary)" }}>
+                  <svg className="w-16 h-16" style={{ color: "var(--text-muted)", opacity: 0.3 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+                  </svg>
                 </div>
               )}
             </div>
-          )}
-
-          {listing.status !== "active" && (
-            <div className={`py-3 px-4 rounded-xl text-center font-medium ${listing.status === "sold" ? "bg-[var(--bg-hover)] text-[var(--text-muted)]" : "bg-[rgba(255,56,92,0.06)] text-[#ff385c]"}`}>
-              {listing.status === "sold" ? "This item has been sold" : `Status: ${listing.status}`}
-            </div>
-          )}
-
-          <div className="bg-[var(--bg-secondary)] rounded-[14px] p-4 space-y-2.5 text-sm">
-            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Condition</span><span className="font-medium text-[var(--text-primary)]">{conditionLabel || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Location</span><span className="font-medium text-[var(--text-primary)]">{listing.location_city || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Category</span><span className="font-medium text-[var(--text-primary)]">{category?.name || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Views</span><span className="font-medium text-[var(--text-primary)]">{listing.views.toLocaleString()}</span></div>
-            <div className="flex justify-between"><span className="text-[var(--text-secondary)]">Posted</span><span className="font-medium text-[var(--text-primary)]">{new Date(listing.created_at).toLocaleDateString("en-KE", { month: "short", day: "numeric" })}</span></div>
           </div>
 
-          <div className="border border-[var(--border-light)] rounded-[14px] overflow-hidden">
-            <Link href={listing.seller?.store_slug ? `/store/${listing.seller.store_slug}` : "#"}>
-              <div className="p-4 flex items-center gap-3 hover:bg-[var(--bg-secondary)] cursor-pointer">
-                <div className="w-11 h-11 rounded-full bg-[var(--bg-hover)] flex items-center justify-center text-lg text-[var(--text-secondary)] font-bold shrink-0">{listing.seller?.full_name?.[0]?.toUpperCase() || "?"}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1">
-                    <p className="font-medium text-sm text-[var(--text-primary)] truncate">{listing.seller?.store_name || listing.seller?.full_name || "Seller"}</p>
-                    {listing.seller?.verified_badge && <span className="text-[#ff385c] text-xs">✓</span>}
-                  </div>
-                  {listing.seller?.rating_count > 0 && <p className="text-xs text-[var(--text-muted)]">Rating: {listing.seller.rating_avg.toFixed(1)} ({listing.seller.rating_count} reviews)</p>}
-                </div>
-                <span className="text-xs text-[#ff385c] font-medium">View Store →</span>
+          {/* Details */}
+          <div className="w-full md:w-1/2 lg:w-2/5 flex flex-col">
+            <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>
+              {listing.title}
+            </h1>
+            <p className="text-2xl md:text-3xl font-bold text-[#ff385c] mb-6">
+              {formatKES(listing.price)}
+            </p>
+
+            <div className="flex flex-wrap gap-4 mb-6">
+              <div className="flex items-center gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                <span>{listing.location}</span>
               </div>
-            </Link>
+              <div className="flex items-center gap-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{listing.condition}</span>
+              </div>
+            </div>
+
+            {listing.description && (
+              <div className="border-t py-6" style={{ borderColor: "var(--border-light)" }}>
+                <h3 className="font-bold mb-2" style={{ color: "var(--text-primary)" }}>Description</h3>
+                <p className="whitespace-pre-line leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                  {listing.description}
+                </p>
+              </div>
+            )}
+
+            {listing.seller_name && (
+              <div className="border-t py-6" style={{ borderColor: "var(--border-light)" }}>
+                <h3 className="font-bold mb-2" style={{ color: "var(--text-primary)" }}>Seller</h3>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm" style={{ background: "var(--bg-secondary)", color: "var(--text-secondary)" }}>
+                    {listing.seller_name.charAt(0).toUpperCase()}
+                  </div>
+                  <span style={{ color: "var(--text-primary)" }}>{listing.seller_name}</span>
+                </div>
+                {listing.seller_phone && (
+                  <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>
+                    {listing.seller_phone}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* M-Pesa */}
+            <div className="card p-6 mt-auto">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-white" style={{ background: "#00a651" }}>
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg" style={{ color: "var(--text-primary)" }}>Pay via M-Pesa</h3>
+                  <p className="text-sm" style={{ color: "var(--text-muted)" }}>Secure direct payment</p>
+                </div>
+              </div>
+              <div className="p-4 rounded-lg" style={{ background: "var(--bg-primary)" }}>
+                <p className="text-xs mb-1" style={{ color: "var(--text-muted)" }}>Buy Goods Till Number</p>
+                <p className="text-2xl font-bold tracking-wider" style={{ color: "#00a651" }}>1919000</p>
+              </div>
+              <p className="text-xs mt-3" style={{ color: "var(--text-muted)" }}>
+                Contact the seller after payment to arrange delivery or pickup. Do not pay in advance for unseen items.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+
+        {/* Related */}
+        {relatedFiltered.length > 0 && (
+          <div className="mt-16 pt-8 border-t" style={{ borderColor: "var(--border-light)" }}>
+            <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--text-primary)" }}>
+              Similar in {listing.category}
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+              {relatedFiltered.map((l) => (
+                <ProductCard key={l.id} listing={l} />
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+
+      <Footer />
     </div>
   );
 }

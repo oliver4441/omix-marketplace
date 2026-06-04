@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npx next build",
+  "buildCommand": "NEXT_PUBLIC_BUILD_ID=$(date +%s) npx next build",
   "framework": "nextjs",
   "cleanUrls": true,
   "trailingSlash": false
